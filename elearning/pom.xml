@@ -11,7 +11,7 @@
 
   <name>eLearning</name>
   <!-- FIXME change it to the project's website -->
-  <url>https://localhost:8080/eLearning</url>
+  <url>http://localhost:8080/eLearning</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
