@@ -84,26 +84,23 @@
         </style>
     </jsp:attribute>
     <jsp:body>
-        <form class="modal-content" action="${pageContext.request.contextPath}/login" method="post">
+        <form class="modal-content" action="${pageContext.request.contextPath}/register" method="post">
+            <input type="hidden" name="action" value="register">
             <div class="container">
-                <h1>Log in</h1>
-                <p>Please fill in this form to log in</p>
+                <h1>Sign Up</h1>
+                <p>Please fill in this form to create an account.</p>
                 <hr>
                 <label for="email"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" required>
 
                 <label for="password"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" required>
-                
-                <label>
-                    <input type="checkbox" checked name="remember_me" style="margin-bottom:15px"> Remember me
-                </label>
 
                 <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
                 <div class="clearfix">
                     <button type="button" onclick="window.location.href='${pageContext.request.contextPath}';" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn">Log In</button>
+                    <button type="submit" class="signupbtn">Sign Up</button>
                 </div>
             </div>
         </form>
