@@ -41,6 +41,7 @@ public class RegisterController extends HttpServlet {
             e.printStackTrace();
         }
 
+        //TODO: dispatch to confirm otp page
         resp.sendRedirect(req.getContextPath() + "/login");
     }
 
