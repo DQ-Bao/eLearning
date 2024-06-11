@@ -47,6 +47,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="index.jsp" class="nav-item nav-link active">Home</a>
+                 <a href="fu.jsp" class="nav-item nav-link ">For Universities</a>
                 <a href="about.jsp" class="nav-item nav-link">About</a>
                 <a href="courses.jsp" class="nav-item nav-link">Courses</a>
                 <div class="nav-item dropdown">
@@ -58,7 +59,7 @@
                     </div>
                 </div>
                 <jsp:invoke fragment="nav"/>
-                <a href="contact.jsp" class="nav-item nav-link">Contact</a>
+            
                 <a href="${pageContext.request.contextPath}/login" class="nav-item nav-link">Login</a>
             </div>
             <a href="${pageContext.request.contextPath}/register" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
@@ -92,15 +93,9 @@
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
+               
             </div>
+            
         </div>
         <div class="container">
             <div class="copyright">
@@ -140,4 +135,5 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <jsp:invoke fragment="script"/>
 </body>

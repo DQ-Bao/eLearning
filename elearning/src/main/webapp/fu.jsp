@@ -40,8 +40,7 @@
     </div>
     <!-- Spinner End -->
 
-
-  <!-- Navbar Start -->
+<!-- Navbar Start -->
 <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <a href="index.jsp" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
         <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
@@ -62,13 +61,11 @@
                     <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
                     <a href="404.jsp" class="dropdown-item">404 Page</a>
                 </div>
+                
             </div>
-
             
-
-
-         
-         
+            <!-- Include custom nav fragment here -->
+           
         
             <a href="${pageContext.request.contextPath}/login" class="nav-item nav-link">Login</a>
         </div>
@@ -76,7 +73,6 @@
     </div>
 </nav>
 <!-- Navbar End -->
- 
 
 
     <!-- Header Start -->
@@ -84,7 +80,7 @@
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Contact</h1>
+                    <h1 class="display-3 text-white animated slideInDown">For Universities</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
@@ -116,7 +112,7 @@
                         </div>
                         <div class="ms-3">
                             <h5 class="text-primary">Office</h5>
-                            <p class="mb-0">123 Street, New York, USA</p>
+                            <p class="mb-0">FPT University, Hoa Lac, Thach That, Ha Noi, Viet Nam</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center mb-3">
@@ -138,13 +134,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <iframe class="position-relative rounded w-100 h-100"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                        frameborder="0" style="min-height: 300px; border:0;" allowfullscreen="" aria-hidden="false"
-                        tabindex="0"></iframe>
-                </div>
+                
                 <div class="col-lg-4 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
+                    
                     <form>
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -183,7 +175,7 @@
     <!-- Contact End -->
 
 
-     <!-- Footer Start -->
+   <!-- Footer Start -->
    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="row g-5">
