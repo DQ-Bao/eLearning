@@ -51,7 +51,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="index.jsp" class="nav-item nav-link active">Home</a>
+            <a href="index.jsp" class="nav-item nav-link ">Home</a>
             <a href="fu.jsp" class="nav-item nav-link">For Universities</a>
             <a href="about.jsp" class="nav-item nav-link">About</a>
             <a href="courses.jsp" class="nav-item nav-link">Courses</a>

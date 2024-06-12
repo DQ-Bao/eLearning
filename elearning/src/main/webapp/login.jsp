@@ -1,6 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
-<t:main>
+<t:main nav_active="login">
     <jsp:attribute name="head">
         <style>
             body {font-family: Arial, Helvetica, sans-serif;}
@@ -34,6 +34,7 @@
             opacity: 0.9;
             float: left;
             width: 50%;
+            
             }
 
             /* Extra styles for the cancel button */
