@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    <t:main nav_active="about
+    ">
 <head>
     <meta charset="utf-8">
     <title>eLEARNING - eLearning HTML Template</title>
@@ -51,18 +52,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="index.jsp" class="nav-item nav-link active">Home</a>
+            <a href="index.jsp" class="nav-item nav-link ">Home</a>
             <a href="fu.jsp" class="nav-item nav-link">For Universities</a>
-            <a href="about.jsp" class="nav-item nav-link">About</a>
+            <a href="about.jsp" class="nav-item nav-link active">About</a>
             <a href="courses.jsp" class="nav-item nav-link">Courses</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu fade-down m-0">
-                    <a href="team.jsp" class="dropdown-item">Our Team</a>
-                    <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                    <a href="404.jsp" class="dropdown-item">404 Page</a>
-                </div>
-            </div>
+           
 
             
 

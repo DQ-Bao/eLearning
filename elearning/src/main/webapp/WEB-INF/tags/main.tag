@@ -3,6 +3,8 @@
 <%@attribute name="head" fragment="true"%>
 <%@attribute name="nav" fragment="true"%>
 <%@attribute name="script" fragment="true"%>
+<%@attribute name="nav_active"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,9 +27,19 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <script>
+        function setNavActive() {
+            const navItems = document.getElementsByClassName("nav-item");
+            for (let i = 0; i < navItems.length; i++) {
+                if ('${nav_active}' == navItems[i].getAttribute('id')) {
+                    navItems[i].classList.add("active");
+                }
+            }
+        }
+    </script>
     <jsp:invoke fragment="head"/>
 </head>
-<body>
+<body onload="setNavActive()">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -46,21 +58,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.jsp" class="nav-item nav-link active">Home</a>
-                 <a href="fu.jsp" class="nav-item nav-link ">For Universities</a>
-                <a href="about.jsp" class="nav-item nav-link">About</a>
-                <a href="courses.jsp" class="nav-item nav-link">Courses</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <a href="team.jsp" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.jsp" class="dropdown-item">Testimonial</a>
-                        <a href="404.jsp" class="dropdown-item">404 Page</a>
-                    </div>
-                </div>
+                <a href="index.jsp" id="home" class="nav-item nav-link">Home</a>
+                 <a href="fu.jsp" id="fu"class="nav-item nav-link ">For Universities</a>
+                <a href="about.jsp" id="about"class="nav-item nav-link">About</a>
+                <a href="courses.jsp" id="courses"class="nav-item nav-link">Courses</a>
+               
                 <jsp:invoke fragment="nav"/>
             
-                <a href="${pageContext.request.contextPath}/login" class="nav-item nav-link">Login</a>
+                <a href="${pageContext.request.contextPath}/login" id="login"class="nav-item nav-link">Login</a>
             </div>
             <a href="${pageContext.request.contextPath}/register" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
