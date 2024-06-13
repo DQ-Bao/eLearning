@@ -28,18 +28,16 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <script>
-        function setNavActive() {
-            const navItems = document.getElementsByClassName("nav-item");
-            for (let i = 0; i < navItems.length; i++) {
-                if ('${nav_active}' == navItems[i].getAttribute('id')) {
-                    navItems[i].classList.add("active");
-                }
+        function checkMessage() {
+            const message = '${requestScope.message}';
+            if (message) {
+                alert(message);
             }
         }
     </script>
     <jsp:invoke fragment="head"/>
 </head>
-<body onload="setNavActive()">
+<body onload="checkMessage()">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -64,10 +62,34 @@
                 <a href="courses.jsp" id="courses"class="nav-item nav-link">Courses</a>
                
                 <jsp:invoke fragment="nav"/>
-            
-                <a href="${pageContext.request.contextPath}/login" id="login"class="nav-item nav-link">Login</a>
+                <c:if test="${empty sessionScope.user}">
+                    <a href="${pageContext.request.contextPath}/login" class="nav-item nav-link">Login</a>
+                </c:if>
             </div>
-            <a href="${pageContext.request.contextPath}/register" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+            <c:choose>
+                <c:when test="${empty sessionScope.user}">
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+                </c:when>
+                <c:otherwise>
+                    <div class="d-none d-lg-block nav-item dropdown">
+                        <a class="btn btn-primary py-4 px-lg-5 dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.user.firstName and not empty sessionScope.user.lastName}">
+                                    ${sessionScope.user.firstName} ${sessionScope.user.lastName}
+                                </c:when>
+                                <c:otherwise>
+                                    ${sessionScope.user.account.email}
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                        <div class="dropdown-menu fade-down m-0">
+                            <a href="#" class="dropdown-item">Profile</a>
+                            <a href="#" class="dropdown-item">Account</a>
+                            <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
     <!-- Navbar End -->

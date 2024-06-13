@@ -28,8 +28,9 @@ public class UserDataAccess {
         return INSTANCE;
     }
 
-    public void register(String email, String password, Role role) {
-        String sp = "{call spRegisterAccount(?, ?, ?)}";
+    public boolean register(String email, String password, Role role) {
+        boolean success = false;
+        String sp = "{call spRegisterAccount(?, ?, ?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
             byte[] salt = generateSalt();
             String hash = hashPassword(password, salt);
@@ -38,10 +39,13 @@ public class UserDataAccess {
             statement.setString("Email", email);
             statement.setString("Password", dbPassword);
             statement.setString("Role", Account.roleToString(role));
+            statement.registerOutParameter("Success", java.sql.Types.BIT);
             statement.execute();
+            success = statement.getBoolean("Success");
         } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return success;
     }
 
     public User authenticate(String email, String password) {
@@ -63,14 +67,20 @@ public class UserDataAccess {
                     String firstName = res.getString("first_name");
                     String lastName = res.getString("last_name");
                     boolean gender = res.getBoolean("gender");
-                    LocalDate dob = res.getDate("date_of_birth").toLocalDate();
+                    LocalDate dob = null;
+                    if (res.getDate("date_of_birth") != null) {
+                        dob = res.getDate("date_of_birth").toLocalDate();
+                    }
                     String profileImagePath = res.getString("profile_image");
 
                     int accountId = res.getInt("account_id");
                     String accountEmail = res.getString("email");
                     boolean activated = res.getBoolean("activated");
                     Role role = Role.valueOf(res.getString("role_name"));
-                    LocalDateTime createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                    LocalDateTime createdAt = null;
+                    if (res.getTimestamp("created_at") != null) {
+                        createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                    }
                     user = new User(
                         id, new Account(accountId, accountEmail, activated, role, createdAt),
                         firstName, lastName, gender, dob, profileImagePath
@@ -84,14 +94,56 @@ public class UserDataAccess {
         return user;
     }
 
-    public void activate(String email) {
-        String sp = "{call spActivateAccount(?)}";
+    public boolean activate(String email) {
+        boolean success = false;
+        String sp = "{call spActivateAccount(?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
             statement.setString("Email", email);
+            statement.registerOutParameter("Success", java.sql.Types.BIT);
             statement.execute();
+            success = statement.getBoolean("Success");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return success;
+    }
+
+    public User getUserByEmail(String email) {
+        String sp = "{call spGetUserByEmail(?)}";
+        User user = null;
+        try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
+            statement.setString("Email", email);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("id");
+                String firstName = res.getString("first_name");
+                String lastName = res.getString("last_name");
+                boolean gender = res.getBoolean("gender");
+                LocalDate dob = null;
+                if (res.getDate("date_of_birth") != null) {
+                    dob = res.getDate("date_of_birth").toLocalDate();
+                }
+                String profileImagePath = res.getString("profile_image");
+
+                int accountId = res.getInt("account_id");
+                String accountEmail = res.getString("email");
+                boolean activated = res.getBoolean("activated");
+                Role role = Role.valueOf(res.getString("role_name"));
+                LocalDateTime createdAt = null;
+                if (res.getTimestamp("created_at") != null) {
+                    createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                }
+                user = new User(
+                    id, new Account(accountId, accountEmail, activated, role, createdAt),
+                    firstName, lastName, gender, dob, profileImagePath
+                );
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     private byte[] generateSalt() {

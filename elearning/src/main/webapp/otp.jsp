@@ -115,23 +115,27 @@
                         <div class="card-body p-5 text-center">
                             <h4>Verify</h4>
                             <p>Your code was sent to you via email</p>
-
-                            <div class="otp-field mb-4">
-                                <input type="number" />
-                                <input type="number" disabled />
-                                <input type="number" disabled />
-                                <input type="number" disabled />
-                                <input type="number" disabled />
-                                <input type="number" disabled />
-                            </div>
-
-                            <button class="btn btn-primary mb-3">
-                                Verify
-                            </button>
-
-                            <p class="resend mb-0">
-                                Didn't receive code? <a href="">Request again</a>
-                            </p>
+                            
+                            <form action="${pageContext.request.contextPath}/register" method="post">
+                                <input type="hidden" name="action" value="verify-otp">
+                                <input type="hidden" name="email" value="${requestScope.email}">
+                                <div class="otp-field mb-4">
+                                    <input type="number" name="num1">
+                                    <input type="number" name="num2" disabled>
+                                    <input type="number" name="num3" disabled>
+                                    <input type="number" name="num4" disabled>
+                                    <input type="number" name="num5" disabled>
+                                    <input type="number" name="num6" disabled>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-3">Verify</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/register" method="post">
+                                <input type="hidden" name="action" value="resend-otp">
+                                <input type="hidden" name="email" value="${requestScope.email}">
+                                <p class="resend mb-0">
+                                    Didn't receive code? <button type="submit" class="btn btn-link">Send again</button>
+                                </p>
+                            </form>
                         </div>
                     </div>
                 </div>
