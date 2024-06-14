@@ -34,6 +34,10 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String rememberMe = req.getParameter("remember_me");
+        boolean isPasswordSet = userDAO.isPasswordSet(email);
+        if (!isPasswordSet) {
+            userDAO.updatePassword(email, password);
+        }
         User user = userDAO.authenticate(email, password);
         if (user == null) {
             req.setAttribute("message", "Login Failed!");
@@ -43,6 +47,7 @@ public class LoginController extends HttpServlet {
         if (!user.getAccount().isActivated()) {
             String userEmail = user.getAccount().getEmail();
             String otp = RandomUtil.generateOTP();
+            req.getSession().setAttribute("otp", otp);
             try {
                 String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
                 MailUtil mail = MailUtil.getInstance();
@@ -51,7 +56,7 @@ public class LoginController extends HttpServlet {
                 e.printStackTrace();
             }
             req.setAttribute("message", "You haven't activate your account. Confirm the OTP sent to your email.");
-            req.setAttribute("email", user.getAccount().getEmail());
+            req.setAttribute("email", userEmail);
             req.getRequestDispatcher("otp.jsp").forward(req, resp);
             return;
         }
