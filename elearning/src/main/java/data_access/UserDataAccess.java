@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -28,8 +29,9 @@ public class UserDataAccess {
         return INSTANCE;
     }
 
-    public void register(String email, String password, Role role) {
-        String sp = "{call spRegisterAccount(?, ?, ?)}";
+    public boolean register(String email, String password, Role role) {
+        boolean success = false;
+        String sp = "{call spRegisterAccount(?, ?, ?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
             byte[] salt = generateSalt();
             String hash = hashPassword(password, salt);
@@ -38,10 +40,13 @@ public class UserDataAccess {
             statement.setString("Email", email);
             statement.setString("Password", dbPassword);
             statement.setString("Role", Account.roleToString(role));
+            statement.registerOutParameter("Success", java.sql.Types.BIT);
             statement.execute();
+            success = statement.getBoolean("Success");
         } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return success;
     }
 
     public User authenticate(String email, String password) {
@@ -63,14 +68,20 @@ public class UserDataAccess {
                     String firstName = res.getString("first_name");
                     String lastName = res.getString("last_name");
                     boolean gender = res.getBoolean("gender");
-                    LocalDate dob = res.getDate("date_of_birth").toLocalDate();
+                    LocalDate dob = null;
+                    if (res.getDate("date_of_birth") != null) {
+                        dob = res.getDate("date_of_birth").toLocalDate();
+                    }
                     String profileImagePath = res.getString("profile_image");
 
                     int accountId = res.getInt("account_id");
                     String accountEmail = res.getString("email");
                     boolean activated = res.getBoolean("activated");
                     Role role = Role.valueOf(res.getString("role_name"));
-                    LocalDateTime createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                    LocalDateTime createdAt = null;
+                    if (res.getTimestamp("created_at") != null) {
+                        createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                    }
                     user = new User(
                         id, new Account(accountId, accountEmail, activated, role, createdAt),
                         firstName, lastName, gender, dob, profileImagePath
@@ -84,14 +95,94 @@ public class UserDataAccess {
         return user;
     }
 
-    public void activate(String email) {
-        String sp = "{call spActivateAccount(?)}";
+    public boolean activate(String email) {
+        boolean success = false;
+        String sp = "{call spActivateAccount(?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
             statement.setString("Email", email);
+            statement.registerOutParameter("Success", java.sql.Types.BIT);
             statement.execute();
+            success = statement.getBoolean("Success");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return success;
+    }
+
+    public User getUserByEmail(String email) {
+        String sp = "{call spGetUserByEmail(?)}";
+        User user = null;
+        try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
+            statement.setString("Email", email);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("id");
+                String firstName = res.getString("first_name");
+                String lastName = res.getString("last_name");
+                boolean gender = res.getBoolean("gender");
+                LocalDate dob = null;
+                if (res.getDate("date_of_birth") != null) {
+                    dob = res.getDate("date_of_birth").toLocalDate();
+                }
+                String profileImagePath = res.getString("profile_image");
+
+                int accountId = res.getInt("account_id");
+                String accountEmail = res.getString("email");
+                boolean activated = res.getBoolean("activated");
+                Role role = Role.valueOf(res.getString("role_name"));
+                LocalDateTime createdAt = null;
+                if (res.getTimestamp("created_at") != null) {
+                    createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                }
+                user = new User(
+                    id, new Account(accountId, accountEmail, activated, role, createdAt),
+                    firstName, lastName, gender, dob, profileImagePath
+                );
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public boolean isPasswordSet(String email) {
+        String sql = "select [password_hash] from [account] where [email] = ?";
+        boolean isSet = false;
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setString(1, email);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                String password = res.getString("password_hash");
+                if (password != null) {
+                    isSet = true;
+                }
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isSet;
+    }
+
+    public boolean updatePassword(String email, String password) {
+        String sql = "update [account] set [password_hash] = ? where [email] = ?";
+        boolean success = false;
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            byte[] salt = generateSalt();
+            String hash = hashPassword(password, salt);
+            String dbPassword = hash + ":" + Base64.getEncoder().encodeToString(salt);
+
+            statement.setString(1, dbPassword);
+            statement.setString(2, email);
+            statement.execute();
+            return success;
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return success;
     }
 
     private byte[] generateSalt() {

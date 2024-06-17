@@ -15,7 +15,6 @@ if "%JAVA_HOME%"=="" (
 
 if "%JRE_HOME%"=="" (
     echo JRE_HOME is not properly set
-    
     pause
     exit
 )

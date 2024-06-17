@@ -14,9 +14,11 @@ go
 create or alter procedure spRegisterAccount
 	@Email varchar(max),
 	@Password char(69),
-	@Role nvarchar(255)
+	@Role nvarchar(255),
+	@Success bit output
 as
 begin
+	select @Success = 0;
 	declare @output table (account_id int);
 	-- insert unactivated account
 	insert into [account]([email], [password_hash], [activated], [role_id])
@@ -28,16 +30,29 @@ begin
 	-- insert empty user profile
 	declare @account_id int;
 	select @account_id = [account_id] from @output;
-	insert into [user]([account_id]) values(@account_id);
+	if @account_id is not null
+	begin
+		insert into [user]([account_id]) values(@account_id);
+		select @Success = 1;
+	end
 end
 go
 
 create or alter procedure spActivateAccount
-	@Email varchar(max)
+	@Email varchar(max),
+	@Success bit output
 as
 begin
+	select @Success = 0;
 	update [account]
 	set [activated] = 1
 	where [email] = @Email;
+
+	declare @act bit;
+	select @act = [activated] from [account] where [email] = @Email;
+	if @act = 1
+	begin
+		select @Success = 1;
+	end
 end
 go
