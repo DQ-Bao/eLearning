@@ -34,10 +34,18 @@
                 alert(message);
             }
         }
+        function setNavActive() {
+            const navItems = document.getElementsByClassName("nav-item");
+            for (let i = 0; i < navItems.length; i++) {
+                if ('${nav_active}' === navItems[i].getAttribute('id')) {
+                    navItems[i].classList.add("active");
+                }
+            }
+        }
     </script>
     <jsp:invoke fragment="head"/>
 </head>
-<body onload="checkMessage()">
+<body onload="checkMessage();setNavActive()">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -48,7 +56,7 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.jsp" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="${pageContext.request.contextPath}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -56,10 +64,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.jsp" id="home" class="nav-item nav-link">Home</a>
-                 <a href="fu.jsp" id="fu"class="nav-item nav-link ">For Universities</a>
-                <a href="about.jsp" id="about"class="nav-item nav-link">About</a>
-                <a href="courses.jsp" id="courses"class="nav-item nav-link">Courses</a>
+                <a href="fu.jsp" id="fu" class="nav-item nav-link ">For Universities</a>
+                <a href="about.jsp" id="about" class="nav-item nav-link">About</a>
+                <a href="courses.jsp" id="courses" class="nav-item nav-link">Courses</a>
                
                 <jsp:invoke fragment="nav"/>
                 <c:if test="${empty sessionScope.user}">

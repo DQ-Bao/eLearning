@@ -14,7 +14,6 @@ import java.io.IOException;
 
 public class RegisterController extends HttpServlet {
     private UserDataAccess userDAO;
-    private String userEmail;
 
     @Override
     public void init() throws ServletException {
@@ -36,19 +35,20 @@ public class RegisterController extends HttpServlet {
             return;
         }
         if (action.equals("register")) {
-            userEmail = req.getParameter("email");
+            String email = req.getParameter("email");
             String password = req.getParameter("password");
             
-            if (userDAO.register(userEmail, password, Role.Student)) {
+            if (userDAO.register(email, password, Role.Student)) {
                 String otp = RandomUtil.generateOTP();
                 req.getSession().setAttribute("otp", otp);
                 try {
                     String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
                     MailUtil mail = MailUtil.getInstance();
-                    mail.sendEmail(userEmail, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
+                    mail.sendEmail(email, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
                 } catch (IOException | MessagingException e) {
                     e.printStackTrace();
                 }
+                req.setAttribute("email", email);
                 req.getRequestDispatcher("otp.jsp").forward(req, resp);
             }
             else {
@@ -58,6 +58,7 @@ public class RegisterController extends HttpServlet {
             return;
         }
         else if (action.equals("verify-otp")) {
+            String email = req.getParameter("email");
             String otp = (String)req.getSession().getAttribute("otp");
             String reqOtp = req.getParameter("num1") 
                           + req.getParameter("num2")
@@ -65,24 +66,25 @@ public class RegisterController extends HttpServlet {
                           + req.getParameter("num4")
                           + req.getParameter("num5")
                           + req.getParameter("num6");
-            if (userEmail == null || otp == null || !otp.equals(reqOtp)) {
+            if (otp == null || !otp.equals(reqOtp)) {
                 req.setAttribute("message", "Confirm failed");
                 req.getRequestDispatcher("otp.jsp").forward(req, resp);
             }
             else {
-                userDAO.activate(userEmail);
+                userDAO.activate(email);
                 req.getSession().removeAttribute("otp");
                 resp.sendRedirect(req.getContextPath() + "/login");
             }
             return;
         }
         else if (action.equals("resend-otp")) {
+            String email = req.getParameter("email");
             String otp = RandomUtil.generateOTP();
             req.getSession().setAttribute("otp", otp);
             try {
                 String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
                 MailUtil mail = MailUtil.getInstance();
-                mail.sendEmail(userEmail, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
+                mail.sendEmail(email, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
             } catch (IOException | MessagingException e) {
                 e.printStackTrace();
             }
