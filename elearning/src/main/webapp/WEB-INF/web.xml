@@ -54,4 +54,21 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+        <servlet>
+        <servlet-name>ManagerController</servlet-name>
+        <servlet-class>controller.ManagerController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManagerController</servlet-name>
+        <url-pattern>/manager</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TeacherController</servlet-name>
+        <servlet-class>controller.TeacherController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TeacherController</servlet-name>
+        <url-pattern>/teacher</url-pattern>
+    </servlet-mapping>
 </web-app>
