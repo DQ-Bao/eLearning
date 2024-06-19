@@ -1,28 +1,52 @@
 package controller;
 
 import data_access.UserDataAccess;
+import model.Account;
+import model.User;
 import model.Account.Role;
-import util.MailUtil;
-import util.PropertyUtil;
-import util.RandomUtil;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class RegisterController extends HttpServlet {
-    private UserDataAccess userDAO;
+    private UserDataAccess dao;
 
     @Override
     public void init() throws ServletException {
-        this.userDAO = UserDataAccess.getInstance();
+        this.dao = UserDataAccess.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String action = req.getParameter("action");
+        String id = req.getParameter("verify_id");
+        String verifyId = (String)req.getSession().getAttribute("verify_id");
+        if (action != null && id != null && id.equals(verifyId)) {
+            if (action.equals("activate_account")) {
+                String verifyEmail = req.getParameter("verify_email");
+                if (verifyEmail != null) {
+                    String email = URLDecoder.decode(verifyEmail, "UTF-8");
+                    dao.activate(email);
+                    resp.sendRedirect(req.getContextPath() + "/login");
+                }
+            }
+            else if (action.equals("check_email")) {
+                String verifyEmail = req.getParameter("verify_email");
+                if (verifyEmail != null) {
+                    String email = URLDecoder.decode(verifyEmail, "UTF-8");
+                    req.setAttribute("email", email);
+                    req.setAttribute("set_pw_message", "Set your password to finish creating account");
+                    req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
+                }
+            }
+            req.getSession().removeAttribute("verify_id");
+            return;
+        }
         req.getRequestDispatcher("register.jsp").forward(req, resp);
     }
 
@@ -38,18 +62,9 @@ public class RegisterController extends HttpServlet {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
             
-            if (userDAO.register(email, password, Role.Student)) {
-                String otp = RandomUtil.generateOTP();
-                req.getSession().setAttribute("otp", otp);
-                try {
-                    String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
-                    MailUtil mail = MailUtil.getInstance();
-                    mail.sendEmail(email, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
-                } catch (IOException | MessagingException e) {
-                    e.printStackTrace();
-                }
-                req.setAttribute("email", email);
-                req.getRequestDispatcher("otp.jsp").forward(req, resp);
+            if (dao.register(email, password, Role.Student)) {
+                String redirectUrl = req.getContextPath() + "/register?action=activate_account";
+                resp.sendRedirect(req.getContextPath() + "/verify?email=" + URLEncoder.encode(email, "UTF-8") + "&redirect_url=" + URLEncoder.encode(redirectUrl, "UTF-8"));
             }
             else {
                 req.setAttribute("message", "Register failed");
@@ -57,40 +72,34 @@ public class RegisterController extends HttpServlet {
             }
             return;
         }
-        else if (action.equals("verify-otp")) {
+        else if (action.equals("check_email")) {
             String email = req.getParameter("email");
-            String otp = (String)req.getSession().getAttribute("otp");
-            String reqOtp = req.getParameter("num1") 
-                          + req.getParameter("num2")
-                          + req.getParameter("num3")
-                          + req.getParameter("num4")
-                          + req.getParameter("num5")
-                          + req.getParameter("num6");
-            if (otp == null || !otp.equals(reqOtp)) {
-                req.setAttribute("message", "Confirm failed");
-                req.getRequestDispatcher("otp.jsp").forward(req, resp);
+            User user = dao.getUserByEmail(email);
+            if (user == null || user.getAccount().getRole() == Account.Role.Student || user.getAccount().getRole() == Account.Role.Admin) {
+                req.setAttribute("message", "Invalid user");
+                req.getRequestDispatcher("register.jsp").forward(req, resp);
             }
             else {
-                userDAO.activate(email);
-                req.getSession().removeAttribute("otp");
+                if (dao.isPasswordSet(email)) {
+                    req.setAttribute("message", "Account is already registered");
+                    req.getRequestDispatcher("register.jsp").forward(req, resp);
+                    return;
+                }
+                String redirectUrl = req.getContextPath() + "/register?action=check_email";
+                resp.sendRedirect(req.getContextPath() + "/verify?email=" + URLEncoder.encode(email, "UTF-8") + "&redirect_url=" + URLEncoder.encode(redirectUrl, "UTF-8"));
+            }
+        }
+        else if (action.equals("set_pw")) {
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
+            if (dao.updatePassword(email, password)) {
+                dao.activate(email);
                 resp.sendRedirect(req.getContextPath() + "/login");
             }
-            return;
-        }
-        else if (action.equals("resend-otp")) {
-            String email = req.getParameter("email");
-            String otp = RandomUtil.generateOTP();
-            req.getSession().setAttribute("otp", otp);
-            try {
-                String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
-                MailUtil mail = MailUtil.getInstance();
-                mail.sendEmail(email, fromEmailAddress, "Activate your account", "Your otp code is " + otp, "text/html");
-            } catch (IOException | MessagingException e) {
-                e.printStackTrace();
+            else {
+                req.setAttribute("message", "Set password failed");
+                req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
             }
-            req.setAttribute("message", "OTP has been resent to your email.");
-            req.getRequestDispatcher("otp.jsp").forward(req, resp);
-            return;
         }
     }
 }

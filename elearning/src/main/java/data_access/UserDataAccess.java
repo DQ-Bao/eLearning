@@ -169,7 +169,6 @@ public class UserDataAccess {
 
     public boolean updatePassword(String email, String password) {
         String sql = "update [account] set [password_hash] = ? where [email] = ?";
-        boolean success = false;
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
             byte[] salt = generateSalt();
             String hash = hashPassword(password, salt);
@@ -178,11 +177,11 @@ public class UserDataAccess {
             statement.setString(1, dbPassword);
             statement.setString(2, email);
             statement.execute();
-            return success;
+            return true;
         } catch (SQLException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return success;
+        return false;
     }
 
     private byte[] generateSalt() {

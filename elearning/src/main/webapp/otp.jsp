@@ -71,6 +71,16 @@
                 }
                 });
             });
+            function concatOTP() {
+                const num1 = document.getElementById("num1").value;
+                const num2 = document.getElementById("num2").value;
+                const num3 = document.getElementById("num3").value;
+                const num4 = document.getElementById("num4").value;
+                const num5 = document.getElementById("num5").value;
+                const num6 = document.getElementById("num6").value;
+                const otp = num1 + num2 + num3 + num4 + num5 + num6;
+                document.getElementsByName("verify_otp")[0].value = otp;
+            }
         </script>
     </jsp:attribute>
     <jsp:attribute name="head">
@@ -108,7 +118,7 @@
         </style>
     </jsp:attribute>
     <jsp:body>
-        <div class="container-xxl bg-body-tertiary d-block">
+        <div class="container-xxl d-block">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
                     <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
@@ -116,24 +126,20 @@
                             <h4>Verify</h4>
                             <p>Your code was sent to you via email</p>
                             
-                            <form action="${pageContext.request.contextPath}/register" method="post">
-                                <input type="hidden" name="action" value="verify-otp">
-                                <input type="hidden" name="email" value="${requestScope.email}">
+                            <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP()">
+                                <input type="hidden" name="verify_email" value="${requestScope.verify_email}">
+                                <input type="hidden" name="verify_otp">
                                 <div class="otp-field mb-4">
-                                    <input type="number" name="num1">
-                                    <input type="number" name="num2" disabled>
-                                    <input type="number" name="num3" disabled>
-                                    <input type="number" name="num4" disabled>
-                                    <input type="number" name="num5" disabled>
-                                    <input type="number" name="num6" disabled>
+                                    <input type="number" id="num1" required>
+                                    <input type="number" id="num2" required disabled>
+                                    <input type="number" id="num3" required disabled>
+                                    <input type="number" id="num4" required disabled>
+                                    <input type="number" id="num5" required disabled>
+                                    <input type="number" id="num6" required disabled>
                                 </div>
-                                <button type="submit" class="btn btn-primary mb-3">Verify</button>
-                            </form>
-                            <form action="${pageContext.request.contextPath}/register" method="post">
-                                <input type="hidden" name="action" value="resend-otp">
-                                <input type="hidden" name="email" value="${requestScope.email}">
+                                <button type="submit" name="action" value="verify" class="btn btn-primary mb-3">Verify</button>
                                 <p class="resend mb-0">
-                                    Didn't receive code? <button type="submit" class="btn btn-link">Send again</button>
+                                    Didn't receive code? <button type="submit" name="action" value="send_again" class="btn btn-link">Send again</button>
                                 </p>
                             </form>
                         </div>

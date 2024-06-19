@@ -3,106 +3,63 @@
 <t:main>
     <jsp:attribute name="head">
         <style>
-            body {font-family: Arial, Helvetica, sans-serif;}
-            * {box-sizing: border-box;}
-
-            /* Full-width input fields */
             input[type=text], input[type=password] {
-            width: 100%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
-            display: inline-block;
-            border: none;
-            background: #f1f1f1;
+                width: 100%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                display: inline-block;
+                border: none;
+                background: #f1f1f1;
             }
 
             /* Add a background color when the inputs get focus */
             input[type=text]:focus, input[type=password]:focus {
-            background-color: #ddd;
-            outline: none;
-            }
-
-            /* Float cancel and signup buttons and add an equal width */
-            .cancelbtn, .signupbtn {
-            background-color: #04AA6D;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            opacity: 0.9;
-            float: left;
-            width: 50%;
-            }
-
-            /* Extra styles for the cancel button */
-            .cancelbtn {
-            padding: 14px 20px;
-            background-color: #f44336;
-            }
-
-            /* Add padding to container elements */
-            .container {
-            padding: 16px;
-            }
-
-            /* The Modal (background) */
-            .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: #474e5d;
-            padding-top: 50px;
-            }
-
-            /* Modal Content/Box */
-            .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            }
-
-            /* Style the horizontal ruler */
-            hr {
-            border: 1px solid #f1f1f1;
-            margin-bottom: 25px;
-            }
-            
-            /* Clear floats */
-            .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
+                background-color: #ddd;
+                outline: none;
             }
         </style>
     </jsp:attribute>
     <jsp:body>
-        <form class="modal-content" action="${pageContext.request.contextPath}/register" method="post">
-            <input type="hidden" name="action" value="register">
-            <div class="container">
-                <h1>Sign Up</h1>
-                <p>Please fill in this form to create an account.</p>
-                <hr>
-                <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
+        <div class="container-xxl d-block">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
+                    <div class="nav nav-tabs mt-5">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#student-register" type="button" aria-controls="student-register" aria-selected="true">For Student</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#org-register" type="button" aria-controls="org-register" aria-selected="false">For Organization</button>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="student-register">
+                            <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
+                                <div class="card-body p-5 text-center">
+                                    <h1>Sign Up</h1>
+                                    <p>Sign up an account by filling in this form</p>
+                                    
+                                    <form action="${pageContext.request.contextPath}/register" method="post">
+                                        <input type="text" placeholder="Enter Email" name="email" required>
+                                        <input type="password" placeholder="Enter Password" name="password" required>
 
-                <label for="password"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
-
-                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-
-                <div class="clearfix">
-                    <button type="button" onclick="window.location.href='${pageContext.request.contextPath}';" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn">Sign Up</button>
+                                        <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+                                        <button type="submit" name="action" value="register" class="btn btn-primary mb-3">Sign up</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="org-register">
+                            <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
+                                <div class="card-body p-5 text-center">
+                                    <h1>Enter your email</h1>
+                                    <p>Enter the email provided by your organization</p>
+                                    
+                                    <form action="${pageContext.request.contextPath}/register" method="post">
+                                        <input type="text" placeholder="Enter Email" name="email" required>
+                                        <button type="submit" name="action" value="check_email" class="btn btn-primary mb-3">Next</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
     </jsp:body>
 </t:main>

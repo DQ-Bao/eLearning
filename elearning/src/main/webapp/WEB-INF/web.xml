@@ -54,6 +54,15 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VerifyController</servlet-name>
+        <servlet-class>controller.VerifyController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VerifyController</servlet-name>
+        <url-pattern>/verify</url-pattern>
+    </servlet-mapping>
     
     <servlet>
         <servlet-name>LogoutController</servlet-name>
