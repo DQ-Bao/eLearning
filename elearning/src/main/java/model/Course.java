@@ -1,36 +1,61 @@
 package model;
 
 public class Course {
-    private String imagePath;
-    private double price;
-    private String title;
-    private String language;
+    private int id;
     private Manager manager;
+    private String title;
     private String description;
+    private String language;
+    private String categoryName;
+    private double price;
+    private String imagePath;
+    private boolean active;
+    private boolean archived;
 
-    
-    public Course() {
-    }
-
-    
-    
-    public Course(String imagePath, double price, String title, String language, Manager manager, String description) {
-        this.imagePath = imagePath;
-        this.price = price;
-        this.title = title;
-        this.language = language;
+    public Course(int id, Manager manager, String title, String description, String language, String categoryName,
+            double price, String imagePath, boolean active, boolean archived) {
+        this.id = id;
         this.manager = manager;
+        this.title = title;
         this.description = description;
+        this.language = language;
+        this.categoryName = categoryName;
+        this.price = price;
+        this.imagePath = imagePath;
+        this.active = active;
+        this.archived = archived;
     }
 
-    
+    public int getId() {
+        return id;
+    }
 
-    public Course(String imagePath, double price, String title, String language, Manager manager) {
-        this.imagePath = imagePath;
-        this.price = price;
-        this.title = title;
-        this.language = language;
-        this.manager = manager;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     public String getImagePath() {
@@ -81,9 +106,5 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    
-
-    
+    }    
 }

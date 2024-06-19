@@ -15,6 +15,10 @@ public class Manager {
         this.country = country;
     }
 
+    public Manager(String orgName) {
+        this.orgName = orgName;
+    }
+
     public int getId() {
         return id;
     }

@@ -4,7 +4,6 @@
 <%@attribute name="nav" fragment="true"%>
 <%@attribute name="script" fragment="true"%>
 <%@attribute name="nav_active"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,22 +26,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <script>
-        function checkMessage() {
-            const message = '${requestScope.message}';
-            if (message) {
-                alert(message);
-            }
-        }
-        function setNavActive() {
-            const navItems = document.getElementsByClassName("nav-item");
-            for (let i = 0; i < navItems.length; i++) {
-                if ('${nav_active}' === navItems[i].getAttribute('id')) {
-                    navItems[i].classList.add("active");
-                }
-            }
-        }
-    </script>
     <jsp:invoke fragment="head"/>
 </head>
 <body>
@@ -64,9 +47,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="fu.jsp" id="fu" class="nav-item nav-link ">For Universities</a>
+                <a href="contact.jsp" id="contact" class="nav-item nav-link ">Contact</a>
                 <a href="about.jsp" id="about" class="nav-item nav-link">About</a>
-                <a href="courses.jsp" id="courses" class="nav-item nav-link">Courses</a>
+                <a href="${pageContext.request.contextPath}/courses" id="courses" class="nav-item nav-link">Courses</a>
                
                 <jsp:invoke fragment="nav"/>
                 <c:if test="${empty sessionScope.user}">

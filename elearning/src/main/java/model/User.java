@@ -11,8 +11,6 @@ public class User {
     private LocalDate dateOfBirth;
     private String profileImagePath;
 
-    
-
     public User(String firstName, String lastName, String profileImagePath) {
         this.firstName = firstName;
         this.lastName = lastName;

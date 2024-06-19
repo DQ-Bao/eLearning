@@ -55,6 +55,7 @@ create table [course] (
 	[language] nvarchar(255),
 	[category_id] int foreign key references [category]([id]) on delete set null,
 	[price] decimal(19, 4) not null,
+	[image_path] nvarchar(max),
 	[active] bit not null default(0),
 	[archived] bit not null default(0),
 	[created_at] datetime2 not null default getutcdate(),
