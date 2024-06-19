@@ -11,6 +11,14 @@ public class User {
     private LocalDate dateOfBirth;
     private String profileImagePath;
 
+    
+
+    public User(String firstName, String lastName, String profileImagePath) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profileImagePath = profileImagePath;
+    }
+
     public User(int id, Account account, String firstName, String lastName, boolean gender, LocalDate dateOfBirth, String profileImagePath) {
         this.id = id;
         this.account = account;
