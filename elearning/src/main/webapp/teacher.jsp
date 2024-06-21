@@ -15,7 +15,7 @@
             background-color: #f4f4f4;
         }
         .header, .footer {
-            background-color: #333;
+            background-color: #c11551;
             color: #fff;
             text-align: center;
             padding: 1em 0;
@@ -113,7 +113,7 @@
     </header>
     <nav class="nav">
         <ul>
-            <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
+            <li><a href="${pageContext.request.contextPath}/index.jsp">Index</a></li>
             <li><a href="${pageContext.request.contextPath}/manageCourses">Manage Courses</a></li>
             <li><a href="${pageContext.request.contextPath}/gradeStudents">Grade Students</a></li>
             <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
