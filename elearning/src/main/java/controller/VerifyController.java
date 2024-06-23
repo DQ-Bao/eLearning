@@ -51,7 +51,7 @@ public class VerifyController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) {
-            resp.sendError(400);
+            resp.sendError(404);
             return;
         }
         if (action.equals("verify")) {
