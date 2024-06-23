@@ -86,46 +86,20 @@
     <jsp:body>
         <main class="content">
             <section class="intro">
-                <h2>About CalArts</h2>
+                <h2>About ${manager.orgName}</h2>
                 <img src="path/to/calarts/image.jpg" alt="CalArts Image">
-                <p>California Institute of the Arts (CalArts) is renowned internationally as a game-changer in the education of professional artists. Our school offers a comprehensive program of undergraduate and graduate degrees in art, design, film, music, theater, and dance. Our vibrant campus community is a fertile environment for the collaborative and interdisciplinary work that defines CalArts' educational philosophy.</p>
+                <p>${manager.description}</p>
             </section>
             <section class="courses">
                 <h2>Our Courses</h2>
-                <div class="card">
-                    <h3>Course Title 1</h3>
-                    <p>Brief description of the course.</p>
-                    <a href="${pageContext.request.contextPath}/course/1" class="btn">View Course</a>
-                </div>
-                <div class="card">
-                    <h3>Course Title 2</h3>
-                    <p>Brief description of the course.</p>
-                    <a href="${pageContext.request.contextPath}/course/2" class="btn">View Course</a>
-                </div>
+                <c:forEach var="course" items="${course_list}">
+                    <div class="card">
+                        <h3>${course.title}</h3>
+                        <p>${course.description}</p>
+                        <a href="${pageContext.request.contextPath}/courses?id=${course.id}" class="btn">View Course</a>
+                    </div>
+                </c:forEach>
                 <!-- Add more course cards as needed -->
-            </section>
-            <section class="management">
-                <h2>Management Tools</h2>
-                <div class="card">
-                    <h3>Manage Users</h3>
-                    <p>View and manage users registered on the platform.</p>
-                    <a href="${pageContext.request.contextPath}/manageUsers" class="btn">Manage Users</a>
-                </div>
-                <div class="card">
-                    <h3>Reports</h3>
-                    <p>Access various reports related to platform usage and performance.</p>
-                    <a href="${pageContext.request.contextPath}/reports" class="btn">View Reports</a>
-                </div>
-                <div class="card">
-                    <h3>System Settings</h3>
-                    <p>Configure system settings and preferences.</p>
-                    <a href="${pageContext.request.contextPath}/settings" class="btn">System Settings</a>
-                </div>
-                <div class="card">
-                    <h3>Support Requests</h3>
-                    <p>Manage and respond to user support requests.</p>
-                    <a href="${pageContext.request.contextPath}/support" class="btn">View Support Requests</a>
-                </div>
             </section>
         </main>
     </jsp:body>

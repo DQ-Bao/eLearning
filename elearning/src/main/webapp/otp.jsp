@@ -3,117 +3,110 @@
 <t:main>
     <jsp:attribute name="script">
         <script>
-            const inputs = document.querySelectorAll(".otp-field > input");
-            const button = document.querySelector(".btn");
-
+            const inputs = [ 
+                document.getElementById("num1"),
+                document.getElementById("num2"),
+                document.getElementById("num3"),
+                document.getElementById("num4"),
+                document.getElementById("num5"),
+                document.getElementById("num6") 
+            ];
+            const btn = document.getElementById("verify_btn");
             window.addEventListener("load", () => inputs[0].focus());
-            button.setAttribute("disabled", "disabled");
+            btn.setAttribute("disabled", "");
 
-            inputs[0].addEventListener("paste", function (event) {
-                event.preventDefault();
+            inputs[0].addEventListener("paste", function (e) {
+                e.preventDefault();
 
-                const pastedValue = (event.clipboardData || window.clipboardData).getData(
-                "text"
-                );
+                const pastedValue = (event.clipboardData || window.clipboardData).getData("text");
+                if (!/^\d+$/.test(pastedValue)) {
+                    return;
+                }
                 const otpLength = inputs.length;
 
                 for (let i = 0; i < otpLength; i++) {
-                if (i < pastedValue.length) {
-                    inputs[i].value = pastedValue[i];
-                    inputs[i].removeAttribute("disabled");
-                    inputs[i].focus;
-                } else {
-                    inputs[i].value = ""; // Clear any remaining inputs
-                    inputs[i].focus;
-                }
-                }
-            });
-
-            inputs.forEach((input, index1) => {
-                input.addEventListener("keyup", (e) => {
-                const currentInput = input;
-                const nextInput = input.nextElementSibling;
-                const prevInput = input.previousElementSibling;
-
-                if (currentInput.value.length > 1) {
-                    currentInput.value = "";
-                    return;
-                }
-
-                if (
-                    nextInput &&
-                    nextInput.hasAttribute("disabled") &&
-                    currentInput.value !== ""
-                ) {
-                    nextInput.removeAttribute("disabled");
-                    nextInput.focus();
-                }
-
-                if (e.key === "Backspace") {
-                    inputs.forEach((input, index2) => {
-                    if (index1 <= index2 && prevInput) {
-                        input.setAttribute("disabled", true);
-                        input.value = "";
-                        prevInput.focus();
+                    if (i < pastedValue.length) {
+                        inputs[i].value = pastedValue[i];
+                        inputs[i].removeAttribute("disabled");
+                        inputs[i].focus();
+                    } else {
+                        inputs[i].value = ""; // Clear any remaining inputs
+                        inputs[i].focus();
                     }
-                    });
                 }
-
-                button.classList.remove("active");
-                button.setAttribute("disabled", "disabled");
-
-                const inputsNo = inputs.length;
-                if (!inputs[inputsNo - 1].disabled && inputs[inputsNo - 1].value !== "") {
-                    button.classList.add("active");
-                    button.removeAttribute("disabled");
-
-                    return;
-                }
-                });
             });
-            function concatOTP() {
-                const num1 = document.getElementById("num1").value;
-                const num2 = document.getElementById("num2").value;
-                const num3 = document.getElementById("num3").value;
-                const num4 = document.getElementById("num4").value;
-                const num5 = document.getElementById("num5").value;
-                const num6 = document.getElementById("num6").value;
-                const otp = num1 + num2 + num3 + num4 + num5 + num6;
-                document.getElementsByName("verify_otp")[0].value = otp;
+
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                const nextInput = i >= inputs.length - 1 ? null : inputs[i + 1];
+                const prevInput = i <= 0 ? null : inputs[i - 1];
+                input.addEventListener("keyup", (e) => {
+                    if (input.value.length > 1) {
+                        input.value = "";
+                        return;
+                    }
+                    if (nextInput && nextInput.hasAttribute("disabled") && input.value !== "") {
+                        nextInput.removeAttribute("disabled");
+                        nextInput.focus();
+                    }
+                    if (e.key === "Backspace") {
+                        for (let j = 0; j < inputs.length; j++) {
+                            if ((i <= j) && prevInput) {
+                                input.setAttribute("disabled", "");
+                                input.value = "";
+                                prevInput.focus();
+                            }
+                        }
+                    }
+
+                    btn.setAttribute("disabled", "");
+                    if (!inputs[inputs.length - 1].disabled && inputs[inputs.length - 1].value !== "") {
+                        btn.removeAttribute("disabled");
+                    }
+                });
+            }
+            
+            function concatOTP(e) {
+                e.preventDefault();
+                const inputs = [ 
+                    document.getElementById("num1"),
+                    document.getElementById("num2"),
+                    document.getElementById("num3"),
+                    document.getElementById("num4"),
+                    document.getElementById("num5"),
+                    document.getElementById("num6") 
+                ];
+                let otp = "";
+                for (let i = 0; i < inputs.length; i++) {
+                    if (inputs[i].value === "") {
+                        alert('Please fill in all OTP fields.');
+                        return;
+                    }
+                    otp += inputs[i].value;
+                }
+                document.getElementsById("verify_otp").value = otp;
+                e.target.submit();
             }
         </script>
     </jsp:attribute>
     <jsp:attribute name="head">
         <style>
-            .otp-field {
-                flex-direction: row;
-                column-gap: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .otp-field input {
+            .otp-input {
+                width: 45px;
                 height: 45px;
-                width: 42px;
-                border-radius: 6px;
-                outline: none;
-                font-size: 1.125rem;
                 text-align: center;
+                font-size: 1.125rem;
+                border-radius: 0.25rem;
                 border: 1px solid #ddd;
             }
 
-            .otp-field input:focus {
+            .otp-input:focus {
                 box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
             }
 
-            .otp-field input::-webkit-inner-spin-button,
-            .otp-field input::-webkit-outer-spin-button {
+            .otp-input::-webkit-inner-spin-button,
+            .otp-input::-webkit-outer-spin-button {
                 display: none;
-            }
-
-            .resend {
-                font-size: 12px;
             }
         </style>
     </jsp:attribute>
@@ -126,21 +119,31 @@
                             <h4>Verify</h4>
                             <p>Your code was sent to you via email</p>
                             
-                            <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP()">
+                            <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP(e)">
                                 <input type="hidden" name="verify_email" value="${requestScope.verify_email}">
-                                <input type="hidden" name="verify_otp">
-                                <div class="otp-field mb-4">
-                                    <input type="number" id="num1" required>
-                                    <input type="number" id="num2" required disabled>
-                                    <input type="number" id="num3" required disabled>
-                                    <input type="number" id="num4" required disabled>
-                                    <input type="number" id="num5" required disabled>
-                                    <input type="number" id="num6" required disabled>
+                                <input type="hidden" name="verify_otp" id="verify_otp">
+                                <div class="row g-2 justify-content-center mb-4">
+                                    <div class="col-auto">
+                                        <input type="number" id="num1" class="form-control otp-input" maxlength="1">
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="number" id="num2" class="form-control otp-input" maxlength="1" disabled>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="number" id="num3" class="form-control otp-input" maxlength="1" disabled>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="number" id="num4" class="form-control otp-input" maxlength="1" disabled>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="number" id="num5" class="form-control otp-input" maxlength="1" disabled>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="number" id="num6" class="form-control otp-input" maxlength="1" disabled>
+                                    </div>
                                 </div>
-                                <button type="submit" name="action" value="verify" class="btn btn-primary mb-3">Verify</button>
-                                <p class="resend mb-0">
-                                    Didn't receive code? <button type="submit" name="action" value="send_again" class="btn btn-link">Send again</button>
-                                </p>
+                                <button type="submit" name="action" value="verify" id="verify_btn" class="btn btn-primary w-100 mb-3">Verify</button>
+                                <p>Didn't receive code? <button type="submit" name="action" value="send_again" class="btn btn-link">Send again</button></p>
                             </form>
                         </div>
                     </div>

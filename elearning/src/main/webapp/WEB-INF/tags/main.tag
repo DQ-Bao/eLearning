@@ -20,12 +20,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <jsp:invoke fragment="head"/>
 </head>
 <body>
@@ -46,9 +46,21 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle rounded" href="#" id="exploreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid var(--bs-primary);">Explore</a>
+                <ul class="dropdown-menu" aria-labelledby="exploreDropdown">
+                    <c:forEach var="category" items="${category_list}">
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/courses?category=${category}">${category}</a></li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <form action="${pageContext.request.contextPath}/search" class="d-flex me-3">
+                <input class="form-control me-2" type="search" name="query" value="${requestScope.query}" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="contact.jsp" id="contact" class="nav-item nav-link ">Contact</a>
-                <a href="about.jsp" id="about" class="nav-item nav-link">About</a>
+                <a href="${pageContext.request.contextPath}/contact.jsp" id="contact" class="nav-item nav-link ">Contact</a>
+                <a href="${pageContext.request.contextPath}/about.jsp" id="about" class="nav-item nav-link">About</a>
                 <a href="${pageContext.request.contextPath}/courses" id="courses" class="nav-item nav-link">Courses</a>
                
                 <jsp:invoke fragment="nav"/>
@@ -92,11 +104,11 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-3">Quick Link</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Privacy Policy</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">FAQs & Help</a>
+                    <a class="btn btn-link" href="${pageContext.request.contextPath}/about.jsp">About Us</a>
+                    <a class="btn btn-link" href="${pageContext.request.contextPath}/contact.jsp">Contact Us</a>
+                    <a class="btn btn-link" href="${pageContext.request.contextPath}">Privacy Policy</a>
+                    <a class="btn btn-link" href="${pageContext.request.contextPath}">Terms & Condition</a>
+                    <a class="btn btn-link" href="${pageContext.request.contextPath}">FAQs & Help</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-3">Contact</h4>
@@ -104,10 +116,10 @@
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                
@@ -125,10 +137,10 @@
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
+                            <a href="${pageContext.request.contextPath}">Home</a>
+                            <a href="${pageContext.request.contextPath}">Cookies</a>
+                            <a href="${pageContext.request.contextPath}">Help</a>
+                            <a href="${pageContext.request.contextPath}">FQAs</a>
                         </div>
                     </div>
                 </div>
@@ -145,13 +157,13 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/wow/wow.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
     <script>
         const message = '${requestScope.message}';
         if (message) {

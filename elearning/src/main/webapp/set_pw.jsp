@@ -16,24 +16,6 @@
             }
         </script>
     </jsp:attribute>
-    <jsp:attribute name="head">
-        <style>
-            input[type=text], input[type=password] {
-                width: 100%;
-                padding: 15px;
-                margin: 5px 0 22px 0;
-                display: inline-block;
-                border: none;
-                background: #f1f1f1;
-            }
-
-            /* Add a background color when the inputs get focus */
-            input[type=text]:focus, input[type=password]:focus {
-                background-color: #ddd;
-                outline: none;
-            }
-        </style>
-    </jsp:attribute>
     <jsp:body>
         <div class="container-xxl d-block">
             <div class="row justify-content-center">
@@ -45,9 +27,23 @@
                             
                             <form action="${pageContext.request.contextPath}/register" method="post">
                                 <input type="hidden" name="email" value="${requestScope.email}">
-                                <input type="password" id="password" placeholder="Enter Password" name="password" onkeyup="checkPassword()" required>
-                                <input type="password" id="confirm-password" placeholder="Re-enter Password" onkeyup="checkPassword()" required>
-                                <button type="submit" id="submit" name="action" value="set_pw" class="btn btn-primary mb-3" disabled>Sign up</button>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="password" name="password" placeholder="Enter Password" id="password" class="form-control" onkeyup="checkPassword()" required>
+                                            <label for="password">Enter Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="password" placeholder="Re-enter Password" id="confirm-password" class="form-control" onkeyup="checkPassword()" required>
+                                            <label for="password">Re-enter Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" name="action" value="set_pw" id="submit" class="btn btn-primary w-100 py-3" disabled>Sign up</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

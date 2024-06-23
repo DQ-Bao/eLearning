@@ -32,7 +32,8 @@ create table [manager_details](
 	[user_id] int foreign key references [user]([id]), -- user doesn't get deleted when account is deleted so this live too.
 	[org_name] nvarchar(255) unique not null,
 	[description] nvarchar(max),
-	[country] nvarchar(255)
+	[country] nvarchar(255),
+	[logo_path] nvarchar(max)
 );
 
 -- If manager remove a teacher, only the [teacher_details] record get deleted, so teacher go back to normal user (student) because they still have their [user] record.

@@ -55,7 +55,7 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) {
-            resp.sendError(400);
+            resp.sendError(404);
             return;
         }
         if (action.equals("register")) {
