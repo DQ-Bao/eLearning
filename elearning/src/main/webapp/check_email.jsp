@@ -1,24 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
 <t:main>
-    <jsp:attribute name="head">
-        <style>
-            input[type=text], input[type=password] {
-                width: 100%;
-                padding: 15px;
-                margin: 5px 0 22px 0;
-                display: inline-block;
-                border: none;
-                background: #f1f1f1;
-            }
-
-            /* Add a background color when the inputs get focus */
-            input[type=text]:focus, input[type=password]:focus {
-                background-color: #ddd;
-                outline: none;
-            }
-        </style>
-    </jsp:attribute>
     <jsp:body>
         <div class="container-xxl d-block">
             <div class="row justify-content-center">
@@ -29,8 +11,17 @@
                             <p>Enter your account's email address</p>
                             
                             <form action="${pageContext.request.contextPath}/login" method="post">
-                                <input type="text" placeholder="Enter Email" name="email" required>
-                                <button type="submit" name="action" value="fpw_check_email" class="btn btn-primary mb-3">Next</button>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <input type="email" name="email" placeholder="Enter Email" class="form-control" required>
+                                            <label for="email">Enter Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" name="action" value="fpw_check_email" class="btn btn-primary w-100 py-3">Next</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

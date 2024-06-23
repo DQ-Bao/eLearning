@@ -14,7 +14,7 @@
                     <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <img class="img-fluid" src="${course.imgpath}" alt=""
+                                <img class="img-fluid" src="img/${course.imagePath}" alt=""
                                      style="width: 300px; height: auto;">
                             </div>
                             <div class="p-2 flex-grow-1">
@@ -49,7 +49,7 @@
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="team-item bg-light">
                             <div class="overflow-hidden">
-                                <img class="img-fluid" src="${teacher.imagePath}" alt="">
+                                <img class="img-fluid" src="img/${teacher.imagePath}" alt="">
                             </div>
                             <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
                                 <div class="bg-light d-flex justify-content-center pt-2 px-1">

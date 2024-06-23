@@ -107,28 +107,23 @@
             <div class="profile">
                 <img src="path/to/profile/image.jpg" alt="Profile Image">
                 <div class="profile-info">
-                    <h2>Welcome, [Teacher's Name]!</h2>
-                    <p>Here you can manage your courses, grade students, and more.</p>
+                    <h2>Welcome, ${teacher.firstName} ${teacher.lastName}!</h2>
                 </div>
             </div>
             <section class="bio">
                 <h3>About Me</h3>
-                <p>[Teacher's Name] is a [position] at [School Name], with [number] years of experience in [field]. [He/She/They] hold[s] a [degree] from [University] and [has/have] been involved in [relevant activities or achievements].</p>
-                <p>[Additional information about the teacher's background, research interests, publications, and professional experience.]</p>
+                <p>${teacher.bio}</p>
             </section>
             <section class="courses">
                 <h3>Your Courses</h3>
-                <div class="course-card">
-                    <h4>Course Title 1</h4>
-                    <p>Brief description of the course.</p>
-                    <a href="${pageContext.request.contextPath}/manageCourses/1" class="btn">Manage Course</a>
-                </div>
-                <div class="course-card">
-                    <h4>Course Title 2</h4>
-                    <p>Brief description of the course.</p>
-                    <a href="${pageContext.request.contextPath}/manageCourses/2" class="btn">Manage Course</a>
-                </div>
-                <!-- Add more course cards as needed -->
+                <c:forEach var="course" items="${course_list}">
+                    <div class="course-card">
+                        <h4>
+                            <a href="${pageContext.request.contextPath}/courses?id=${course.id}" class="btn">${course.title}</a>
+                        </h4>
+                        <p>${course.description}</p>
+                    </div>
+                </c:forEach>
             </section>
         </main>
     </jsp:body>

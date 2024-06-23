@@ -2,13 +2,17 @@ package data_access;
 
 import data_access.internal.DataAccess;
 import model.Course;
+import model.CourseContent;
 import model.Lesson;
 import model.Manager;
+import model.Quiz;
 import model.User;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +44,34 @@ public class CourseDataAccess {
                 String language = res.getString("language");
                 String categoryName = res.getString("category_name");
                 double price = res.getDouble("price");
-                String imagePath = res.getString("imagePath");
+                String imagePath = res.getString("image_path");
+                boolean active = res.getBoolean("active");
+                boolean archived = res.getBoolean("archived");
+                String orgName = res.getString("org_name");
+                list.add(new Course(id, new Manager(orgName), title, description, language, categoryName, price, imagePath, active, archived));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Course> getAllCoursesOfCategory(String category) {
+        List<Course> list = new ArrayList<>();
+        String sql = "select c.*, cat.[name] as category_name, m.[org_name] from [course] as c join [category] as cat on c.[category_id] = cat.[id] join [manager_details] as m on c.[manager_id] = m.[id] where cat.[name] = ?;";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setString(1, category);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("id");
+                String title = res.getString("title");
+                String description = res.getString("description");
+                String language = res.getString("language");
+                String categoryName = res.getString("category_name");
+                double price = res.getDouble("price");
+                String imagePath = res.getString("image_path");
                 boolean active = res.getBoolean("active");
                 boolean archived = res.getBoolean("archived");
                 String orgName = res.getString("org_name");
@@ -84,7 +115,7 @@ public class CourseDataAccess {
                 String language = res.getString("language");
                 String categoryName = res.getString("category_name");
                 double price = res.getDouble("price");
-                String imagePath = res.getString("imagePath");
+                String imagePath = res.getString("image_path");
                 boolean active = res.getBoolean("active");
                 boolean archived = res.getBoolean("archived");
                 String orgName = res.getString("org_name");
@@ -97,22 +128,54 @@ public class CourseDataAccess {
         return course;
     }
 
-    public List<Lesson> getAllLessonsOfCourse(int id){
-        List<Lesson> list = new ArrayList<>();
-        String sql = "select * from [lesson] where [course_id] = ?";
-        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
+    public List<CourseContent> getAllContentsOfCourse(int id){
+        List<CourseContent> list = new ArrayList<>();
+        String sql = "{call spGetAllContentsOfCourse(?)}";
+        try (CallableStatement statement = DataAccess.getConnection().prepareCall(sql)) {
+            statement.setInt("Id", id);
             statement.execute();
             ResultSet res = statement.getResultSet();
             while (res.next()) {
                 int lid = res.getInt("id");
                 int courseId = res.getInt("course_id");
                 String title = res.getString("title");
-                String content = res.getString("content");
                 int teacherId = res.getInt("created_by");
-                list.add(new Lesson(lid, courseId, title, content, teacherId));
+                String content = res.getString("content");
+                java.sql.Timestamp temp = res.getTimestamp("created_at");
+                LocalDateTime createdAt = null;
+                if (temp != null) {
+                    createdAt = temp.toLocalDateTime();
+                }
+                temp = res.getTimestamp("updated_at");
+                LocalDateTime updatedAt = null;
+                if (temp != null) {
+                    updatedAt = temp.toLocalDateTime();
+                }
+                list.add(new Lesson(lid, courseId, title, teacherId, content, createdAt, updatedAt));
             }
-
+            if (statement.getMoreResults()) {
+                res = statement.getResultSet();
+                while (res.next()) {
+                    int qid = res.getInt("id");
+                    int courseId = res.getInt("course_id");
+                    String title = res.getString("title");
+                    String description = res.getString("description");
+                    String contentPath = res.getString("content_file_path");
+                    double weight = res.getDouble("weight");
+                    int teacherId = res.getInt("created_by");
+                    java.sql.Timestamp temp = res.getTimestamp("created_at");
+                    LocalDateTime createdAt = null;
+                    if (temp != null) {
+                        createdAt = temp.toLocalDateTime();
+                    }
+                    temp = res.getTimestamp("updated_at");
+                    LocalDateTime updatedAt = null;
+                    if (temp != null) {
+                        updatedAt = temp.toLocalDateTime();
+                    }
+                    list.add(new Quiz(qid, courseId, title, teacherId, description, contentPath, weight, createdAt, updatedAt));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

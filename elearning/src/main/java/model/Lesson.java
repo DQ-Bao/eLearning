@@ -1,18 +1,16 @@
 package model;
 
-public class Lesson {
-    private int id;
-    private int courseId;
-    private String title;
-    private String content;
-    private int teacherId;
+import java.time.LocalDateTime;
 
-    public Lesson(int id, int courseId, String title, String content, int teacherId) {
+public class Lesson extends CourseContent {
+    private int id;
+    private String content;
+
+    public Lesson(int id, int courseId, String title, int teacherId, String content, LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        super(courseId, title, ContentType.Lesson, teacherId, createdAt, updatedAt);
         this.id = id;
-        this.courseId = courseId;
-        this.title = title;
         this.content = content;
-        this.teacherId = teacherId;
     }
 
     public int getId() {
@@ -23,22 +21,6 @@ public class Lesson {
         this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
@@ -46,12 +28,4 @@ public class Lesson {
     public void setContent(String content) {
         this.content = content;
     }
-
-    public int getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
-    }   
 }
