@@ -85,8 +85,8 @@
                             </c:choose>
                         </a>
                         <div class="dropdown-menu fade-down m-0">
-                            <a href="#" class="dropdown-item">Profile</a>
-                            <a href="#" class="dropdown-item">Account</a>
+                            <a href="${pageContext.request.contextPath}/user_profile.jsp" class="dropdown-item">Profile</a>
+                            <a href="${pageContext.request.contextPath}/account" class="dropdown-item">Account</a>
                             <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">Logout</a>
                         </div>
                     </div>
