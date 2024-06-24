@@ -66,8 +66,7 @@
                 });
             }
             
-            function concatOTP(e) {
-                e.preventDefault();
+            function concatOTP() {
                 const inputs = [ 
                     document.getElementById("num1"),
                     document.getElementById("num2"),
@@ -78,14 +77,9 @@
                 ];
                 let otp = "";
                 for (let i = 0; i < inputs.length; i++) {
-                    if (inputs[i].value === "") {
-                        alert('Please fill in all OTP fields.');
-                        return;
-                    }
                     otp += inputs[i].value;
                 }
-                document.getElementsById("verify_otp").value = otp;
-                e.target.submit();
+                document.getElementById("verify_otp").value = otp;
             }
         </script>
     </jsp:attribute>
@@ -119,7 +113,7 @@
                             <h4>Verify</h4>
                             <p>Your code was sent to you via email</p>
                             
-                            <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP(e)">
+                            <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP()">
                                 <input type="hidden" name="verify_email" value="${requestScope.verify_email}">
                                 <input type="hidden" name="verify_otp" id="verify_otp">
                                 <div class="row g-2 justify-content-center mb-4">
