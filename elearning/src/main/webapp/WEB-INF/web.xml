@@ -130,4 +130,12 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <servlet-name>AccountController</servlet-name>
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>UserProfileController</servlet-name>
+        <servlet-class>controller.UserProfileController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserProfileController</servlet-name>
+        <url-pattern>/userpr</url-pattern>
+    </servlet-mapping>
 </web-app>
