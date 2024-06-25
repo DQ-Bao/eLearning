@@ -2,6 +2,8 @@ package data_access;
 
 import data_access.internal.DataAccess;
 import model.Lesson;
+import model.Quiz;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,5 +60,40 @@ public class CourseContentDataAccess {
             e.printStackTrace();
         }
         return lesson;
+    }
+
+    public Quiz getQuizById(int id) {
+        Quiz quiz = null;
+        String sql = "select * from [quiz] where [id] = ?;";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int qid = res.getInt("id");
+                int cid = res.getInt("course_id");
+                String title = res.getString("title");
+                String description = res.getString("description");
+                String contentPath = res.getString("content_file_path");
+                double weight = res.getDouble("weight");
+                int teacherId = res.getInt("created_by");
+                java.sql.Timestamp temp = res.getTimestamp("created_at");
+                LocalDateTime createdAt = null;
+                if (temp != null) {
+                    createdAt = temp.toLocalDateTime();
+                }
+                temp = res.getTimestamp("updated_at");
+                LocalDateTime updatedAt = null;
+                if (temp != null) {
+                    updatedAt = temp.toLocalDateTime();
+                }
+                quiz = new Quiz(qid, cid, title, teacherId, description, contentPath, weight, createdAt, updatedAt);
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return quiz;
     }
 }

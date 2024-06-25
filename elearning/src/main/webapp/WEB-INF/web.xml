@@ -70,6 +70,15 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>QuizController</servlet-name>
+        <servlet-class>controller.QuizController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QuizController</servlet-name>
+        <url-pattern>/quiz/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>

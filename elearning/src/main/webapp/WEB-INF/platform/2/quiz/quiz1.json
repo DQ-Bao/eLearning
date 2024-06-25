@@ -1,0 +1,285 @@
+{
+    "pass_grade": 7,
+    "questions": [
+        {
+            "question_id": 1,
+            "question_text": "What does HTML stand for?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "Hyper Text Markup Language",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "Home Tool Markup Language",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "Hyperlinks and Text Markup Language",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "Hyperlinking Text Marking Language",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "HTML stands for Hyper Text Markup Language, which is used to create web pages."
+        },
+        {
+            "question_id": 2,
+            "question_text": "Who is making the Web standards?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "Microsoft",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "Google",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "Mozilla",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "The World Wide Web Consortium",
+                    "is_correct": true
+                }
+            ],
+            "explanation": "The World Wide Web Consortium (W3C) is the main international standards organization for the World Wide Web."
+        },
+        {
+            "question_id": 3,
+            "question_text": "Choose the correct HTML element for the largest heading:",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<h1>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<head>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<h6>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<heading>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "<h1> is the HTML tag for the largest heading, typically used for the main heading of a page."
+        },
+        {
+            "question_id": 4,
+            "question_text": "What is the correct HTML element for inserting a line break?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<break>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<lb>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<br>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<line>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "The <br> tag is used in HTML to insert a line break."
+        },
+        {
+            "question_id": 5,
+            "question_text": "Which HTML element is used to define important text?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<important>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<strong>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<b>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<em>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "<strong> is used to define important text with strong emphasis."
+        },
+        {
+            "question_id": 6,
+            "question_text": "Select the valid attributes for the <form> tag.",
+            "multiple_answers": true,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "action",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "method",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "type",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "name",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "The '/' character is used in HTML to indicate an end tag, as in </tag>."
+        },
+        {
+            "question_id": 7,
+            "question_text": "How can you make a numbered list?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<ol>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<ul>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<list>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<nl>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "The <ol> tag is used to create an ordered (numbered) list in HTML."
+        },
+        {
+            "question_id": 8,
+            "question_text": "How can you make a bulleted list?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<ol>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<ul>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<list>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<bl>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "The <ul> tag is used to create an unordered (bulleted) list in HTML."
+        },
+        {
+            "question_id": 9,
+            "question_text": "What is the correct HTML for creating a hyperlink?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<a href=\"http://www.example.com\">Example</a>",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<a url=\"http://www.example.com\">Example</a>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<a>http://www.example.com</a>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<link href=\"http://www.example.com\">Example</link>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "The correct HTML for creating a hyperlink is <a href=\"http://www.example.com\">Example</a>."
+        },
+        {
+            "question_id": 10,
+            "question_text": "How can you open a link in a new tab/browser window?",
+            "multiple_answers": false,
+            "options": [
+                {
+                    "option_id": 1,
+                    "option_text": "<a href=\"url\" new>",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 2,
+                    "option_text": "<a href=\"url\" target=\"_blank\">",
+                    "is_correct": true
+                },
+                {
+                    "option_id": 3,
+                    "option_text": "<a href=\"url\" target=\"new\">",
+                    "is_correct": false
+                },
+                {
+                    "option_id": 4,
+                    "option_text": "<a href=\"url\" open>",
+                    "is_correct": false
+                }
+            ],
+            "explanation": "To open a link in a new tab or window, use <a href=\"url\" target=\"_blank\">."
+        }
+    ]
+}
