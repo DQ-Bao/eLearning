@@ -66,7 +66,7 @@
                         <tbody>
                             <c:forEach var="teacher" items="${teachers}">
                                 <tr>
-                                    <td><img class="img-fluid" src="${teacher.imagePath}" alt="" style="width: 100px; height: auto;"></td>
+                                    <td><img class="img-fluid" src="${teacher.profileImagePath}" alt="" style="width: 100px; height: auto;"></td>
                                     <td>${teacher.img}</td>
                                     <td>${teacher.name}</td>
                                     <td>

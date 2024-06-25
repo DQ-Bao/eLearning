@@ -4,6 +4,8 @@ import data_access.internal.DataAccess;
 import model.Account;
 import model.Account.Role;
 import model.User;
+import model.User.Gender;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -67,7 +69,7 @@ public class UserDataAccess {
                     int id = res.getInt("id");
                     String firstName = res.getString("first_name");
                     String lastName = res.getString("last_name");
-                    boolean gender = res.getBoolean("gender");
+                    Gender gender = res.getBoolean("gender") ? Gender.Female : Gender.Male;
                     LocalDate dob = null;
                     if (res.getDate("date_of_birth") != null) {
                         dob = res.getDate("date_of_birth").toLocalDate();
@@ -120,7 +122,7 @@ public class UserDataAccess {
                 int id = res.getInt("id");
                 String firstName = res.getString("first_name");
                 String lastName = res.getString("last_name");
-                boolean gender = res.getBoolean("gender");
+                Gender gender = res.getBoolean("gender") ? Gender.Female : Gender.Male;
                 LocalDate dob = null;
                 if (res.getDate("date_of_birth") != null) {
                     dob = res.getDate("date_of_birth").toLocalDate();
