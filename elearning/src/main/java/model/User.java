@@ -3,21 +3,19 @@ package model;
 import java.time.LocalDate;
 
 public class User {
+    public enum Gender { Male, Female }
     private int id;
     private Account account;
     private String firstName;
     private String lastName;
-    private boolean gender;
+    private Gender gender;
     private LocalDate dateOfBirth;
     private String profileImagePath;
 
-    public User(String firstName, String lastName, String profileImagePath) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.profileImagePath = profileImagePath;
+    public User() {
     }
 
-    public User(int id, Account account, String firstName, String lastName, boolean gender, LocalDate dateOfBirth, String profileImagePath) {
+    public User(int id, Account account, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, String profileImagePath) {
         this.id = id;
         this.account = account;
         this.firstName = firstName;
@@ -59,11 +57,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

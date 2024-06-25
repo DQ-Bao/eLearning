@@ -6,8 +6,7 @@ import model.CourseContent;
 import model.Lesson;
 import model.Manager;
 import model.Quiz;
-import model.User;
-
+import model.Teacher;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +14,10 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 
 public class CourseDataAccess {
@@ -48,7 +51,9 @@ public class CourseDataAccess {
                 boolean active = res.getBoolean("active");
                 boolean archived = res.getBoolean("archived");
                 String orgName = res.getString("org_name");
-                list.add(new Course(id, new Manager(orgName), title, description, language, categoryName, price, imagePath, active, archived));
+                Manager manager = new Manager();
+                manager.setOrgName(orgName);
+                list.add(new Course(id, manager, title, description, language, categoryName, price, imagePath, active, archived));
             }
 
         } catch (SQLException e) {
@@ -75,7 +80,9 @@ public class CourseDataAccess {
                 boolean active = res.getBoolean("active");
                 boolean archived = res.getBoolean("archived");
                 String orgName = res.getString("org_name");
-                list.add(new Course(id, new Manager(orgName), title, description, language, categoryName, price, imagePath, active, archived));
+                Manager manager = new Manager();
+                manager.setOrgName(orgName);
+                list.add(new Course(id, manager, title, description, language, categoryName, price, imagePath, active, archived));
             }
 
         } catch (SQLException e) {
@@ -119,7 +126,9 @@ public class CourseDataAccess {
                 boolean active = res.getBoolean("active");
                 boolean archived = res.getBoolean("archived");
                 String orgName = res.getString("org_name");
-                course = new Course(cid, new Manager(orgName), title, description, language, categoryName, price, imagePath, active, archived);
+                Manager manager = new Manager();
+                manager.setOrgName(orgName);
+                course = new Course(cid, manager, title, description, language, categoryName, price, imagePath, active, archived);
                 break;
             }
         } catch (SQLException e) {
@@ -132,6 +141,7 @@ public class CourseDataAccess {
         List<CourseContent> list = new ArrayList<>();
         String sql = "{call spGetAllContentsOfCourse(?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sql)) {
+            Parser parser = Parser.builder().build();
             statement.setInt("Id", id);
             statement.execute();
             ResultSet res = statement.getResultSet();
@@ -140,7 +150,12 @@ public class CourseDataAccess {
                 int courseId = res.getInt("course_id");
                 String title = res.getString("title");
                 int teacherId = res.getInt("created_by");
-                String content = res.getString("content");
+                
+                String mdContent = res.getString("content");
+                Node document = parser.parse(mdContent);
+                HtmlRenderer renderer = HtmlRenderer.builder().build();
+                String content = renderer.render(document);
+                
                 java.sql.Timestamp temp = res.getTimestamp("created_at");
                 LocalDateTime createdAt = null;
                 if (temp != null) {
@@ -182,18 +197,24 @@ public class CourseDataAccess {
         return list;
     }
 
-    public List<User> getAllTeachersOfCourse(int id){
-        List<User> list = new ArrayList<>();
-        String sql = "select u.* from [lesson] as l join [teacher_details] as td on l.[created_by] = td.[id] join [user] as u on td.[user_id] = u.[id] where l.[course_id] = ?;";
+    public List<Teacher> getAllTeachersOfCourse(int id){
+        List<Teacher> list = new ArrayList<>();
+        String sql = "select td.[id], u.[first_name], u.[last_name], u.[profile_image] from [lesson] as l join [teacher_details] as td on l.[created_by] = td.[id] join [user] as u on td.[user_id] = u.[id] where l.[course_id] = ?;";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
             ResultSet res = statement.getResultSet();
             while (res.next()) {
-               String first_name = res.getString("first_name");
-               String last_name = res.getString("last_name");
-               String profile_image = res.getString("profile_image");
-               list.add(new User(first_name, last_name, profile_image));
+                int teacherId = res.getInt("id");
+                String firstName = res.getString("first_name");
+                String lastName = res.getString("last_name");
+                String profileImage = res.getString("profile_image");
+                Teacher teacher = new Teacher();
+                teacher.setTeacherId(teacherId);
+                teacher.setFirstName(firstName);
+                teacher.setLastName(lastName);
+                teacher.setProfileImagePath(profileImage);
+                list.add(teacher);
             }
 
         } catch (SQLException e) {

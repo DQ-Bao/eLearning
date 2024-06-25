@@ -1,6 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
-<%@page import="model.CourseContent.ContentType"%>
 <t:main>
     <div class="container-xxl py-5">
         <div class="container mt-5">
@@ -35,7 +34,7 @@
                             <div class="row border-bottom px-3 py-2 mx-0">
                                 <div class="col-9">
                                     <c:choose>
-                                        <c:when test="${content.type == ContentType.Lesson}">
+                                        <c:when test="${content.type == 'Lesson'}">
                                             <a href="${pageContext.request.contextPath}/lesson/${content.id}">${content.title}</a>
                                         </c:when>
                                         <c:otherwise>
@@ -67,11 +66,11 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="border rounded mb-3">
                         <c:forEach var="teacher" items="${teacher_list}">
-                            <div class="row border-bottom px-3 py-2 mx-0 align-items-cente">
+                            <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
                                 <div class="col-3">
-                                    <img src="${pageContext.request.contextPath}/img/${teacher.imagePath}" alt="${teacher.firstName} ${teacher.lastName}" class="img-fluid rounded-circle">
+                                    <img src="${pageContext.request.contextPath}/img/${teacher.profileImagePath}" alt="${teacher.firstName} ${teacher.lastName}" class="img-fluid rounded-circle">
                                 </div>
-                                <div class="col-9"><a href="${pageContext.request.contextPath}/teacher/${teacher.id}">${teacher.firstName} ${teacher.lastName}</a></div>
+                                <div class="col-9"><a href="${pageContext.request.contextPath}/teacher/${teacher.teacherId}">${teacher.firstName} ${teacher.lastName}</a></div>
                             </div>
                         </c:forEach>
                         <div class="row border-bottom px-3 py-2 mx-0 align-items-center">

@@ -61,6 +61,15 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>LessonController</servlet-name>
+        <servlet-class>controller.LessonController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LessonController</servlet-name>
+        <url-pattern>/lesson/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
