@@ -1,38 +1,42 @@
 package model;
 
-public class Manager {
-    private int id;
-    private int userId;
+import java.time.LocalDate;
+
+public class Manager extends User {
+    private int managerId;
     private String orgName;
     private String description;
     private String country;
-    
-    public Manager(int id, int userId, String orgName, String description, String country) {
-        this.id = id;
-        this.userId = userId;
+    private String logoPath;
+
+    public Manager() {
+    }
+
+    public Manager(int id, Account account, String firstName, String lastName, Gender gender, LocalDate dateOfBirth,
+            String profileImagePath, int managerId, String orgName, String description, String country,
+            String logoPath) {
+        super(id, account, firstName, lastName, gender, dateOfBirth, profileImagePath);
+        this.managerId = managerId;
         this.orgName = orgName;
         this.description = description;
         this.country = country;
+        this.logoPath = logoPath;
     }
-
-    public Manager(String orgName) {
+    
+    public Manager(int managerId, String orgName, String description, String country, String logoPath) {
+        this.managerId = managerId;
         this.orgName = orgName;
+        this.description = description;
+        this.country = country;
+        this.logoPath = logoPath;
     }
 
-    public int getId() {
-        return id;
+    public int getManagerId() {
+        return managerId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
     }
 
     public String getOrgName() {
@@ -57,5 +61,13 @@ public class Manager {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getLogoPath() {
+        return logoPath;
+    }
+
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
     }
 }

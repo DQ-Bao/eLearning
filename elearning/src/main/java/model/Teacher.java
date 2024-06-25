@@ -1,42 +1,38 @@
 package model;
 
-public class Teacher {
-    private int id;
-    private String firstName;
-    private String lastName;
+import java.time.LocalDate;
+
+public class Teacher extends User {
+    private int teacherId;
+    private int managerId;
     private String position;
     private String bio;
+
+    public Teacher() {
+    }
     
-    public Teacher(int id, String firstName, String lastName, String position, String bio) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Teacher(int id, Account account, String firstName, String lastName, Gender gender, LocalDate dateOfBirth,
+            String profileImagePath, int teacherId, int managerId, String position, String bio) {
+        super(id, account, firstName, lastName, gender, dateOfBirth, profileImagePath);
+        this.teacherId = teacherId;
+        this.managerId = managerId;
         this.position = position;
         this.bio = bio;
     }
 
-    public int getId() {
-        return id;
+    public Teacher(int teacherId, int managerId, String position, String bio) {
+        this.teacherId = teacherId;
+        this.managerId = managerId;
+        this.position = position;
+        this.bio = bio;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getTeacherId() {
+        return teacherId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getPosition() {
@@ -53,5 +49,13 @@ public class Teacher {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public int getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
     }
 }
