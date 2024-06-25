@@ -96,6 +96,32 @@
     </nav>
     <!-- Navbar End -->
 
+    <c:if test="${not empty message}">
+        <div class="container">
+            <div class="row justify-content-center mt-3">
+                <c:set var="alert_type" value="alert-info" />
+                <c:choose>
+                    <c:when test="${message.type == 'Error'}">
+                        <c:set var="alert_type" value="alert-danger" />
+                    </c:when>
+                    <c:when test="${message.type == 'Warn'}">
+                        <c:set var="alert_type" value="alert-warning" />
+                    </c:when>
+                    <c:when test="${message.type == 'Info'}">
+                        <c:set var="alert_type" value="alert-info" />
+                    </c:when>
+                    <c:when test="${message.type == 'Success'}">
+                        <c:set var="alert_type" value="alert-success" />
+                    </c:when>
+                </c:choose>
+                <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">
+                    <c:out value="${message.message}"/>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
     <jsp:doBody/>
 
     <!-- Footer Start -->
@@ -165,11 +191,6 @@
     <!-- Template Javascript -->
     <script src="${pageContext.request.contextPath}/js/main.js"></script>
     <script>
-        const message = '${requestScope.message}';
-        if (message) {
-            alert(message);
-        }
-
         const navItems = document.getElementsByClassName("nav-item");
         for (let i = 0; i < navItems.length; i++) {
             if ('${nav_active}' === navItems[i].getAttribute('id')) {

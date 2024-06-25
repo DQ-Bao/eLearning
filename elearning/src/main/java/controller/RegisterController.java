@@ -3,6 +3,7 @@ package controller;
 import data_access.UserDataAccess;
 import model.Account;
 import model.User;
+import model.Message;
 import model.Account.Role;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -67,7 +68,7 @@ public class RegisterController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/verify?email=" + URLEncoder.encode(email, "UTF-8") + "&redirect_url=" + URLEncoder.encode(redirectUrl, "UTF-8"));
             }
             else {
-                req.setAttribute("message", "Register failed");
+                req.setAttribute("message", new Message(Message.Type.Error, "Register failed!"));
                 req.getRequestDispatcher("register.jsp").forward(req, resp);
             }
             return;
@@ -76,12 +77,12 @@ public class RegisterController extends HttpServlet {
             String email = req.getParameter("email");
             User user = dao.getUserByEmail(email);
             if (user == null || user.getAccount().getRole() == Account.Role.Student || user.getAccount().getRole() == Account.Role.Admin) {
-                req.setAttribute("message", "Invalid user");
+                req.setAttribute("message", new Message(Message.Type.Error, "Invalid user!"));
                 req.getRequestDispatcher("register.jsp").forward(req, resp);
             }
             else {
                 if (dao.isPasswordSet(email)) {
-                    req.setAttribute("message", "Account is already registered");
+                    req.setAttribute("message", new Message(Message.Type.Error, "Account is already registered!"));
                     req.getRequestDispatcher("register.jsp").forward(req, resp);
                     return;
                 }
@@ -97,7 +98,7 @@ public class RegisterController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/login");
             }
             else {
-                req.setAttribute("message", "Set password failed");
+                req.setAttribute("message", new Message(Message.Type.Error, "Set password failed!"));
                 req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
             }
         }

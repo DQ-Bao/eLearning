@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Message;
 import util.MailUtil;
 import util.PropertyUtil;
 import util.RandomUtil;
@@ -59,7 +60,7 @@ public class VerifyController extends HttpServlet {
                 String otp = (String)req.getSession().getAttribute("otp");
                 String verifyOTP = req.getParameter("verify_otp");
                 if (otp == null || !otp.equals(verifyOTP)) {
-                    req.setAttribute("message", "Confirm failed");
+                    req.setAttribute("message", new Message(Message.Type.Error, "Confirm failed!"));
                     req.getRequestDispatcher("otp.jsp").forward(req, resp);
                 }
                 else {
@@ -89,7 +90,7 @@ public class VerifyController extends HttpServlet {
                 } catch (IOException | MessagingException e) {
                     e.printStackTrace();
                 }
-                req.setAttribute("message", "OTP has been resent to your email.");
+                req.setAttribute("message", new Message(Message.Type.Success, "OTP has been resent to your email."));
                 req.getRequestDispatcher("otp.jsp").forward(req, resp);
             }
             return;

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
+import model.Message;
 
 public class LoginController extends HttpServlet {
     private UserDataAccess userDAO;
@@ -60,7 +61,7 @@ public class LoginController extends HttpServlet {
             String rememberMe = req.getParameter("remember_me");
             User user = userDAO.authenticate(email, password);
             if (user == null) {
-                req.setAttribute("message", "Login Failed!");
+                req.setAttribute("message", new Message(Message.Type.Error, "Login Failed!"));
                 req.getRequestDispatcher("login.jsp").forward(req, resp);
                 return;
             }

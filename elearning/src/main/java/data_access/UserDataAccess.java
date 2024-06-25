@@ -62,6 +62,9 @@ public class UserDataAccess {
             ResultSet res = statement.getResultSet();
             while (res.next()) {
                 String dbPassword = res.getString("password_hash");
+                if (dbPassword == null) {
+                    break;
+                }
                 String[] hashSalt = dbPassword.split(":");
                 String storedHash = hashSalt[0];
                 byte[] salt = Base64.getDecoder().decode(hashSalt[1]);
