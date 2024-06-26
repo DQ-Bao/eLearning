@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Date;
 
 public class UserDataAccess {
     private static UserDataAccess INSTANCE;
@@ -200,4 +201,69 @@ public class UserDataAccess {
         byte[] hash = md.digest(password.getBytes());
         return Base64.getEncoder().encodeToString(hash);
     }
+
+    public boolean updateFirstName(int accountId, String firstName) throws SQLException {
+        String query = "UPDATE [dbo].[user] SET [first_name] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setString(1, firstName);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateLastName(int accountId, String lastName) throws SQLException {
+        String query = "UPDATE [dbo].[user] SET [last_name] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setString(1, lastName);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateGender(int accountId, boolean gender) throws SQLException {
+        String query = "UPDATE [dbo].[user] SET [gender] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setBoolean(1, gender);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateDateOfBirth(int accountId, java.util.Date dateOfBirth) throws SQLException {
+        String query = "UPDATE [dbo].[user] SET [date_of_birth] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setDate(1, new Date(dateOfBirth.getTime()));
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateProfileImage(int accountId, String profileImage) throws SQLException {
+        String query = "UPDATE [dbo].[user] SET [profile_image] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setString(1, profileImage);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateEmail(int accountId, String email) throws SQLException {
+        String query = "UPDATE [dbo].[account] SET [email] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setString(1, email);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updatePassword(int accountId, String passwordHash) throws SQLException {
+        String query = "UPDATE [dbo].[account] SET [password_hash] = ? WHERE [account_id] = ?";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
+            statement.setString(1, passwordHash);
+            statement.setInt(2, accountId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+
 }

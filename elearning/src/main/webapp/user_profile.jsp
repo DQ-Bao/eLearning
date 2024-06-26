@@ -76,6 +76,8 @@
     </jsp:attribute>
 
     <jsp:body>
+        <form action="userpr" method="post">
+            <input type="hidden" value="${user.id}" name="id">
         <div class="container-xl px-4 mt-4">
 
             <nav class="nav nav-borders">
@@ -110,13 +112,13 @@
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputFirstName">First name</label>
                                         <input class="form-control" id="inputFirstName" type="text"
-                                            placeholder="Enter your first name" value="Valerie">
+                                            placeholder="Enter your first name" value="">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputLastName">Last name</label>
                                         <input class="form-control" id="inputLastName" type="text"
-                                            placeholder="Enter your last name" value="Luna">
+                                            placeholder="Enter your last name" value="">
                                     </div>
                                 </div>
 
@@ -134,7 +136,7 @@
                                         <label class="small mb-1" for="inputBirthday">Birthday</label>
                                         <input class="form-control" id="inputBirthday" type="text"
                                             name="birthday" placeholder="Enter your birthday"
-                                            value="06/10/1988">
+                                            value="">
                                     </div>
                                 </div>
 
@@ -158,5 +160,6 @@
                 </tr>
             </table>
         </form>
+    </form>
     </jsp:body>
 </t:main>

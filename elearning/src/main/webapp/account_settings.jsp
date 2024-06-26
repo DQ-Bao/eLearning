@@ -53,7 +53,8 @@
   </jsp:attribute>
 
   <jsp:body>
-
+    <form action="account" method="post">
+      <input type="hidden" value="${user.id}" name="id">
     <h1>My Account</h1>
 
     <div class="row"> <!-- Cái class row là để hiển thị trên một dòng -->
@@ -108,6 +109,6 @@
 
     
     
-
+  </form>
   </jsp:body>
 </t:main>
