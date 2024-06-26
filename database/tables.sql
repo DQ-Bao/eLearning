@@ -88,7 +88,7 @@ create table [quiz] (
 create table [payment](
 	[id] int primary key identity,
 	[course_id] int foreign key references [course]([id]) on delete set null,
-	[student_id] int not null foreign key references [user]([id]) on delete cascade,
+	[student_id] int not null foreign key references [account]([id]) on delete cascade,
 	[purchase_price] decimal(19, 4) not null,
 	[created_at] datetime2 not null default getutcdate(),
 );

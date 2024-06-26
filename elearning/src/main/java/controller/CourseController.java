@@ -6,10 +6,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Course;
 import model.CourseContent;
+import model.Enrollment;
 import model.Teacher;
+import model.User;
+
 import java.util.List;
 import java.io.IOException;
 import data_access.CourseDataAccess;
+import data_access.EnrollmentDataAccess;
 
 public class CourseController extends HttpServlet {
     private CourseDataAccess dao;
@@ -32,9 +36,15 @@ public class CourseController extends HttpServlet {
             return;
         }
         int id = Integer.parseInt(idStr);
+        User user = (User)req.getSession().getAttribute("user");
+        Enrollment enroll = null;
+        if (user != null) {
+            enroll = EnrollmentDataAccess.getInstance().getStudentEnrollmentOfCourse(user.getId(), id);
+        }
         List<CourseContent> contentList = dao.getAllContentsOfCourse(id);
         List<Teacher> teacherList = dao.getAllTeachersOfCourse(id);
         Course course = dao.getCourseById(id);
+        req.setAttribute("enroll", enroll);
         req.setAttribute("teacher_list", teacherList);
         req.setAttribute("content_list", contentList);
         req.setAttribute("course", course);

@@ -1,4 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
 <t:main>
     <div class="container-xxl py-5">
@@ -19,7 +20,27 @@
             </div>
             <div class="row mb-4">
                 <div class="col-12 d-flex align-items-center">
-                    <button class="btn btn-primary me-3">Enroll for ${course.price == 0.0 ? "FREE" : "$" + course.price.toString()}</button>
+                    <c:choose>
+                        <c:when test="${not empty enroll}">
+                            <div class="rounded" style="border: 1px solid var(--bs-primary);">Enrolled</div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${course.price == 0.0}">
+                                    <form action="${pageContext.request.contextPath}/enroll" method="post">
+                                        <input type="hidden" name="course_id" value="${course.id}">
+                                        <button type="submit" name="action" value="enroll" class="btn btn-primary me-3">Enroll for FREE</button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="${pageContext.request.contextPath}/payment" method="post">
+                                        <input type="hidden" name="amount" value="${course.price}">
+                                        <button type="submit" class="btn btn-primary me-3">Enroll for <fmt:formatNumber type="currency" currencyCode="VND" value="${course.price}"/></button>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
@@ -32,35 +53,19 @@
                     <div class="border rounded mb-3">
                         <c:forEach var="content" items="${content_list}">
                             <div class="row border-bottom px-3 py-2 mx-0">
-                                <div class="col-9">
-                                    <c:choose>
-                                        <c:when test="${content.type == 'Lesson'}">
-                                            <a href="${pageContext.request.contextPath}/lesson/${content.id}">${content.title}</a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/quiz/${content.id}">${content.title}</a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <div class="col-3">Done</div>
+                                <c:set var="type" value="${content.type == 'Lesson' ? 'lesson' : 'quiz'}"/>
+                                <c:choose>
+                                    <c:when test="${not empty enroll}">
+                                        <div class="col-9">
+                                            <a href="${pageContext.request.contextPath}/${type}/${content.id}">${content.title}</a>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p>${content.title}</p>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </c:forEach>
-                        <div class="row border-bottom px-3 py-2 mx-0">
-                            <div class="col-9">Lesson 1</div>
-                            <div class="col-3">Done</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0">
-                            <div class="col-9">Lesson 1</div>
-                            <div class="col-3">Done</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0">
-                            <div class="col-9">Lesson 1</div>
-                            <div class="col-3">Done</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0">
-                            <div class="col-9">Lesson 1</div>
-                            <div class="col-3">Done</div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
@@ -73,30 +78,6 @@
                                 <div class="col-9"><a href="${pageContext.request.contextPath}/teacher/${teacher.teacherId}">${teacher.firstName} ${teacher.lastName}</a></div>
                             </div>
                         </c:forEach>
-                        <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
-                            <div class="col-3">
-                                <img src="${pageContext.request.contextPath}/img/testimonial-1.jpg" alt="test 1" class="img-fluid rounded-circle">
-                            </div>
-                            <div class="col-9">Person 1</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
-                            <div class="col-3">
-                                <img src="${pageContext.request.contextPath}/img/testimonial-1.jpg" alt="test 1" class="img-fluid rounded-circle">
-                            </div>
-                            <div class="col-9">Person 1</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
-                            <div class="col-3">
-                                <img src="${pageContext.request.contextPath}/img/testimonial-1.jpg" alt="test 1" class="img-fluid rounded-circle">
-                            </div>
-                            <div class="col-9">Person 1</div>
-                        </div>
-                        <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
-                            <div class="col-3">
-                                <img src="${pageContext.request.contextPath}/img/testimonial-1.jpg" alt="test 1" class="img-fluid rounded-circle">
-                            </div>
-                            <div class="col-9">Person 1</div>
-                        </div>
                     </div>
                 </div>
             </div>

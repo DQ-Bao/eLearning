@@ -17,9 +17,6 @@
                 <c:out value="${lesson.content}" escapeXml="false"/>
             </div>
             <hr>
-            <div class="mt-4">
-                <button type="button" class="btn btn-success">Mark as completed</button>
-            </div>
         </div>
     </div>
 </t:main>
