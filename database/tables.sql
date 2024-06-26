@@ -67,7 +67,7 @@ create table [lesson] (
 	[id] int primary key identity,
 	[course_id] int not null foreign key references [course]([id]),
 	[title] nvarchar(255) not null,
-	[content] text not null,
+	[content] ntext not null,
 	[created_by] int foreign key references [teacher_details]([id]) on delete set null,
 	[created_at] datetime2 not null default getutcdate(),
 	[updated_at] datetime2 not null default getutcdate()
@@ -79,8 +79,7 @@ create table [quiz] (
 	[title] nvarchar(255) not null,
 	[description] nvarchar(max),
 	[content_file_path] nvarchar(max) not null,
-	[pass_grade] int default(0) check([pass_grade] >= 0 and [pass_grade] <= 100),
-	[weight] int default(0) check([weight] >= 0 and [weight] <= 100),
+	[weight] decimal(3, 2) default(0.00) check([weight] >= 0.00 and [weight] <= 1.00),
 	[created_by] int foreign key references [teacher_details]([id]) on delete set null,
 	[created_at] datetime2 not null default getutcdate(),
 	[updated_at] datetime2 not null default getutcdate()
