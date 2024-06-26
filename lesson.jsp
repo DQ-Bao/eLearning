@@ -325,7 +325,7 @@
             <li class="active">
                 <div class="container">
                     <div class="sidebar">
-                        <h1>Danh sách bài giảng</h1>
+                        <h1>Lesson List</h1>
                         <div class="lecture">
                             <a href="#" onclick="showVideo('https://www.youtube.com/embed/dZTq46PzoEQ')">Lesson 1</a>
                         </div>
