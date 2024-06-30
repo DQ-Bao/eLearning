@@ -2,82 +2,133 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
 <t:main>
-    <div class="container-xxl py-5">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-12">
-                    <h1>${course.title}</h1>
-                    <p class="lead">${course.description}</p>
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs overlay">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">${course.title}</h1>
+                    </div>
+                    <ul class="breadcrumb-nav">
+                        <li><a href="${pageContext.request.contextPath}">Home</a></li>
+                        <li><a href="${pageContext.request.contextPath}/courses">Courses</a></li>
+                        <li>${course.id}</li>
+                    </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <p><i class="fa fa-language text-info me-2"></i><strong>Taught in ${course.language}</strong></p>
-                </div>
-                <div class="col-12">
-                    <p><strong>Created by <a href="${pageContext.request.contextPath}/manager/${course.manager.orgName}">${course.manager.orgName}</a></strong></p>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-12 d-flex align-items-center">
-                    <c:choose>
-                        <c:when test="${not empty enroll}">
-                            <div class="rounded" style="border: 1px solid var(--bs-primary);">Enrolled</div>
-                        </c:when>
-                        <c:otherwise>
-                            <c:choose>
-                                <c:when test="${course.price == 0.0}">
-                                    <form action="${pageContext.request.contextPath}/enroll" method="post">
-                                        <input type="hidden" name="course_id" value="${course.id}">
-                                        <button type="submit" name="action" value="enroll" class="btn btn-primary me-3">Enroll for FREE</button>
-                                    </form>
-                                </c:when>
-                                <c:otherwise>
-                                    <form action="${pageContext.request.contextPath}/payment" method="post">
-                                        <input type="hidden" name="amount" value="${course.price}">
-                                        <button type="submit" class="btn btn-primary me-3">Enroll for <fmt:formatNumber type="currency" currencyCode="VND" value="${course.price}"/></button>
-                                    </form>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Contents</h6>
-                <h1 class="mb-5">Lessons</h1>
-            </div>
+    <div class="course-details section">
+        <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-12">
-                    <div class="border rounded mb-3">
-                        <c:forEach var="content" items="${content_list}">
-                            <div class="row border-bottom px-3 py-2 mx-0">
-                                <c:set var="type" value="${content.type == 'Lesson' ? 'lesson' : 'quiz'}"/>
-                                <c:choose>
-                                    <c:when test="${not empty enroll}">
-                                        <div class="col-9">
-                                            <a href="${pageContext.request.contextPath}/${type}/${content.id}">${content.title}</a>
+                <div class="col-lg-8 col-12">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
+                                data-bs-target="#overview" type="button" role="tab" aria-controls="overview"
+                                aria-selected="true">Overview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="curriculum-tab" data-bs-toggle="tab"
+                                data-bs-target="#curriculum" type="button" role="tab" aria-controls="curriculum"
+                                aria-selected="false">Curriculum</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="instructor-tab" data-bs-toggle="tab"
+                                data-bs-target="#instructor" type="button" role="tab" aria-controls="instructor"
+                                aria-selected="false">Teacher</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                            <div class="course-overview">
+                                <h3 class="title">About This Course</h3>
+                                <p>${course.description}</p>
+                                <ul>
+                                    <li><p>Language: ${course.language}</p></li>
+                                </ul>
+                                <div class="bottom-content">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="button">
+                                                <a href="#0" class="btn">Buy this course</a>
+                                            </div>
                                         </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <p>${content.title}</p>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </div>
+                                </div>
                             </div>
-                        </c:forEach>
+                        </div>
+
+                        <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
+                            <div class="course-curriculum">
+                                <ul class="curriculum-sections">
+                                    <li class="single-curriculum-section">
+                                        <div class="section-header">
+                                            <div class="section-left">
+                                                <h5 class="title">All Lessons</h5>
+                                            </div>
+                                        </div>
+                                        <ul class="section-content">
+                                            <c:forEach var="content" items="${content_list}">
+                                                <c:set var="type" value="${content.type == 'Lesson' ? 'lesson' : 'quiz'}"/>
+                                                <li class="course-item">
+                                                    <a class="section-item-link lesson" href="${pageContext.request.contextPath}/${type}/${content.id}">
+                                                        <span class="item-name">${content.title}</span>
+                                                    </a>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="instructor" role="tabpanel" aria-labelledby="instructor-tab">
+                            <div class="course-instructor">
+                                <c:forEach var="teacher" items="${teacher_list}">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="profile-image">
+                                                <img src="${pageContext.request.contextPath}/img/${teacher.profileImagePath}" alt="${teacher.firstName} ${teacher.lastName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="profile-info">
+                                                <h5><a href="javascript:void(0)">${teacher.firstName} ${teacher.lastName}</a></h5>
+                                                <p class="author-career">${teacher.position}</p>
+                                                <p class="author-bio">${teacher.bio}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="border rounded mb-3">
-                        <c:forEach var="teacher" items="${teacher_list}">
-                            <div class="row border-bottom px-3 py-2 mx-0 align-items-center">
-                                <div class="col-3">
-                                    <img src="${pageContext.request.contextPath}/img/${teacher.profileImagePath}" alt="${teacher.firstName} ${teacher.lastName}" class="img-fluid rounded-circle">
-                                </div>
-                                <div class="col-9"><a href="${pageContext.request.contextPath}/teacher/${teacher.teacherId}">${teacher.firstName} ${teacher.lastName}</a></div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="course-sidebar">
+                        <div class="sidebar-widget">
+                            <h3 class="sidebar-widget-title">Offered by</h3>
+                            <div class="sidebar-widget-content">
+                                <ul class="sidebar-widget-course">
+                                    <li class="single-course">
+                                        <div class="thumbnail">
+                                            <a href="javascript:void(0)" class="image">
+                                                <img src="${pageContext.request.contextPath}/img/${course.manager.logoPath}" alt="${course.manager.orgName}">
+                                            </a>
+                                        </div>
+                                        <div class="info">
+                                            <h6 class="title">
+                                                <a href="${pageContext.request.contextPath}/manager/${course.manager.orgName}">${course.manager.orgName}</a>
+                                            </h6>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                        </c:forEach>
+                        </div>
                     </div>
                 </div>
             </div>

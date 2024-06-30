@@ -1,411 +1,560 @@
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
-<t:main nav_active="home">
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 mb-5">
-        <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/carousel-1.jpg" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="/WEB-INF/tlds/tag" prefix="t" %>
+<t:main>
+    <jsp:attribute name="script">
+        <script>
+            //========= Hero Slider 
+            tns({
+                container: '.hero-slider',
+                items: 1,
+                slideBy: 'page',
+                autoplay: false,
+                mouseDrag: true,
+                gutter: 0,
+                nav: true,
+                controls: false,
+                controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            });
+            //========= testimonial 
+            tns({
+                container: '.testimonial-slider',
+                items: 3,
+                slideBy: 'page',
+                autoplay: false,
+                mouseDrag: true,
+                gutter: 0,
+                nav: true,
+                controls: false,
+                controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+                responsive: {
+                    0: {
+                        items: 1,
+                    },
+                    540: {
+                        items: 1,
+                    },
+                    768: {
+                        items: 2,
+                    },
+                    992: {
+                        items: 2,
+                    },
+                    1170: {
+                        items: 3,
+                    }
+                }
+            });
+        </script>
+    </jsp:attribute>
+    <jsp:body>
+        <!-- Start Hero Area -->
+        <section class="hero-area">
+            <div class="hero-slider">
+                <!-- Single Slider -->
+                <div class="hero-inner overlay" style="background-image: url('${pageContext.request.contextPath}/img/slider-bg1.jpg');">
                     <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
-                                <h1 class="display-3 text-white animated slideInDown">The Best Online Learning Platform</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                                <a href="${pageContext.request.contextPath}/register" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                        <div class="row ">
+                            <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                                <div class="home-slider">
+                                    <div class="hero-text">
+                                        <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to Learning Today</h5>
+                                        <h1 class="wow fadeInUp" data-wow-delay=".5s">Excellent And Friendly <br> Faculty Members</h1>
+                                        <p class="wow fadeInUp" data-wow-delay=".7s">Lorem Ipsum is simply dummy text of the
+                                            printing and typesetting <br> industry. Lorem Ipsum has been the industry's
+                                            standard
+                                            <br>dummy text ever since an to impression.</p>
+                                        <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                            <a href="${pageContext.request.contextPath}/about.jsp" class="btn">Learn More</a>
+                                            <a href="${pageContext.request.contextPath}/courses" class="btn alt-btn">Our Courses</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/carousel-2.jpg" alt="">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
+                <!--/ End Single Slider -->
+                <!-- Single Slider -->
+                <div class="hero-inner overlay" style="background-image: url('${pageContext.request.contextPath}/img/slider-bg2.jpg');">
                     <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Get Educated Online From Your Home</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                                <a href="${pageContext.request.contextPath}/register" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Carousel End -->
-
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item text-center pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
-                            <h5 class="mb-3">Skilled Instructors</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item text-center pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                            <h5 class="mb-3">Online Classes</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item text-center pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-home text-primary mb-4"></i>
-                            <h5 class="mb-3">Home Projects</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item text-center pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
-                            <h5 class="mb-3">Book Library</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service End -->
-
-
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/about.jpg" alt="" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                    <h1 class="mb-4">Welcome to eLEARNING</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <div class="row gy-2 gx-4 mb-4">
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Skilled Instructors</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Online Classes</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
-                        </div>
-                    </div>
-                    <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End -->
-
-
-    <!-- Categories Start -->
-    <div class="container-xxl py-5 category">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
-                <h1 class="mb-5">Courses Categories</h1>
-            </div>
-            <div class="row g-3">
-                <div class="col-lg-7 col-md-6">
-                    <div class="row g-3">
-                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-1.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Web Design</h5>
-                                    <small class="text-primary">49 Courses</small>
+                        <div class="row ">
+                            <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                                <div class="home-slider">
+                                    <div class="hero-text">
+                                        <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
+                                        <h1 class="wow fadeInUp" data-wow-delay=".5s">Innovation Paradise<br> For Students </h1>
+                                        <p class="wow fadeInUp" data-wow-delay=".7s">Lorem Ipsum is simply dummy text of the
+                                            printing and typesetting <br> industry. Lorem Ipsum has been the industry's
+                                            standard
+                                            <br>dummy text ever since an to impression.</p>
+                                        <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                            <a href="${pageContext.request.contextPath}/about.jsp" class="btn">Learn More</a>
+                                            <a href="${pageContext.request.contextPath}/courses" class="btn alt-btn">Our Courses</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-2.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Graphic Design</h5>
-                                    <small class="text-primary">49 Courses</small>
+                    </div>
+                </div>
+                <!--/ End Single Slider -->
+                <!-- Single Slider -->
+                <div class="hero-inner overlay" style="background-image: url('${pageContext.request.contextPath}/img/slider-bg3.jpg');">
+                    <div class="container">
+                        <div class="row ">
+                            <div class="col-lg-8 offset-lg-2 col-md-12 co-12">
+                                <div class="home-slider">
+                                    <div class="hero-text">
+                                        <h5 class="wow fadeInUp" data-wow-delay=".3s">Start to learning Today</h5>
+                                        <h1 class="wow fadeInUp" data-wow-delay=".5s">Your Ideas Will Be <br> Heard & Supported</h1>
+                                        <p class="wow fadeInUp" data-wow-delay=".7s">Lorem Ipsum is simply dummy text of the
+                                            printing and typesetting <br> industry. Lorem Ipsum has been the industry's
+                                            standard
+                                            <br>dummy text ever since an to impression.</p>
+                                        <div class="button wow fadeInUp" data-wow-delay=".9s">
+                                            <a href="${pageContext.request.contextPath}/about.jsp" class="btn">Learn More</a>
+                                            <a href="${pageContext.request.contextPath}/courses" class="btn alt-btn">Our Courses</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-3.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Video Editing</h5>
-                                    <small class="text-primary">49 Courses</small>
+                    </div>
+                </div>
+                <!--/ End Single Slider -->
+            </div>
+        </section>
+        <!--/ End Hero Area -->
+        <!-- Start Features Area -->
+        <section class="features">
+            <div class="container-fluid">
+                <div class="single-head">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                            <!-- Start Single Feature -->
+                            <div class="single-feature">
+                                <h3><a href="javascript:void(0)">Trending Courses</a></h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                    nulla debitis vitae temporibus sed.</p>
+                                <div class="button">
+                                    <a href="javascript:void(0)" class="btn">Explore <i class="lni lni-arrow-right"></i></a>
                                 </div>
-                            </a>
+                            </div>
+                            <!-- End Single Feature -->
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
-                    <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
-                        <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px;">
-                            <h5 class="m-0">Online Marketing</h5>
-                            <small class="text-primary">49 Courses</small>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Categories Start -->
+                        <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                            <!-- Start Single Feature -->
+                            <div class="single-feature">
+                                <h3><a href="javascript:void(0)">Certified Teachers</a></h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                    nulla debitis vitae temporibus sed.</p>
 
+                                <div class="button">
+                                    <a href="javascript:void(0)" class="btn">Explore <i class="lni lni-arrow-right"></i></a>
+                                </div>
+                            </div>
+                            <!-- End Single Feature -->
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12 padding-zero">
+                            <!-- Start Single Feature -->
+                            <div class="single-feature last">
+                                <h3><a href="javascript:void(0)">Books & Library</a></h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, quaerat beatae
+                                    nulla debitis vitae temporibus sed.</p>
 
-    <!-- Courses Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Courses</h6>
-                <h1 class="mb-5">Popular Courses</h1>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-1.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
+                                <div class="button">
+                                    <a href="javascript:void(0)" class="btn">Explore <i class="lni lni-arrow-right"></i></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-2.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-3.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
+                            <!-- End Single Feature -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Courses End -->
+        </section>
+        <!-- /End Features Area -->
 
+        <!-- Start About Us Area -->
+        <section class="about-us section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="about-left">
+                            <div class="about-title align-left">
+                                <span class="wow fadeInDown" data-wow-delay=".2s">About Our Platform</span>
+                                <h2 class="wow fadeInUp" data-wow-delay=".4s">Welcome to eLEARNING</h2>
+                                <p class="wow fadeInUp" data-wow-delay=".6s">
+                                    Welcome to eLEARNING, your premier destination for online education! 
+                                    At eLEARNING, we are dedicated to transforming the way you learn by providing a comprehensive, accessible, and engaging platform that caters to learners of all ages and backgrounds.</p>
+                                <p class="qote wow fadeInUp" data-wow-delay=".8s">
+                                    Our mission is to democratize education and make high-quality learning experiences accessible to everyone, regardless of location or background. 
+                                    We believe that education is the key to personal and professional growth, and we are committed to empowering individuals through knowledge.
+                                </p>
+                                <div class="button wow fadeInUp" data-wow-delay="1s">
+                                    <a href="${pageContext.request.contextPath}/about.jsp" class="btn">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="about-right wow fadeInRight" data-wow-delay=".4s">
+                            <img src="${pageContext.request.contextPath}/img/about-img2.png" alt="#">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /End About Us Area -->
 
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Instructors</h6>
-                <h1 class="mb-5">Expert Instructors</h1>
+        <!-- Start Courses Area -->
+        <section class="courses section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title">
+                            <div class="section-icon wow zoomIn" data-wow-delay=".4s">
+                                <i class="lni lni-graduation"></i>
+                            </div>
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Featured Courses</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".6s">There are many variations of passages of Lorem
+                                Ipsum available, but the majority have suffered alteration in some form.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="single-head">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".2s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-1.jpg"
+                                            alt="#"></a>
+                                    <p class="price">$180</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Computer Science</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>22 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Programming</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".4s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-2.jpg"
+                                            alt="#"></a>
+                                    <p class="price">$200</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Business Management</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>10 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Business</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".6s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-3.jpg"
+                                            alt="#"></a>
+                                    <p class="price">Free</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Java Online Course</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>55 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Programming</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".2s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-4.jpg"
+                                            alt="#"></a>
+                                    <p class="price">$299</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Electrical Engineering</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>60 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Science</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".4s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-5.jpg"
+                                            alt="#"></a>
+                                    <p class="price">$150</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Architecture Design</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>25 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Design</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Course -->
+                            <div class="single-course wow fadeInUp" data-wow-delay=".6s">
+                                <div class="course-image">
+                                    <a href="course-details.html"><img src="${pageContext.request.contextPath}/img/courses-6.jpg"
+                                            alt="#"></a>
+                                    <p class="price">$250</p>
+                                </div>
+                                <div class="content">
+                                    <h3><a href="course-details.html">Medical Technology</a></h3>
+                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                        laborum.</p>
+                                </div>
+                                <div class="bottom-content">
+                                    <ul class="review">
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li><i class="lni lni-star-filled"></i></li>
+                                        <li>35 Reviews</li>
+                                    </ul>
+                                    <span class="tag">
+                                        <i class="lni lni-tag"></i>
+                                        <a href="javascript:void(0)">Medical</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- End Single Course -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-1.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-2.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-3.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item bg-light">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-4.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-sm-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Instructor Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
+        </section>
+        <!-- End Courses Area -->
 
+        <!-- Start Testimonials Area -->
+        <section class="testimonials section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title align-center gray-bg">
+                            <div class="section-icon wow zoomIn" data-wow-delay=".4s">
+                                <i class="lni lni-quotation"></i>
+                            </div>
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">What Our Students Say</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".6s">There are many variations of passages of Lorem
+                                Ipsum available, but the majority have suffered alteration in some form.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row testimonial-slider">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-1.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-2.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-3.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-4.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
 
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-                <h1 class="mb-5">Our Students Say!</h1>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-3.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-2.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Start Single Testimonial -->
+                        <div class="single-testimonial">
+                            <div class="text">
+                                <p>"It's amazing how much easier it has been to meet new people and create instant
+                                    connections. I have the exact same personality, the only thing that has changed is my
+                                    mindset and a few behaviors."</p>
+                            </div>
+                            <div class="author">
+                                <img src="${pageContext.request.contextPath}/img/testi-3.jpg" alt="#">
+                                <h4 class="name">
+                                    Jane Anderson
+                                    <span class="deg">Founder & CEO</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- End Single Testimonial -->
+                    </div>
+                </div>
             </div>
-            <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
+        </section>
+        <!-- End Testimonial Area -->
+    </jsp:body>
 </t:main>

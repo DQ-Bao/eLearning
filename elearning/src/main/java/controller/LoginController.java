@@ -36,7 +36,6 @@ public class LoginController extends HttpServlet {
                     if (verifyEmail != null) {
                         String email = URLDecoder.decode(verifyEmail, "UTF-8");
                         req.setAttribute("email", email);
-                        req.setAttribute("set_pw_message", "Set your new password");
                         req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
                     }
                 }

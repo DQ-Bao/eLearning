@@ -1,99 +1,117 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
-<t:main nav_active="contact">
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header">
-        <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">For Universities</h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item"><a class="text-white" href="${pageContext.request.contextPath}">Home</a></li>
-                            <li class="breadcrumb-item text-white active" aria-current="page">For Universities</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-
-
-    <!-- Contact Start -->
-    <div class="container-xxl py-5">
+<t:main>
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs overlay">
         <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Contact Us</h6>
-                <h1 class="mb-5">Contact For Any Query</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h5>Get In Touch</h5>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-map-marker-alt text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">Office</h5>
-                            <p class="mb-0">FPT University, Hoa Lac, Thach That, Ha Noi, Viet Nam</p>
-                        </div>
+            <div class="row align-items-center">
+                <div class="col-lg-8 offset-lg-2 col-md-12 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Contact Us</h1>
                     </div>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-phone-alt text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">Mobile</h5>
-                            <p class="mb-0">+012 345 67890</p>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
-                            <i class="fa fa-envelope-open text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">Email</h5>
-                            <p class="mb-0">info@example.com</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-8 col-md-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                    <label for="name">Your Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email">
-                                    <label for="email">Your Email</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
-                                    <label for="subject">Your organization name</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
-                                    <label for="message">Message</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
+                    <ul class="breadcrumb-nav">
+                        <li><a href="${pageContext.request.contextPath}">Home</a></li>
+                        <li>Contact Us</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Contact End -->
+    <!-- End Breadcrumbs -->
+
+    <!-- Start Contact Area -->
+    <section id="contact-us" class="contact-us section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12 col-12">
+                    <div class="form-main">
+                        <h3 class="title"><span>Want to work with us?</span>
+                            Let's Talk
+                        </h3>
+                        <form action="${pageContext.request.contextPath}/contact" method="post" class="form">
+                            <div class="row">
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Your Name</label>
+                                        <input name="name" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Your Organization Name</label>
+                                        <input name="org-name" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Your Email Address</label>
+                                        <input name="email" type="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label>Your Phone Number</label>
+                                        <input name="phone" type="text" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group message">
+                                        <label>Your Message</label>
+                                        <textarea name="message" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group button">
+                                        <button type="submit" class="btn ">Submit Message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="contact-info">
+                        <!-- Start Single Info -->
+                        <div class="single-info">
+                            <i class="lni lni-map-marker"></i>
+                            <h4>Visit Our Office</h4>
+                            <p class="no-margin-bottom">FPT University, Hoa Lac, Thach That
+                                <br> Ha Noi, Viet Nam</p>
+                        </div>
+                        <!-- End Single Info -->
+                        <!-- Start Single Info -->
+                        <div class="single-info">
+                            <i class="lni lni-phone"></i>
+                            <h4>Let's Talk</h4>
+                            <p class="no-margin-bottom">Phone: (+81) 123 456 789</p>
+                        </div>
+                        <!-- End Single Info -->
+                        <!-- Start Single Info -->
+                        <div class="single-info">
+                            <i class="lni lni-envelope"></i>
+                            <h4>E-mail Us</h4>
+                            <p class="no-margin-bottom"><a href="mailto:info@yourdomain.com">elearningswp@gmail.com</a></p>
+                        </div>
+                        <!-- End Single Info -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/ End Contact Area -->
+
+    <!-- Start Google-map Area -->
+    <div class="map-section">
+        <div class="mapouter">
+            <div class="gmap_canvas">
+                <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.498714562555!2d105.5236476834512!3d21.012722149964393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBGUFQgSMOgIE7hu5lp!5e0!3m2!1svi!2sus!4v1719734088914!5m2!1svi!2sus" 
+                width="100%" height="500" 
+                style="border:0;" scrolling="no" 
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <!-- End Google-map Area -->
 </t:main>

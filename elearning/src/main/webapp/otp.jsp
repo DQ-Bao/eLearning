@@ -102,17 +102,22 @@
             .otp-input::-webkit-outer-spin-button {
                 display: none;
             }
+            .outer-link .btn-link {
+                color: #0EDC8D;
+                text-decoration: none;
+            }
+            .outer-link .btn-link:hover {
+                text-decoration: underline;
+            }
         </style>
     </jsp:attribute>
     <jsp:body>
-        <div class="container-xxl d-block">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
-                    <div class="card bg-white mb-5 mt-5 border-0" style="box-shadow: 0 12px 15px rgba(0, 0, 0, 0.02);">
-                        <div class="card-body p-5 text-center">
-                            <h4>Verify</h4>
-                            <p>Your code was sent to you via email</p>
-                            
+        <section class="login section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
+                        <div class="form-head">
+                            <h4 class="title">Verify</h4>
                             <form action="${pageContext.request.contextPath}/verify" method="post" onsubmit="concatOTP()">
                                 <input type="hidden" name="verify_email" value="${requestScope.verify_email}">
                                 <input type="hidden" name="verify_otp" id="verify_otp">
@@ -136,13 +141,17 @@
                                         <input type="number" id="num6" class="form-control otp-input" maxlength="1" disabled>
                                     </div>
                                 </div>
-                                <button type="submit" name="action" value="verify" id="verify_btn" class="btn btn-primary w-100 mb-3">Verify</button>
-                                <p>Didn't receive code? <button type="submit" name="action" value="send_again" class="btn btn-link">Send again</button></p>
+                                <div class="button">
+                                    <button type="submit" name="action" value="verify" id="verify_btn" class="btn">Verify</button>
+                                </div>
+                                <p class="outer-link">
+                                    Didn't receive code? <button type="submit" name="action" value="send_again" class="btn btn-link">Send again</button>
+                                </p>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </jsp:body>
 </t:main>

@@ -3,10 +3,9 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.text.ParseException;
+import java.time.LocalDate;
 import data_access.UserDataAccess;
-import jakarta.mail.internet.ParseException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,15 +37,9 @@ public class UserProfileController extends HttpServlet {
         boolean gender = Boolean.parseBoolean(genderString);
         boolean status = false;
         int id = Integer.parseInt(Id);
-        Date dob = null;
+        LocalDate dob = null;
         if (dobString != null && !dobString.trim().isEmpty()) {
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsedDate = dateFormat.parse(dobString);
-                dob = new Date(parsedDate.getTime());
-            } catch (ParseException e) {
-                throw new ServletException("Invalid date format, please use yyyy-MM-dd", e);
-            }
+            
         } else {
             throw new ServletException("Date of birth cannot be null or empty");
         }

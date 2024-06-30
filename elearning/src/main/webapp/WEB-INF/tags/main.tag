@@ -3,98 +3,129 @@
 <%@attribute name="head" fragment="true"%>
 <%@attribute name="nav" fragment="true"%>
 <%@attribute name="script" fragment="true"%>
-<%@attribute name="nav_active"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>eLEARNING</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Libraries Stylesheet -->
-    <link href="${pageContext.request.contextPath}/lib/animate/animate.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Template Stylesheet -->
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg">
+    <!-- Web Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/LineIcons.2.0.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tiny-slider.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <jsp:invoke fragment="head"/>
 </head>
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
-    <!-- Spinner End -->
+    <!-- /End Preloader -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="${pageContext.request.contextPath}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="nav-item dropdown me-3">
-                <a class="nav-link dropdown-toggle rounded" href="#" id="exploreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid var(--bs-primary);">Explore</a>
-                <ul class="dropdown-menu" aria-labelledby="exploreDropdown">
-                    <c:forEach var="category" items="${category_list}">
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/courses?category=${category}">${category}</a></li>
-                    </c:forEach>
-                </ul>
-            </div>
-            <form action="${pageContext.request.contextPath}/search" class="d-flex me-3">
-                <input class="form-control me-2" type="search" name="query" value="${requestScope.query}" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form>
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="${pageContext.request.contextPath}/contact.jsp" id="contact" class="nav-item nav-link ">Contact</a>
-                <a href="${pageContext.request.contextPath}/about.jsp" id="about" class="nav-item nav-link">About</a>
-                <a href="${pageContext.request.contextPath}/courses" id="courses" class="nav-item nav-link">Courses</a>
-               
-                <jsp:invoke fragment="nav"/>
-                <c:if test="${empty sessionScope.user}">
-                    <a href="${pageContext.request.contextPath}/login" class="nav-item nav-link">Login</a>
-                </c:if>
-            </div>
-            <c:choose>
-                <c:when test="${empty sessionScope.user}">
-                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
-                </c:when>
-                <c:otherwise>
-                    <div class="d-none d-lg-block nav-item dropdown">
-                        <a class="btn btn-primary py-4 px-lg-5 dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.user.firstName and not empty sessionScope.user.lastName}">
-                                    ${sessionScope.user.firstName} ${sessionScope.user.lastName}
-                                </c:when>
-                                <c:otherwise>
-                                    ${sessionScope.user.account.email}
-                                </c:otherwise>
-                            </c:choose>
-                        </a>
-                        <div class="dropdown-menu fade-down m-0">
-                            <a href="${pageContext.request.contextPath}/user_profile.jsp" class="dropdown-item">Profile</a>
-                            <a href="${pageContext.request.contextPath}/account" class="dropdown-item">Account</a>
-                            <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">Logout</a>
+    <!-- Start Header Area -->
+    <header class="header navbar-area sticky">
+        <c:if test="${empty sessionScope.user}">
+            <!-- Toolbar Start -->
+            <div class="toolbar-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6 col-12">
+                            <div class="toolbar-social">
+                                <ul>
+                                    <li><span class="title">Follow Us On : </span></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-facebook-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-instagram"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-google"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="toolbar-login">
+                                <div class="button">
+                                    <a href="${pageContext.request.contextPath}/register">Create an Account</a>
+                                    <a href="${pageContext.request.contextPath}/login" class="btn">Log In</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </nav>
-    <!-- Navbar End -->
+                </div>
+            </div>
+            <!-- Toolbar End -->
+        </c:if>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <div class="nav-inner">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand" href="${pageContext.request.contextPath}">
+                                <img src="${pageContext.request.contextPath}/img/logo.svg" alt="Logo">
+                            </a>
+                            <form action="${pageContext.request.contextPath}/search" method="post" class="d-flex search-form">
+                                <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit"><i class="lni lni-search-alt"></i></button>
+                            </form>
+                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="page-scroll dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#category-submenu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">Explore</a>
+                                        <ul class="sub-menu collapse" id="category-submenu">
+                                            <c:forEach var="category" items="${category_list}">
+                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/courses?category=${category}">${category}</a></li>
+                                            </c:forEach>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item"><a href="${pageContext.request.contextPath}/courses">Courses</a></li>
+                                    <li class="nav-item"><a href="${pageContext.request.contextPath}/about.jsp">About</a></li>
+                                    <li class="nav-item"><a href="${pageContext.request.contextPath}/contact.jsp">Contact</a></li>
+                                    <jsp:invoke fragment="nav"/>
+                                    <c:if test="${not empty sessionScope.user}">
+                                        <li class="nav-item">
+                                            <a class="page-scroll dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#user-submenu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                                <c:choose>
+                                                    <c:when test="${not empty sessionScope.user.firstName and not empty sessionScope.user.lastName}">
+                                                        ${sessionScope.user.firstName} ${sessionScope.user.lastName}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${sessionScope.user.account.email}
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </a>
+                                            <ul class="sub-menu collapse" id="user-submenu">
+                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/user_profile.jsp">Profile</a></li>
+                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/account">Account</a></li>
+                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+                                            </ul>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </div> <!-- navbar collapse -->
+                        </nav> <!-- navbar -->
+                    </div>
+                </div>
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </header>
+    <!-- End Header Area -->
 
     <c:if test="${not empty message}">
         <div class="container">
@@ -124,79 +155,61 @@
 
     <jsp:doBody/>
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Quick Link</h4>
-                    <a class="btn btn-link" href="${pageContext.request.contextPath}/about.jsp">About Us</a>
-                    <a class="btn btn-link" href="${pageContext.request.contextPath}/contact.jsp">Contact Us</a>
-                    <a class="btn btn-link" href="${pageContext.request.contextPath}">Privacy Policy</a>
-                    <a class="btn btn-link" href="${pageContext.request.contextPath}">Terms & Condition</a>
-                    <a class="btn btn-link" href="${pageContext.request.contextPath}">FAQs & Help</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>FPT University, Hoa Lac, Thach That, Ha Noi, Viet Nam</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href="${pageContext.request.contextPath}"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-               
-            </div>
-            
-        </div>
-        <div class="container">
-            <div class="copyright">
+    <!-- Start Footer Area -->
+    <footer class="footer">
+        <!-- Start Middle Top -->
+        <div class="footer-middle">
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">eLEARNING</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                    <div class="col-12">
+                        <!-- Single Widget -->
+                        <div class="f-about single-footer">
+                            <div class="logo">
+                                <a href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/img/logo.svg" alt="Logo"></a>
+                            </div>
+                            <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>FPT University, Hoa Lac, Thach That, Ha Noi, Viet Nam</p>
+                            <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(+81) 123 456 789</p>
+                            <p class="mb-2"><i class="fa fa-envelope me-3"></i>elearningswp@gmail.com</p>
+                            <div class="footer-social">
+                                <ul>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-facebook-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-linkedin-original"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="lni lni-google"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Widget -->
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="${pageContext.request.contextPath}">Home</a>
-                            <a href="${pageContext.request.contextPath}">Cookies</a>
-                            <a href="${pageContext.request.contextPath}">Help</a>
-                            <a href="${pageContext.request.contextPath}">FQAs</a>
+                </div>
+            </div>
+        </div>
+        <!--/ End Footer Middle -->
+        <!-- Start Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="inner">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="left">
+                                <p>Designed by<a href="https://graygrids.com/" rel="nofollow" target="_blank">GrayGrids</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Footer End -->
+        <!-- End Footer Middle -->
+    </footer>
+    <!--/ End Footer Area -->
 
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top btn-hover" style="display: flex;"><i class="lni lni-chevron-up"></i></a>
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${pageContext.request.contextPath}/lib/wow/wow.min.js"></script>
-    <script src="${pageContext.request.contextPath}/lib/easing/easing.min.js"></script>
-    <script src="${pageContext.request.contextPath}/lib/waypoints/waypoints.min.js"></script>
-    <script src="${pageContext.request.contextPath}/lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/js/main.js"></script>
-    <script>
-        const navItems = document.getElementsByClassName("nav-item");
-        for (let i = 0; i < navItems.length; i++) {
-            if ('${nav_active}' === navItems[i].getAttribute('id')) {
-                navItems[i].classList.add("active");
-            }
-        }
-    </script>
     <jsp:invoke fragment="script"/>
 </body>

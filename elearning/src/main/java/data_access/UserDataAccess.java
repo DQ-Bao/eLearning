@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Date;
 
 public class UserDataAccess {
     private static UserDataAccess INSTANCE;
@@ -232,10 +231,10 @@ public class UserDataAccess {
         }
     }
 
-    public boolean updateDateOfBirth(int accountId, java.util.Date dateOfBirth) throws SQLException {
+    public boolean updateDateOfBirth(int accountId, LocalDate dateOfBirth) throws SQLException {
         String query = "UPDATE [dbo].[user] SET [date_of_birth] = ? WHERE [account_id] = ?";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(query)) {
-            statement.setDate(1, new Date(dateOfBirth.getTime()));
+            statement.setDate(1, java.sql.Date.valueOf(dateOfBirth));
             statement.setInt(2, accountId);
             return statement.executeUpdate() > 0;
         }

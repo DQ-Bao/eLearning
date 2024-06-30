@@ -1,6 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
-<t:main nav_active="login">
+<t:main>
     <div class="container-xxl d-block">
         <div class="row justify-content-center">
             <div class="col-12 col-md-6 col-lg-4" style="min-width: 500px;">
