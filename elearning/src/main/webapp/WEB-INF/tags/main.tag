@@ -75,9 +75,9 @@
                             <a class="navbar-brand" href="${pageContext.request.contextPath}">
                                 <img src="${pageContext.request.contextPath}/img/logo.svg" alt="Logo">
                             </a>
-                            <form action="${pageContext.request.contextPath}/search" method="post" class="d-flex search-form">
-                                <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit"><i class="lni lni-search-alt"></i></button>
+                            <form action="${pageContext.request.contextPath}/search" method="get" class="d-flex search-form">
+                                <input name="search_query" value="${param.search_query}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success me-2" type="submit"><i class="lni lni-search-alt"></i></button>
                             </form>
                             <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="toggler-icon"></span>

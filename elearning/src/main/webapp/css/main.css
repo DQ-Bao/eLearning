@@ -1885,7 +1885,7 @@ ol {
     padding: 32px 0 !important;
   }
   .header .search-form .form-control {
-    width: 130px !important;
+    width: 200px !important;
   }
   .header .search-form {
     margin-left: 30px !important;
@@ -1931,7 +1931,7 @@ ol {
 
 .header .search-form .form-control {
   display: block;
-  width: 175px;
+  width: 300px;
   padding: .375rem .75rem;
   font-size: 1rem;
   font-weight: 500;
