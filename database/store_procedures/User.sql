@@ -38,6 +38,33 @@ begin
 end
 go
 
+create or alter procedure spAddAccountList
+	@AccountList Account readonly,
+	@Success bit output
+as
+begin
+	set nocount on;
+	declare @added_accounts table ([account_id] int);
+
+	begin try
+		begin transaction;
+		insert into [account]([email], [activated], [role_id])
+		output inserted.[id] into @added_accounts([account_id])
+		select [email], [activated], (select [id] from [role] where [name] = [role_name])
+		from @AccountList;
+
+		insert into [user]([account_id])
+		select [account_id] from @added_accounts;
+		commit transaction;
+		set @Success = 1;
+	end try
+	begin catch
+		rollback transaction;
+		set @Success = 0;
+	end catch;
+end
+go
+
 create or alter procedure spActivateAccount
 	@Email varchar(max),
 	@Success bit output

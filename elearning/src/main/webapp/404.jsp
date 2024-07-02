@@ -1,5 +1,4 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 <head>
@@ -8,7 +7,7 @@
     <title>404 Error</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg" />
     <!-- Place favicon.ico in the root directory -->
 
     <!-- Web Font -->
