@@ -1,7 +1,6 @@
 package controller;
 
 import data_access.UserDataAccess;
-import model.Account;
 import model.User;
 import model.Message;
 import model.Account.Role;
@@ -75,7 +74,7 @@ public class RegisterController extends HttpServlet {
         else if (action.equals("check_email")) {
             String email = req.getParameter("email");
             User user = dao.getUserByEmail(email);
-            if (user == null || user.getAccount().getRole() == Account.Role.Student || user.getAccount().getRole() == Account.Role.Admin) {
+            if (user == null) {
                 req.setAttribute("message", new Message(Message.Type.Error, "Invalid user!"));
                 req.getRequestDispatcher("register.jsp").forward(req, resp);
             }

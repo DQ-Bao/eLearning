@@ -90,7 +90,7 @@
                         <div class="single-info">
                             <i class="lni lni-envelope"></i>
                             <h4>E-mail Us</h4>
-                            <p class="no-margin-bottom"><a href="mailto:info@yourdomain.com">elearningswp@gmail.com</a></p>
+                            <p class="no-margin-bottom"><a href="https://mail.google.com/mail/u/0/?fs=1&to=elearningswp@gmail.com&tf=cm">elearningswp@gmail.com</a></p>
                         </div>
                         <!-- End Single Info -->
                     </div>

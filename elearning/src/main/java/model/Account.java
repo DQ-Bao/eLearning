@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDateTime;
 
 public class Account {
-    public enum Role { All, Admin, Manager, Teacher, Student, None }
+    public enum Role { Manager, Teacher, Student }
 
     private int id;
     private String email;
@@ -19,22 +19,36 @@ public class Account {
         this.createdAt = createdAt;
     }
 
+    public Account(String email, boolean activated, Role role) {
+        this.email = email;
+        this.activated = activated;
+        this.role = role;
+    }
+
     public static String roleToString(Role role) throws IllegalArgumentException {
         switch (role) {
-            case All:
-                return "All";
-            case Admin:
-                return "Admin";
             case Manager:
                 return "Manager";
             case Teacher:
                 return "Teacher";
             case Student:
                 return "Student";
-            case None:
-                return "None";
             default:
                 throw new IllegalArgumentException("Role is not allowed.");
+        }
+    }
+
+    public static Role stringToRole(String role) {
+        if (role == null) return null;
+        switch (role) {
+            case "Manager":
+                return Role.Manager;
+            case "Teacher":
+                return Role.Teacher;
+            case "Student":
+                return Role.Student;
+            default:
+                return null;
         }
     }
 

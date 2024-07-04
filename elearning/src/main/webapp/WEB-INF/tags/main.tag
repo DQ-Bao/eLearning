@@ -11,7 +11,7 @@
     <title>eLEARNING</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg">
     <!-- Web Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
@@ -75,9 +75,9 @@
                             <a class="navbar-brand" href="${pageContext.request.contextPath}">
                                 <img src="${pageContext.request.contextPath}/img/logo.svg" alt="Logo">
                             </a>
-                            <form action="${pageContext.request.contextPath}/search" method="post" class="d-flex search-form">
-                                <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit"><i class="lni lni-search-alt"></i></button>
+                            <form action="${pageContext.request.contextPath}/search" method="get" class="d-flex search-form">
+                                <input name="search_query" value="${param.search_query}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success me-2" type="submit"><i class="lni lni-search-alt"></i></button>
                             </form>
                             <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="toggler-icon"></span>

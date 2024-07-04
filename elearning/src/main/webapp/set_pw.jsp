@@ -23,14 +23,14 @@
                     <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
                         <div class="form-head">
                             <h4 class="title">Set your password</h4>
-                            <form action="${pageContext.request.contextPath}/login" method="post">
+                            <form action="${pageContext.request.contextPath}/register" method="post">
                                 <input type="hidden" name="email" value="${requestScope.email}">
                                 <div class="form-group">
                                     <label>Password</label>
                                     <input type="password" name="password" placeholder="Enter Password" id="password" class="margin-5px-bottom" onkeyup="checkPassword()" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
+                                    <label>Re-enter Password</label>
                                     <input type="password" placeholder="Re-enter Password" id="confirm-password" class="margin-5px-bottom" onkeyup="checkPassword()" required>
                                 </div>
                                 <div class="button">

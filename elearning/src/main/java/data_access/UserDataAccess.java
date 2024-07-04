@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
+import java.util.List;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 
 public class UserDataAccess {
     private static UserDataAccess INSTANCE;
@@ -187,6 +189,28 @@ public class UserDataAccess {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public boolean addAccountList(List<Account> list) {
+        boolean success = false;
+        String sp = "{call spAddAccountList(?, ?)}";
+        try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
+            SQLServerDataTable table = new SQLServerDataTable();
+            table.addColumnMetadata("email", java.sql.Types.VARCHAR);
+            table.addColumnMetadata("activated", java.sql.Types.BIT);
+            table.addColumnMetadata("role_name", java.sql.Types.NVARCHAR);
+            for (Account acc : list) {
+                table.addRow(acc.getEmail(), acc.isActivated(), Account.roleToString(acc.getRole()));
+            }
+
+            statement.setObject("AccountList", table);
+            statement.registerOutParameter("Success", java.sql.Types.BIT);
+            statement.execute();
+            success = statement.getBoolean("Success");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return success;
     }
 
     private byte[] generateSalt() {

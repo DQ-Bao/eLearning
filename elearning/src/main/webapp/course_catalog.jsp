@@ -1,5 +1,4 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="/WEB-INF/tlds/tag" prefix="t"%>
 <t:main>
     <jsp:attribute name="head">
@@ -47,38 +46,9 @@
                 <div class="row">
                     <c:forEach var="course" items="${course_list}" varStatus="status">
                         <div class="col-lg-4 col-md-6 col-12">
-                            <div class="single-course wow fadeInUp" data-wow-delay="${0.2 + (status.index * 0.2)}s">
-                                <div class="course-image">
-                                    <a href="${pageContext.request.contextPath}/courses/${course.id}">
-                                        <img src="${pageContext.request.contextPath}/img/${course.imagePath}" alt="${course.title}">
-                                    </a>
-                                    <p class="price">
-                                        <c:choose>
-                                            <c:when test="${course.price == 0}">
-                                                FREE
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:formatNumber type="currency" currencyCode="VND" value="${course.price}"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </p>
-                                </div>
-                                <div class="content">
-                                    <h3><a href="${pageContext.request.contextPath}/courses/${course.id}">${course.title}</a></h3>
-                                </div>
-                                <div class="bottom-content">
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <i class="lni lni-graduation"></i>
-                                            <p>${course.manager.orgName}</p>
-                                        </div>
-                                        <div class="col-5 tag">
-                                            <i class="lni lni-tag"></i>
-                                            <a href="${pageContext.request.contextPath}/courses?category=${course.categoryName}">${course.categoryName}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <t:course id="${course.id}" title="${course.title}"
+                            image_path="${course.imagePath}" price="${course.price}"
+                            manager_name="${course.manager.orgName}" category_name="${course.categoryName}" index="${status.index}"/>
                         </div>
                     </c:forEach>
                 </div>
