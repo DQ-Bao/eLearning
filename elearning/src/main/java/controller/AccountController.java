@@ -11,6 +11,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
+import model.User;
 
 public class AccountController extends HttpServlet {
 
@@ -35,11 +37,11 @@ public class AccountController extends HttpServlet {
         String cfPassword = req.getParameter("cfPassword");
 
         int id = Integer.parseInt(Id);
-        
-        if(userDAO.authenticate(email, rawPasword)!=null){
+        User acc = userDAO.authenticate(email, rawPasword);
+        if(acc!=null){
             if(newPassword == cfPassword){
                 try {
-                    if(userDAO.updatePassword(id, newPassword)&&userDAO.updateEmail(id, email)){
+                    if(userDAO.changePassword(acc.getId(), newPassword)||userDAO.updateEmail(acc.getId(), email)){
                         req.setAttribute("message", "update account successfully");
                     }else{
                         req.setAttribute("message", "update failed");
@@ -49,9 +51,9 @@ public class AccountController extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-        }
+        } else {  req.setAttribute("message", "Wrong email or password");}
 
-        req.getRequestDispatcher("account_settings.jsp").forward(req, resp);
+        req.getRequestDispatcher("404.jsp").forward(req, resp);
         
     }
 

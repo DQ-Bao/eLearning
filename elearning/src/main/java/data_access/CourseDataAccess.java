@@ -222,4 +222,5 @@ public class CourseDataAccess {
         }
         return list;
     }
+    public List<Course> GetAllcoursePaid()
 }

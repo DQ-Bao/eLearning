@@ -148,6 +148,16 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <servlet-name>AccountController</servlet-name>
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteAccountController</servlet-name>
+        <servlet-class>controller.DeleteAccountController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountController</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>UserProfileController</servlet-name>
         <servlet-class>controller.UserProfileController</servlet-class>
