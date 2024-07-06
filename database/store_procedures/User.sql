@@ -39,22 +39,64 @@ end
 go
 
 create or alter procedure spAddAccountList
-	@AccountList Account readonly,
+	@AccountList AccountData readonly,
 	@Success bit output
 as
 begin
 	set nocount on;
-	declare @added_accounts table ([account_id] int);
-
 	begin try
 		begin transaction;
+		-- Add manager and student first then teachers
+		declare @added_accounts table ([account_id] int);
+
 		insert into [account]([email], [activated], [role_id])
 		output inserted.[id] into @added_accounts([account_id])
-		select [email], [activated], (select [id] from [role] where [name] = [role_name])
-		from @AccountList;
+		select al.[email], 0, (select [id] from [role] where [name] = al.[role])
+		from @AccountList as al where al.[role] in (N'Manager', N'Student');
 
 		insert into [user]([account_id])
 		select [account_id] from @added_accounts;
+
+		insert into [manager_details]([user_id], [org_name], [country])
+		select u.[id], al.[manager], al.[country]
+		from @AccountList as al
+		join [account] as acc on al.[email] = acc.[email]
+		join [user] as u on acc.[id] = u.[account_id]
+		where al.[role] = N'Manager';
+
+		-- Add teachers
+		declare @valid_teachers table (
+			[email] varchar(255) unique not null,
+			[role] nvarchar(255) not null,
+			[manager] nvarchar(255),
+			[country] nvarchar(255),
+			[position] nvarchar(255)
+		);
+		
+		-- Filter out invalid teachers whose manager doesn't exist
+		insert into @valid_teachers([email], [role], [manager], [country], [position])
+		select *
+		from @AccountList as al
+		where al.[role] = N'Teacher'
+		and al.[manager] is not null
+		and exists (select 1 from [manager_details] as md where md.[org_name] = al.[manager]);
+
+		declare @added_teachers table ([account_id] int);
+		insert into [account]([email], [activated], [role_id])
+		output inserted.[id] into @added_teachers([account_id])
+		select al.[email], 0, (select [id] from [role] where [name] = al.[role])
+		from @valid_teachers as al;
+
+		insert into [user]([account_id])
+		select [account_id] from @added_teachers;
+
+		insert into [teacher_details]([user_id], [manager_id], [position])
+		select u.[id], md.[id], al.[position]
+		from @valid_teachers as al
+		join [account] as acc on al.[email] = acc.[email]
+		join [user] as u on acc.[id] = u.[account_id]
+		join [manager_details] as md on al.[manager] = md.[org_name];
+
 		commit transaction;
 		set @Success = 1;
 	end try

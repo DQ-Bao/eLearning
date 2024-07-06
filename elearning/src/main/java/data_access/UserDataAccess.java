@@ -2,6 +2,7 @@ package data_access;
 
 import data_access.internal.DataAccess;
 import model.Account;
+import model.AccountRequest.AccountData;
 import model.Account.Role;
 import model.User;
 import model.User.Gender;
@@ -191,16 +192,33 @@ public class UserDataAccess {
         return false;
     }
 
-    public boolean addAccountList(List<Account> list) {
+    public boolean addAccountList(List<AccountData> list) {
         boolean success = false;
         String sp = "{call spAddAccountList(?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
             SQLServerDataTable table = new SQLServerDataTable();
             table.addColumnMetadata("email", java.sql.Types.VARCHAR);
-            table.addColumnMetadata("activated", java.sql.Types.BIT);
-            table.addColumnMetadata("role_name", java.sql.Types.NVARCHAR);
-            for (Account acc : list) {
-                table.addRow(acc.getEmail(), acc.isActivated(), Account.roleToString(acc.getRole()));
+            table.addColumnMetadata("role", java.sql.Types.NVARCHAR);
+            table.addColumnMetadata("manager", java.sql.Types.NVARCHAR);
+            table.addColumnMetadata("country", java.sql.Types.NVARCHAR);
+            table.addColumnMetadata("position", java.sql.Types.NVARCHAR);
+            for (AccountData acc : list) {
+                if (acc.getRole() == null || acc.getEmail() == null || acc.getEmail().isEmpty()) continue;
+                boolean valid = true;
+                switch (acc.getRole()) {
+                    case Student:
+                        break;
+                    case Manager:
+                    case Teacher:
+                        if (acc.getManager() == null || acc.getManager().isEmpty()) {
+                            valid = false;
+                        }
+                        break;
+                }
+                if (valid) {
+                    table.addRow(acc.getEmail(), Account.roleToString(acc.getRole()), 
+                                 acc.getManager(), acc.getCountry(), acc.getPosition());
+                }
             }
 
             statement.setObject("AccountList", table);

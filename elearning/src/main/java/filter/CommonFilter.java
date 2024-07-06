@@ -9,6 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import model.Message;
 
 public class CommonFilter implements Filter {
 
@@ -17,7 +19,13 @@ public class CommonFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         List<String> list = CourseDataAccess.getInstance().getAllCategories();
-        req.setAttribute("category_list", list); 
+        HttpSession session = req.getSession();
+        Message message = (Message)session.getAttribute("message");
+        if (message != null) {
+            req.setAttribute("message", message);
+            session.removeAttribute("message");
+        }
+        req.setAttribute("category_list", list);
         chain.doFilter(request, response);
     }
 }

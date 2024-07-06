@@ -130,19 +130,19 @@
     <c:if test="${not empty message}">
         <div class="container">
             <div class="row justify-content-center mt-3">
-                <c:set var="alert_type" value="alert-info" />
+                <c:set var="alert_type" value="alert-info"/>
                 <c:choose>
                     <c:when test="${message.type == 'Error'}">
-                        <c:set var="alert_type" value="alert-danger" />
+                        <c:set var="alert_type" value="alert-danger"/>
                     </c:when>
                     <c:when test="${message.type == 'Warn'}">
-                        <c:set var="alert_type" value="alert-warning" />
+                        <c:set var="alert_type" value="alert-warning"/>
                     </c:when>
                     <c:when test="${message.type == 'Info'}">
-                        <c:set var="alert_type" value="alert-info" />
+                        <c:set var="alert_type" value="alert-info"/>
                     </c:when>
                     <c:when test="${message.type == 'Success'}">
-                        <c:set var="alert_type" value="alert-success" />
+                        <c:set var="alert_type" value="alert-success"/>
                     </c:when>
                 </c:choose>
                 <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">

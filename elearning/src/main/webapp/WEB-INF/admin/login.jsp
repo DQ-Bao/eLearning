@@ -2,30 +2,30 @@
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg"/>
     <title>Admin</title>
     <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
 </head>
 <body>
     <c:if test="${not empty message}">
         <div class="container">
             <div class="row justify-content-center mt-3">
-                <c:set var="alert_type" value="alert-info" />
+                <c:set var="alert_type" value="alert-info"/>
                 <c:choose>
                     <c:when test="${message.type == 'Error'}">
-                        <c:set var="alert_type" value="alert-danger" />
+                        <c:set var="alert_type" value="alert-danger"/>
                     </c:when>
                     <c:when test="${message.type == 'Warn'}">
-                        <c:set var="alert_type" value="alert-warning" />
+                        <c:set var="alert_type" value="alert-warning"/>
                     </c:when>
                     <c:when test="${message.type == 'Info'}">
-                        <c:set var="alert_type" value="alert-info" />
+                        <c:set var="alert_type" value="alert-info"/>
                     </c:when>
                     <c:when test="${message.type == 'Success'}">
-                        <c:set var="alert_type" value="alert-success" />
+                        <c:set var="alert_type" value="alert-success"/>
                     </c:when>
                 </c:choose>
                 <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">

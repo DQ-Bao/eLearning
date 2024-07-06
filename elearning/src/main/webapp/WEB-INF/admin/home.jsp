@@ -3,30 +3,30 @@
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/img/favicon.svg"/>
     <title>Admin</title>
     <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
 </head>
 <body>
     <c:if test="${not empty message}">
         <div class="container">
             <div class="row justify-content-center mt-3">
-                <c:set var="alert_type" value="alert-info" />
+                <c:set var="alert_type" value="alert-info"/>
                 <c:choose>
                     <c:when test="${message.type == 'Error'}">
-                        <c:set var="alert_type" value="alert-danger" />
+                        <c:set var="alert_type" value="alert-danger"/>
                     </c:when>
                     <c:when test="${message.type == 'Warn'}">
-                        <c:set var="alert_type" value="alert-warning" />
+                        <c:set var="alert_type" value="alert-warning"/>
                     </c:when>
                     <c:when test="${message.type == 'Info'}">
-                        <c:set var="alert_type" value="alert-info" />
+                        <c:set var="alert_type" value="alert-info"/>
                     </c:when>
                     <c:when test="${message.type == 'Success'}">
-                        <c:set var="alert_type" value="alert-success" />
+                        <c:set var="alert_type" value="alert-success"/>
                     </c:when>
                 </c:choose>
                 <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">
@@ -69,69 +69,50 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="req" items="${request_list}" varStatus="status">
-                                <tr>
-                                    <td>${status.index}</td>
-                                    <td>${req.requesterName}</td>
-                                    <td>${req.type}</td>
-                                    <td><fmt:parseDate type="both" value="${req.requestAt}" pattern="yyyy-MM-dd'T'HH:mm"/></td>
-                                    <td>${req.status}</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/admin/req?id=${req.id}" class="btn btn-primary">Details</a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>${status.index + 1}</td>
+                                        <td>${req.requesterName}</td>
+                                        <td>${req.type}</td>
+                                        <td><fmt:parseDate type="both" value="${req.requestedAt}" pattern="yyyy-MM-dd'T'HH:mm"/></td>
+                                        <td>${req.status}</td>
+                                        <td class="d-flex">
+                                            <a href="${pageContext.request.contextPath}/admin/req?id=${req.id}" class="btn btn-primary">Details</a>
+                                            <c:if test="${req.status != 'Pending'}">
+                                                <form action="${pageContext.request.contextPath}/admin/req" method="post">
+                                                    <input type="hidden" name="id" value="${req.id}">
+                                                    <button type="submit" name="action" value="remove_request" class="btn btn-danger ms-3">Remove</button>
+                                                </form>
+                                            </c:if>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
-                                <tr>
-                                    <td>1</td>
-                                    <td>FPT University</td>
-                                    <td>Contact</td>
-                                    <td>Tue Jul 02 09:36:00 ICT 2024</td>
-                                    <td>Pending</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/admin/req?id=1" class="btn btn-primary">Details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Michigan University</td>
-                                    <td>Account</td>
-                                    <td>Mon Jul 01 09:36:00 ICT 2024</td>
-                                    <td>Done</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/admin/req?id=2" class="btn btn-primary">Details</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Google</td>
-                                    <td>Account</td>
-                                    <td>Mon Jun 24 09:36:00 ICT 2024</td>
-                                    <td>Cancel</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/admin/req?id=3" class="btn btn-primary">Details</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="tab-pane fade" id="tool" role="tabpanel" aria-labelledby="tool-tab">
                         <h2 class="mb-3">Manage Accounts</h2>
-                        <form action="${pageContext.request.contextPath}/admin/account" method="post" enctype="multipart/form-data">
-                            <div class="mb-2">
-                                <button id="add-acc-btn" class="btn btn-primary me-2">Add Account</button>
-                                <input type="file" name="acc_file">
+                        <form action="${pageContext.request.contextPath}/admin/req" method="post" enctype="multipart/form-data">
+                            <div class="mb-2 d-flex align-items-center">
+                                <button type="button" id="add-acc-btn" class="btn btn-primary me-2">Add Account</button>
+                                <div class="form-group">
+                                    <input type="file" name="acc_file" class="form-control ms-2">
+                                </div>
                             </div>
                             <table class="table table-bordered table-striped">
-                                <thead>
+                                <thead id="table-header">
                                     <tr>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Organization Name</th>
+                                        <th>Country</th>
+                                        <th>Position</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="acc-fields"></tbody>
                             </table>
-                            <button type="submit" class="btn btn-success mt-3">Submit</button>
+                            <button type="submit" name="action" value="add_account" class="btn btn-success mt-3">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -139,67 +120,132 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/form.js"></script>
     <script>
-        let fieldCount = 0;
-        function updateFieldNames() {
+        const body = document.getElementById("acc-fields");
+        let rowIdx = 0;
+        document.getElementById("add-acc-btn").addEventListener("click", function() {
+            addTableRow(rowIdx);
+            rowIdx++;
+        });
+        function updateInputNames() {
             const rows = document.querySelectorAll("#acc-fields tr");
             rows.forEach((row, index) => {
-                row.querySelector("input[type=email]").name = "email_" + index;
-                row.querySelector("select").name = "role_" + index;
+                const tds = row.querySelectorAll("td");
+                tds.forEach(td => {
+                    const input = td.firstElementChild;
+                    const lastUnderScore = input.name.lastIndexOf('_');
+                    input.name = input.name.substring(0, lastUnderScore) + "_" + index;
+                });
             });
-            fieldCount = rows.length;
+            rowIdx = rows.length;
         }
 
-        document.getElementById("add-acc-btn").addEventListener("click", function() {
-            let container = document.getElementById("acc-fields");
-            let inputGroup = document.createElement("tr");
-            
-            let emailInput = document.createElement("input");
-            emailInput.type = "email";
-            emailInput.name = "email_" + fieldCount;
-            emailInput.className = "form-control";
-            emailInput.required = true;
-
-            let emailField = document.createElement("td");
-            emailField.appendChild(emailInput);
-            
-            let roleSelect = document.createElement("select");
-            roleSelect.name = "role_" + fieldCount;
-            roleSelect.className = "form-control";
-            roleSelect.required = true;
-            
-            let option1 = document.createElement("option");
-            option1.value = "Manager";
-            option1.text = "Manager";
-            roleSelect.appendChild(option1);
-            let option2 = document.createElement("option");
-            option2.value = "Teacher";
-            option2.text = "Teacher";
-            roleSelect.appendChild(option2);
-            let option3 = document.createElement("option");
-            option3.value = "Student";
-            option3.text = "Student";
-            roleSelect.appendChild(option3);
-
-            let roleField = document.createElement("td");
-            roleField.appendChild(roleSelect);
-
-            let actionField = document.createElement("td");
-            let deleteBtn = document.createElement("button");
-            deleteBtn.className = "btn btn-danger";
-            deleteBtn.textContent = "Remove";
-            deleteBtn.addEventListener("click", function() {
-                inputGroup.remove();
-                updateFieldNames();
+        function addTableRow(index) {
+            const row = document.createElement("tr");
+            const emailInput = createInput("email_" + index, "email", "form-control", true);
+            const managerInput = createInput("manager_" + index, "text", "form-control", false);
+            const countries = new Intl.DisplayNames(["en"], { type: "region" });
+            let names = [];
+            for(let i = 65; i <= 90; ++i) {
+                for(let j = 65; j <= 90; ++j) {
+                    let code = String.fromCharCode(i) + String.fromCharCode(j)
+                    let name = countries.of(code)
+                    if (code !== name && name !== "Unknown Region") {
+                        names.push(name);
+                    }
+                }
+            }
+            names = [ ...new Set(names) ].sort();
+            const options = names.map(name => ({
+                value: name,
+                text: name,
+                selected: false
+            }));
+            const countryInput = createSelect("country_" + index, options, "form-control", false);
+            const positionInput = createInput("position_" + index, "text", "form-control", false);
+            const roleSelect = createSelect("role_" + index, [
+                { value: "Manager", text: "Manager", selected: true },
+                { value: "Teacher", text: "Teacher", selected: false },
+                { value: "Student", text: "Student", selected: false }
+            ], "form-control", true, {
+                event: "change",
+                handler: function() {
+                    const role = roleSelect.value;
+                    switch (role) {
+                        case "Student":
+                            managerInput.required = false;
+                            managerInput.disabled = true;
+                            countryInput.required = false;
+                            countryInput.disabled = true;
+                            positionInput.required = false;
+                            positionInput.disabled = true;
+                            break;
+                        case "Manager":
+                            managerInput.required = true;
+                            managerInput.disabled = false;
+                            countryInput.required = false;
+                            countryInput.disabled = false;
+                            positionInput.required = false;
+                            positionInput.disabled = true;
+                            break;
+                        case "Teacher":
+                            managerInput.required = true;
+                            managerInput.disabled = false;
+                            countryInput.required = false;
+                            countryInput.disabled = true;
+                            positionInput.required = false;
+                            positionInput.disabled = false;
+                            break;
+                        default:
+                            break;
+                    }
+                }
             });
-            actionField.appendChild(deleteBtn);
-
-            inputGroup.appendChild(emailField);
-            inputGroup.appendChild(roleField);
-            inputGroup.appendChild(actionField);
-            container.appendChild(inputGroup);
-            fieldCount++;
-        });
+            row.appendChild(document.createElement("td").appendChild(emailInput).parentNode);
+            row.appendChild(document.createElement("td").appendChild(roleSelect).parentNode);
+            row.appendChild(document.createElement("td").appendChild(managerInput).parentNode);
+            row.appendChild(document.createElement("td").appendChild(countryInput).parentNode);
+            row.appendChild(document.createElement("td").appendChild(positionInput).parentNode);
+            const role = roleSelect.value;
+            switch (role) {
+                case "Student":
+                    managerInput.required = false;
+                    managerInput.disabled = true;
+                    countryInput.required = false;
+                    countryInput.disabled = true;
+                    positionInput.required = false;
+                    positionInput.disabled = true;
+                    break;
+                case "Manager":
+                    managerInput.required = true;
+                    managerInput.disabled = false;
+                    countryInput.required = false;
+                    countryInput.disabled = false;
+                    positionInput.required = false;
+                    positionInput.disabled = true;
+                    break;
+                case "Teacher":
+                    managerInput.required = true;
+                    managerInput.disabled = false;
+                    countryInput.required = false;
+                    countryInput.disabled = true;
+                    positionInput.required = false;
+                    positionInput.disabled = false;
+                    break;
+                default:
+                    break;
+            }
+            const deleteBtn = createButton("button", "btn btn-danger", "Remove", {
+                event: "click",
+                handler: function() {
+                    row.remove();
+                    updateInputNames();
+                }
+            });
+            row.appendChild(document.createElement("td").appendChild(deleteBtn).parentNode);
+            body.appendChild(row);
+        }
     </script>
 </body>
 </html>

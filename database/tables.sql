@@ -63,23 +63,14 @@ create table [course] (
 	[updated_at] datetime2 not null default getutcdate()
 );
 
-create table [lesson] (
+create table [course_content](
 	[id] int primary key identity,
 	[course_id] int not null foreign key references [course]([id]),
+	[type] varchar(255) not null check([type] in ('Lesson', 'Quiz')),
 	[title] nvarchar(255) not null,
+	[quiz_description] nvarchar(max),
 	[content] ntext not null,
-	[created_by] int foreign key references [teacher_details]([id]) on delete set null,
-	[created_at] datetime2 not null default getutcdate(),
-	[updated_at] datetime2 not null default getutcdate()
-);
-
-create table [quiz] (
-	[id] int primary key identity,
-	[course_id] int not null foreign key references [course]([id]),
-	[title] nvarchar(255) not null,
-	[description] nvarchar(max),
-	[content_file_path] nvarchar(max) not null,
-	[weight] decimal(3, 2) default(0.00) check([weight] >= 0.00 and [weight] <= 1.00),
+	[quiz_weight] decimal(3, 2) default(0.00) check([quiz_weight] >= 0.00 and [quiz_weight] <= 1.00),
 	[created_by] int foreign key references [teacher_details]([id]) on delete set null,
 	[created_at] datetime2 not null default getutcdate(),
 	[updated_at] datetime2 not null default getutcdate()
@@ -103,7 +94,7 @@ create table [enrollment](
 
 --TODO: create trigger to cascade this when delete quiz or user
 create table [student_quiz_result](
-	[quiz_id] int foreign key references [quiz]([id]),
+	[quiz_id] int foreign key references [course_content]([id]),
 	[student_id] int foreign key references [user]([id]),
 	[grade] decimal(19, 4) not null,
 	[passed] bit not null,
@@ -115,4 +106,28 @@ create table [teacher_assign_course](
 	[course_id] int foreign key references [course]([id]),
 	[teacher_id] int foreign key references [teacher_details]([id])
 	primary key([course_id], [teacher_id])
+);
+
+create table [request](
+	[id] int primary key identity,
+	[requester_id] int foreign key references [manager_details]([id]) on delete set null, -- This is available when there is manager sending request
+	[type] varchar(255) not null check([type] in ('Contact', 'Account')),
+	[requester_name] nvarchar(255),
+	[message] nvarchar(max),
+	[reply_message] nvarchar(max),
+	[status] varchar(255) not null check([status] in ('Pending', 'Accepted', 'Rejected')),
+	[requested_at] datetime2 not null default getutcdate(),
+	[contact_representative_name] nvarchar(255),
+	[contact_email] varchar(255),
+	[contact_phone] varchar(22),
+	[account_data] ntext -- this is raw json
+	-- eg: [ 
+	--         {
+	--             "email": "abc@gmail.com",
+	--             "role": "Teacher",
+	--             "manager": "FPT University",
+	--             "country": null,
+	--             "position": "Lecturer"
+	--         }
+	--     ]
 );

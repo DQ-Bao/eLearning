@@ -45,10 +45,6 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/admin/req</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>AdminFilter</filter-name>
-        <url-pattern>/admin/account</url-pattern>
-    </filter-mapping>
 
     <servlet>
         <servlet-name>AdminController</servlet-name>
@@ -69,13 +65,13 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AdminAccountController</servlet-name>
-        <servlet-class>controller.AdminAccountController</servlet-class>
+        <servlet-name>AdminRequestController</servlet-name>
+        <servlet-class>controller.AdminRequestController</servlet-class>
         <multipart-config/>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdminAccountController</servlet-name>
-        <url-pattern>/admin/account</url-pattern>
+        <servlet-name>AdminRequestController</servlet-name>
+        <url-pattern>/admin/req</url-pattern>
     </servlet-mapping>
 
     <servlet>
