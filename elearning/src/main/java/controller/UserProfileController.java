@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserProfileController extends HttpServlet {
 
     private UserDataAccess userDAO;
-    
+
     @Override
     public void init() throws ServletException {
         this.userDAO = UserDataAccess.getInstance();
@@ -22,7 +22,7 @@ public class UserProfileController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
     }
 
     @Override
@@ -33,72 +33,60 @@ public class UserProfileController extends HttpServlet {
         String genderString = req.getParameter("gender");
         String dobString = req.getParameter("dob");
         String pimg = req.getParameter("pimg");
-
-        boolean gender = Boolean.parseBoolean(genderString);
+        boolean gender;
+        if (genderString.equalsIgnoreCase("0")) {
+            gender = false;
+        } else {
+            gender = true;
+        }
         boolean status = false;
         int id = Integer.parseInt(Id);
-        LocalDate dob = null;
-        if (dobString != null && !dobString.trim().isEmpty()) {
+        LocalDate dob = userDAO.convertStringToLocalDate(dobString);
+
+        if (firstName != null) {
+            status = userDAO.updateFirstName(id, firstName);
             
         } else {
-            throw new ServletException("Date of birth cannot be null or empty");
+            req.setAttribute(",", ",");
         }
 
-        
+        if (lastName != null) {
 
-        if(firstName!=null){
-            try {
-                status = userDAO.updateFirstName(id, firstName);
-            } catch (SQLException e) {
-                
-                e.printStackTrace();
-            }
+            status = userDAO.updateLastName(id, lastName);
+
+        } else {
+            req.setAttribute(",", ",");
         }
 
-        if(lastName!=null){
-            try {
-                status = userDAO.updateLastName(id, lastName);
-            } catch (SQLException e) {
-                
-                e.printStackTrace();
-            }
+        if (genderString != null) {
+
+            status = userDAO.updateGender(id, gender);
+
+        } else {
+            req.setAttribute(",", ",");
         }
 
-        if(genderString!=null){
-            try {
-                status = userDAO.updateGender(id, gender);
-            } catch (SQLException e) {
-                
-                e.printStackTrace();
-            }
+        if (dob != null) {
+            userDAO.updateDateOfBirth(id, dob);
+        } else {
+            req.setAttribute(",", ",");
         }
 
-        if(dob!=null){
-            try {
-                status = userDAO.updateDateOfBirth(id, dob);
-            } catch (SQLException e) {
-                
-                e.printStackTrace();
-            }
+        if (pimg != null) {
+
+            status = userDAO.updateProfileImage(id, pimg);
+
+        } else {
+            req.setAttribute(",", ",");
         }
 
-        if(pimg!=null){
-            try {
-                status = userDAO.updateProfileImage(id, pimg);
-            } catch (SQLException e) {
-                
-                e.printStackTrace();
-            }
-        }
-        
-        if(status==false){
+        if (status == false) {
             req.setAttribute("message", "Failed");
-        }else{
+        } else {
             req.setAttribute("message", "Update Successfully");
         }
 
         req.getRequestDispatcher("user_profile.jsp").forward(req, resp);
     }
-
 
 }
