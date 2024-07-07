@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Message;
 import util.MailUtil;
 import util.PropertyUtil;
-import util.RandomUtil;
+import util.SecurityUtil;
 
 public class VerifyController extends HttpServlet {
     private String verifyEmail;
@@ -32,7 +32,7 @@ public class VerifyController extends HttpServlet {
         String url = req.getParameter("redirect_url");
         if (email != null) {
             verifyEmail = URLDecoder.decode(email, "UTF-8");
-            String otp = RandomUtil.generateOTP();
+            String otp = SecurityUtil.generateOTP();
             req.getSession().setAttribute("otp", otp);
             try {
                 String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
@@ -81,7 +81,7 @@ public class VerifyController extends HttpServlet {
         }
         else if (action.equals("send_again")) {
             if (verifyEmail != null) {
-                String otp = RandomUtil.generateOTP();
+                String otp = SecurityUtil.generateOTP();
                 req.getSession().setAttribute("otp", otp);
                 try {
                     String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");

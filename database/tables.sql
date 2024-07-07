@@ -9,7 +9,8 @@ create table [account] (
 	[password_hash] char(69),
 	[activated] bit not null,
 	[role_id] int foreign key references [role]([id]) on delete set null,
-	[created_at] datetime2 not null default getutcdate()
+	[created_at] datetime2 not null default getutcdate(),
+	[login_token] char(64)
 );
 
 create table [user] (

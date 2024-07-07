@@ -6,10 +6,7 @@ import model.AccountRequest.AccountData;
 import model.Account.Role;
 import model.User;
 import model.User.Gender;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import util.SecurityUtil;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Base64;
 import java.util.List;
 import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 
@@ -40,9 +36,7 @@ public class UserDataAccess {
         boolean success = false;
         String sp = "{call spRegisterAccount(?, ?, ?, ?)}";
         try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
-            byte[] salt = generateSalt();
-            String hash = hashPassword(password, salt);
-            String dbPassword = hash + ":" + Base64.getEncoder().encodeToString(salt);
+            String dbPassword = SecurityUtil.createHashSaltString(password);
 
             statement.setString("Email", email);
             statement.setString("Password", dbPassword);
@@ -50,7 +44,7 @@ public class UserDataAccess {
             statement.registerOutParameter("Success", java.sql.Types.BIT);
             statement.execute();
             success = statement.getBoolean("Success");
-        } catch (SQLException | NoSuchAlgorithmException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return success;
@@ -69,11 +63,7 @@ public class UserDataAccess {
                 if (dbPassword == null) {
                     break;
                 }
-                String[] hashSalt = dbPassword.split(":");
-                String storedHash = hashSalt[0];
-                byte[] salt = Base64.getDecoder().decode(hashSalt[1]);
-                String hash = hashPassword(password, salt);
-                if (hash.equals(storedHash)) {
+                if (SecurityUtil.equalsHashSalt(dbPassword, password)) {
                     int id = res.getInt("id");
                     String firstName = res.getString("first_name");
                     String lastName = res.getString("last_name");
@@ -98,7 +88,7 @@ public class UserDataAccess {
                     break;
                 }
             }
-        } catch (SQLException | NoSuchAlgorithmException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
@@ -116,6 +106,68 @@ public class UserDataAccess {
             e.printStackTrace();
         }
         return success;
+    }
+
+    public boolean storeUserLogin(int id, String token) {
+        String sql = "update [account] set [login_token] = ? where [id] = ?;";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setString(1, token);
+            statement.setInt(2, id);
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean removeUserLogin(int id) {
+        String sql = "update [account] set [login_token] = null where [id] = ?;";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public User getUserByLoginToken(String token) {
+        User user = null;
+        String sp = "{call spGetUserByLoginToken(?)}";
+        try (CallableStatement statement = DataAccess.getConnection().prepareCall(sp)) {
+            statement.setString("Token", token);
+            statement.execute();
+            ResultSet res = statement.getResultSet();
+            while (res.next()) {
+                int id = res.getInt("id");
+                String firstName = res.getString("first_name");
+                String lastName = res.getString("last_name");
+                Gender gender = res.getBoolean("gender") ? Gender.Female : Gender.Male;
+                LocalDate dob = null;
+                if (res.getDate("date_of_birth") != null) {
+                    dob = res.getDate("date_of_birth").toLocalDate();
+                }
+                String profileImagePath = res.getString("profile_image");
+
+                int accountId = res.getInt("account_id");
+                String accountEmail = res.getString("email");
+                boolean activated = res.getBoolean("activated");
+                Role role = Role.valueOf(res.getString("role_name"));
+                LocalDateTime createdAt = null;
+                if (res.getTimestamp("created_at") != null) {
+                    createdAt = res.getTimestamp("created_at").toLocalDateTime();
+                }
+                user = new User(
+                        id, new Account(accountId, accountEmail, activated, role, createdAt),
+                        firstName, lastName, gender, dob, profileImagePath);
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public User getUserByEmail(String email) {
@@ -178,15 +230,13 @@ public class UserDataAccess {
     public boolean updatePassword(String email, String password) {
         String sql = "update [account] set [password_hash] = ? where [email] = ?";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
-            byte[] salt = generateSalt();
-            String hash = hashPassword(password, salt);
-            String dbPassword = hash + ":" + Base64.getEncoder().encodeToString(salt);
+            String dbPassword = SecurityUtil.createHashSaltString(password);
 
             statement.setString(1, dbPassword);
             statement.setString(2, email);
             statement.execute();
             return true;
-        } catch (SQLException | NoSuchAlgorithmException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -231,20 +281,6 @@ public class UserDataAccess {
         return success;
     }
 
-    private byte[] generateSalt() {
-        byte[] salt = new byte[16];
-        new SecureRandom().nextBytes(salt);
-        return salt;
-    }
-
-    private String hashPassword(String password, byte[] salt)
-            throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.reset();
-        md.update(salt);
-        byte[] hash = md.digest(password.getBytes());
-        return Base64.getEncoder().encodeToString(hash);
-    }
     public  boolean isOnlyLetters(String input) {
         return input != null && input.matches("[a-zA-Z]+");
     }
@@ -340,15 +376,13 @@ public class UserDataAccess {
     public boolean changePassword(int accountId, String passwordHash) {
         String sql = "UPDATE [dbo].[account] SET [password_hash] = ? WHERE id= ?";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
-            byte[] salt = generateSalt();
-            String hash = hashPassword(passwordHash, salt);
-            String dbPassword = hash + ":" + Base64.getEncoder().encodeToString(salt);
+            String dbPassword = SecurityUtil.createHashSaltString(passwordHash);
 
             statement.setString(1, dbPassword);
             statement.setInt(2, accountId);
             statement.execute();
             return true;
-        } catch (SQLException | NoSuchAlgorithmException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;

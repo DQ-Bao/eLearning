@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.UUID;
+
 import data_access.UserDataAccess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -71,7 +73,9 @@ public class LoginController extends HttpServlet {
             }
             req.getSession().setAttribute("user", user);
             if (rememberMe != null && rememberMe.equals("true")) {
-                Cookie userCookie = new Cookie("user_email", user.getAccount().getEmail());
+                String loginToken = UUID.randomUUID().toString();
+                userDAO.storeUserLogin(user.getAccount().getId(), loginToken);
+                Cookie userCookie = new Cookie("user_login", loginToken);
                 userCookie.setMaxAge(60 * 60 * 24 * 7);
                 resp.addCookie(userCookie);
             }

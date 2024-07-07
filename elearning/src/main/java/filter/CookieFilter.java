@@ -25,9 +25,9 @@ public class CookieFilter implements Filter {
             Cookie[] cookies = req.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("user_email")) {
-                        String email = cookie.getValue();
-                        User user = UserDataAccess.getInstance().getUserByEmail(email);
+                    if (cookie.getName().equals("user_login")) {
+                        String token = cookie.getValue();
+                        User user = UserDataAccess.getInstance().getUserByLoginToken(token);
                         if (user != null) {
                             session = req.getSession(true);
                             session.setAttribute("user", user);

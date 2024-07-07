@@ -11,6 +11,19 @@ begin
 end
 go
 
+create or alter procedure spGetUserByLoginToken
+	@Token char(64)
+as
+begin
+	select u.[id], u.[first_name], u.[last_name], u.[gender], u.[date_of_birth], u.[profile_image],
+	acc.[id] as [account_id], acc.[email], acc.[password_hash], acc.[activated], acc.[created_at], r.[name] as [role_name]
+	from [user] as u
+	join [account] as acc on u.[account_id] = acc.[id]
+	join [role] as r on acc.[role_id] = r.[id]
+	where acc.[login_token] = @Token;
+end
+go
+
 create or alter procedure spRegisterAccount
 	@Email varchar(max),
 	@Password char(69),
