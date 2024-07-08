@@ -281,6 +281,23 @@ public class UserDataAccess {
         return success;
     }
 
+    public boolean updateUserProfile(int id, User data) {
+        String sql = "update [user] set [first_name] = ?, [last_name] = ?, [gender] = ?, [date_of_birth] = ? where [id] = ?;";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setString(1, data.getFirstName());
+            statement.setString(2, data.getLastName());
+            statement.setBoolean(3, data.getGender() == User.Gender.Female);
+            java.sql.Date date = data.getDateOfBirth() == null ? null : java.sql.Date.valueOf(data.getDateOfBirth());
+            statement.setDate(4, date);
+            statement.setInt(5, id);
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+//=============================================================
     public  boolean isOnlyLetters(String input) {
         return input != null && input.matches("[a-zA-Z]+");
     }
@@ -348,15 +365,17 @@ public class UserDataAccess {
     }
     
 
-    public boolean updateProfileImage(int accountId, String profileImage) {
-        String sql = "UPDATE [dbo].[user] SET [profile_image] = ? WHERE [account_id] = ?";
+    public boolean updateProfileImage(int id, String profileImagePath) {
+        String sql = "update [user] set [profile_image] = ? where [id] = ?;";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
-            statement.setString(1, profileImage);
-            statement.setInt(2, accountId);
+            statement.setString(1, profileImagePath);
+            statement.setInt(2, id);
             if (statement.executeUpdate() > 0) {
                 return true;
             }
-        } catch(SQLException e){}
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
     

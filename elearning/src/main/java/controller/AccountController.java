@@ -1,11 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.SQLException;
-import java.util.Base64;
 import data_access.UserDataAccess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -25,7 +20,10 @@ public class AccountController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+        User user = (User)req.getSession().getAttribute("user");
+        Account account = user.getAccount();
+        req.setAttribute("account", account);
+        req.getRequestDispatcher("/account_settings.jsp").forward(req, resp);
     }
 
     @Override
@@ -40,15 +38,10 @@ public class AccountController extends HttpServlet {
         User acc = userDAO.authenticate(email, rawPasword);
         if(acc!=null){
             if(newPassword == cfPassword){
-                try {
-                    if(userDAO.changePassword(acc.getId(), newPassword)||userDAO.updateEmail(acc.getId(), email)){
-                        req.setAttribute("message", "update account successfully");
-                    }else{
-                        req.setAttribute("message", "update failed");
-                    }
-                } catch (SQLException e) {
-                    
-                    e.printStackTrace();
+                if(userDAO.changePassword(acc.getId(), newPassword)||userDAO.updateEmail(acc.getId(), email)){
+                    req.setAttribute("message", "update account successfully");
+                }else{
+                    req.setAttribute("message", "update failed");
                 }
             }
         } else {  req.setAttribute("message", "Wrong email or password");}

@@ -6,6 +6,7 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <location>/404.jsp</location>
     </error-page>
     
+    <!-- Filters -->
     <filter>
         <filter-name>CookieFilter</filter-name>
         <filter-class>filter.CookieFilter</filter-class>
@@ -22,6 +23,19 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     <filter-mapping>
         <filter-name>CommonFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UserFilter</filter-name>
+        <filter-class>filter.UserFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/account</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserFilter</filter-name>
+        <url-pattern>/profile</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -46,6 +60,7 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
         <url-pattern>/admin/req</url-pattern>
     </filter-mapping>
 
+    <!-- Servlets -->
     <servlet>
         <servlet-name>AdminController</servlet-name>
         <servlet-class>controller.AdminController</servlet-class>
@@ -182,21 +197,13 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>DeleteAccountController</servlet-name>
-        <servlet-class>controller.DeleteAccountController</servlet-class>
+        <servlet-name>ProfileController</servlet-name>
+        <servlet-class>controller.ProfileController</servlet-class>
+        <multipart-config/>
     </servlet>
     <servlet-mapping>
-        <servlet-name>DeleteAccountController</servlet-name>
-        <url-pattern>/delete</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>UserProfileController</servlet-name>
-        <servlet-class>controller.UserProfileController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserProfileController</servlet-name>
-        <url-pattern>/userpr</url-pattern>
+        <servlet-name>ProfileController</servlet-name>
+        <url-pattern>/profile</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -233,5 +240,14 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
         <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ImageController</servlet-name>
+        <servlet-class>controller.ImageController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImageController</servlet-name>
+        <url-pattern>/img/*</url-pattern>
     </servlet-mapping>
 </web-app>

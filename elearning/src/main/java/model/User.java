@@ -12,6 +12,18 @@ public class User {
     private LocalDate dateOfBirth;
     private String profileImagePath;
 
+    public static Gender stringToGender(String str) {
+        if (str == null) return null;
+        switch (str) {
+            case "Male":
+                return Gender.Male;
+            case "Female":
+                return Gender.Female;
+            default:
+                return null;
+        }
+    }
+
     public User() {
     }
 
@@ -23,6 +35,13 @@ public class User {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.profileImagePath = profileImagePath;
+    }
+
+    public User(String firstName, String lastName, Gender gender, LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int getId() {

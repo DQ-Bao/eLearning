@@ -96,7 +96,7 @@
                             <div class="mb-2 d-flex align-items-center">
                                 <button type="button" id="add-acc-btn" class="btn btn-primary me-2">Add Account</button>
                                 <div class="form-group">
-                                    <input type="file" name="acc_file" class="form-control ms-2">
+                                    <input type="file" name="acc_file" accept=".csv" class="form-control ms-2">
                                 </div>
                             </div>
                             <table class="table table-bordered table-striped">

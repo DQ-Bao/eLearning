@@ -111,7 +111,7 @@
                                                 </c:choose>
                                             </a>
                                             <ul class="sub-menu collapse" id="user-submenu">
-                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/user_profile.jsp">Profile</a></li>
+                                                <li class="nav-item"><a href="${pageContext.request.contextPath}/profile">Profile</a></li>
                                                 <li class="nav-item"><a href="${pageContext.request.contextPath}/account">Account</a></li>
                                                 <li class="nav-item"><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
                                             </ul>
