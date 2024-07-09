@@ -135,6 +135,24 @@ public class RequestDataAccess {
         return request;
     }
 
+    public boolean addContactRequest(ContactRequest req) {
+        String sql = "insert into [request]([type], [requester_name], [message], [status], [contact_representative_name], [contact_email], [contact_phone]) values (?, ?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {
+            statement.setString(1, req.getType().name());
+            statement.setString(2, req.getRequesterName());
+            statement.setString(3, req.getMessage());
+            statement.setString(4, req.getStatus().name());
+            statement.setString(5, req.getRepresentativeName());
+            statement.setString(6, req.getEmail());
+            statement.setString(7, req.getPhone());
+            statement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean updateRequest(int id, Request.Status status, String reply) {
         String sql = "update [request] set [status] = ?, [reply_message] = ? where [id] = ?;";
         try (PreparedStatement statement = DataAccess.getConnection().prepareStatement(sql)) {

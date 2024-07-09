@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import data_access.UserDataAccess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -81,11 +83,23 @@ public class ProfileController extends HttpServlet {
             lastName = lastName.trim();
             String genderStr = req.getParameter("gender");
             String dobStr = req.getParameter("dob");
-            if (!validator.validateName(firstName) 
-            || !validator.validateName(lastName)
-            || !validator.validateEnum(User.Gender.class, genderStr)
-            || !validator.validateDate(dobStr, "yyyy-MM-dd")) {
-                req.getSession().setAttribute("message", new Message(Message.Type.Error, "Wrong data format"));
+
+            List<String> errors = new ArrayList<>();
+            if (!validator.validateName(firstName) || !validator.validateName(lastName)) {
+                errors.add("Names must not contains special characters.");
+            }
+            if (!validator.validateEnum(User.Gender.class, genderStr)) {
+                errors.add("Empty or wrong gender format.");
+            }
+            if (!validator.validateDate(dobStr, "yyyy-MM-dd")) {
+                errors.add("Empty or wrong date format.");
+            }
+            if (!errors.isEmpty()) {
+                Message message = new Message.MessageBuilder(Message.Type.Error)
+                    .addBoldText("Wrong data format").addLineBreak()
+                    .addList(errors)
+                    .build();
+                req.getSession().setAttribute("message", message);
                 resp.sendRedirect(req.getContextPath() + "/profile");
                 return;
             }

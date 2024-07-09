@@ -243,6 +243,15 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ContactController</servlet-name>
+        <servlet-class>controller.ContactController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ContactController</servlet-name>
+        <url-pattern>/contact</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ImageController</servlet-name>
         <servlet-class>controller.ImageController</servlet-class>
     </servlet>

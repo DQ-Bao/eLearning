@@ -101,4 +101,8 @@ public class ValidationUtil {
         }
         return false;
     }
+
+    public boolean validatePhone(String phone) {
+        return phone != null && phone.matches("[0-9]{3}-[0-9]{3}-[0-9]{4}");
+    }
 }

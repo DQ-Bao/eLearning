@@ -31,7 +31,7 @@
                     </c:when>
                 </c:choose>
                 <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">
-                    <c:out value="${message.message}"/>
+                    <c:out value="${message.message}" escapeXml="false"/>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>

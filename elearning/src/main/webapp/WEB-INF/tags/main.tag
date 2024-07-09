@@ -96,7 +96,7 @@
                                     </li>
                                     <li class="nav-item"><a href="${pageContext.request.contextPath}/courses">Courses</a></li>
                                     <li class="nav-item"><a href="${pageContext.request.contextPath}/about.jsp">About</a></li>
-                                    <li class="nav-item"><a href="${pageContext.request.contextPath}/contact.jsp">Contact</a></li>
+                                    <li class="nav-item"><a href="${pageContext.request.contextPath}/contact">Contact</a></li>
                                     <jsp:invoke fragment="nav"/>
                                     <c:if test="${not empty sessionScope.user}">
                                         <li class="nav-item">
@@ -146,7 +146,7 @@
                     </c:when>
                 </c:choose>
                 <div class="col-6 alert ${alert_type} alert-dismissible fade show position-fixed" role="alert" style="z-index: 1050;">
-                    <c:out value="${message.message}"/>
+                    <c:out value="${message.message}" escapeXml="false"/>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>

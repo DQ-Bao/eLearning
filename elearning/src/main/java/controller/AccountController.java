@@ -11,15 +11,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import model.User;
+import util.ValidationUtil;
 import model.Message;
 
 public class AccountController extends HttpServlet {
-
     private UserDataAccess userDAO;
+    private ValidationUtil validator;
     
     @Override
     public void init() throws ServletException {
-        this.userDAO = UserDataAccess.getInstance();
+        userDAO = UserDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
@@ -57,7 +59,11 @@ public class AccountController extends HttpServlet {
         if (action.equals("change_pw")) {
             String oldPassword = req.getParameter("old_password");
             String newPassword = req.getParameter("new_password");
-    
+            if (!validator.validatePassword(newPassword)) {
+                req.getSession().setAttribute("message", new Message(Message.Type.Error, "Wrong password format"));
+                resp.sendRedirect(req.getContextPath() + "/account");
+                return;
+            }    
             User acc = userDAO.authenticate(user.getAccount().getEmail(), oldPassword);
             if (acc == null) {
                 req.getSession().setAttribute("message", new Message(Message.Type.Error, "Wrong password"));
