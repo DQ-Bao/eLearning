@@ -5,6 +5,7 @@ import data_access.TeacherDataAccess;
 import model.Quiz;
 import model.QuizData;
 import model.Teacher;
+import util.ValidationUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,18 +20,20 @@ import com.google.gson.Gson;
 public class QuizController extends HttpServlet {
     private CourseContentDataAccess quizDAO;
     private TeacherDataAccess teacherDAO;
+    private ValidationUtil validator;
     private QuizData quizData;
 
     @Override
     public void init() throws ServletException {
         quizDAO = CourseContentDataAccess.getInstance();
         teacherDAO = TeacherDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getPathInfo();
-        if (idStr == null || idStr.equals("/") || !idStr.substring(1).matches("^[0-9]+$")) {
+        if (idStr == null || idStr.equals("/") || !validator.validateInt(idStr.substring(1))) {
             resp.sendError(404);
             return;
         }
@@ -45,7 +48,7 @@ public class QuizController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getPathInfo();
-        if (idStr == null || idStr.equals("/") || !idStr.substring(1).matches("^[0-9]+$")) {
+        if (idStr == null || idStr.equals("/") || !validator.validateInt(idStr.substring(1))) {
             resp.sendError(404);
             return;
         }

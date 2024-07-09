@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 import model.Message;
 
@@ -56,14 +57,15 @@ public class LoginController extends HttpServlet {
             resp.sendError(404);
             return;
         }
+        HttpSession session = req.getSession();
         if (action.equals("login")) {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
             String rememberMe = req.getParameter("remember_me");
             User user = userDAO.authenticate(email, password);
             if (user == null) {
-                req.setAttribute("message", new Message(Message.Type.Error, "Login Failed!"));
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                session.setAttribute("message", new Message(Message.Type.Error, "Login Failed!"));
+                resp.sendRedirect(req.getContextPath() + "/login");
                 return;
             }
             if (!user.getAccount().isActivated()) {

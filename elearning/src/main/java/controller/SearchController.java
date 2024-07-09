@@ -20,10 +20,11 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String query = req.getParameter("search_query");
-        if (query == null || query.equals("")) {
+        if (query == null) {
             resp.sendError(404);
             return;
         }
+        query = query.trim();
         List<Course> courseList = dao.searchCourses(query);
         req.setAttribute("course_list", courseList);
         req.getRequestDispatcher("/search.jsp").forward(req, resp);

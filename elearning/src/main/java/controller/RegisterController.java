@@ -4,20 +4,25 @@ import data_access.UserDataAccess;
 import model.User;
 import model.Message;
 import model.Account.Role;
+import util.ValidationUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class RegisterController extends HttpServlet {
     private UserDataAccess dao;
+    private ValidationUtil validator;
 
     @Override
     public void init() throws ServletException {
-        this.dao = UserDataAccess.getInstance();
+        dao = UserDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
@@ -57,17 +62,23 @@ public class RegisterController extends HttpServlet {
             resp.sendError(404);
             return;
         }
+        HttpSession session = req.getSession();
         if (action.equals("register")) {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            
-            if (dao.register(email, password, Role.Student)) {
-                String redirectUrl = req.getContextPath() + "/register?action=activate_account";
-                resp.sendRedirect(req.getContextPath() + "/verify?email=" + URLEncoder.encode(email, "UTF-8") + "&redirect_url=" + URLEncoder.encode(redirectUrl, "UTF-8"));
+            if (validator.validateEmail(email) && validator.validatePassword(password)) {
+                if (dao.register(email, password, Role.Student)) {
+                    String redirectUrl = req.getContextPath() + "/register?action=activate_account";
+                    resp.sendRedirect(req.getContextPath() + "/verify?email=" + URLEncoder.encode(email, "UTF-8") + "&redirect_url=" + URLEncoder.encode(redirectUrl, "UTF-8"));
+                }
+                else {
+                    session.setAttribute("message", new Message(Message.Type.Error, "Register failed!"));
+                    resp.sendRedirect(req.getContextPath() + "/register");
+                }
             }
             else {
-                req.setAttribute("message", new Message(Message.Type.Error, "Register failed!"));
-                req.getRequestDispatcher("register.jsp").forward(req, resp);
+                session.setAttribute("message", new Message(Message.Type.Error, "Wrong email or password format"));
+                resp.sendRedirect(req.getContextPath() + "/register");
             }
             return;
         }
@@ -75,13 +86,13 @@ public class RegisterController extends HttpServlet {
             String email = req.getParameter("email");
             User user = dao.getUserByEmail(email);
             if (user == null) {
-                req.setAttribute("message", new Message(Message.Type.Error, "Invalid user!"));
-                req.getRequestDispatcher("register.jsp").forward(req, resp);
+                session.setAttribute("message", new Message(Message.Type.Error, "Invalid user!"));
+                resp.sendRedirect(req.getContextPath() + "/register");
             }
             else {
                 if (dao.isPasswordSet(email)) {
-                    req.setAttribute("message", new Message(Message.Type.Error, "Account is already registered!"));
-                    req.getRequestDispatcher("register.jsp").forward(req, resp);
+                    session.setAttribute("message", new Message(Message.Type.Error, "Account is already registered!"));
+                    resp.sendRedirect(req.getContextPath() + "/register");
                     return;
                 }
                 String redirectUrl = req.getContextPath() + "/register?action=check_email";
@@ -91,12 +102,18 @@ public class RegisterController extends HttpServlet {
         else if (action.equals("set_pw")) {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            if (dao.updatePassword(email, password)) {
-                dao.activate(email);
-                resp.sendRedirect(req.getContextPath() + "/login");
+            if (validator.validatePassword(password)) {
+                if (dao.updatePassword(email, password)) {
+                    dao.activate(email);
+                    resp.sendRedirect(req.getContextPath() + "/login");
+                }
+                else {
+                    req.setAttribute("message", new Message(Message.Type.Error, "Set password failed!"));
+                    req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
+                }
             }
             else {
-                req.setAttribute("message", new Message(Message.Type.Error, "Set password failed!"));
+                req.setAttribute("message", new Message(Message.Type.Error, "Wrong password format"));
                 req.getRequestDispatcher("set_pw.jsp").forward(req, resp);
             }
         }

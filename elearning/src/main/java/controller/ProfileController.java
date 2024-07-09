@@ -13,13 +13,16 @@ import jakarta.servlet.http.Part;
 import model.Message;
 import model.User;
 import util.ImageUtil;
+import util.ValidationUtil;
 
 public class ProfileController extends HttpServlet {
     private UserDataAccess userDAO;
+    private ValidationUtil validator;
 
     @Override
     public void init() throws ServletException {
-        this.userDAO = UserDataAccess.getInstance();
+        userDAO = UserDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
@@ -61,10 +64,8 @@ public class ProfileController extends HttpServlet {
                     req.getSession().setAttribute("message", new Message(Message.Type.Error, "Update profile image failed!"));
                 }
                 else {
-                    User newUser = userDAO.getUserByEmail(user.getAccount().getEmail());
-                    if (newUser != null) {
-                        req.getSession().setAttribute("user", newUser);
-                    }
+                    user.setProfileImagePath(imagePath);
+                    req.getSession().setAttribute("user", user);
                     req.getSession().setAttribute("message", new Message(Message.Type.Success, "Update profile image success!"));
                 }
                 resp.sendRedirect(req.getContextPath() + "/profile");
@@ -75,23 +76,32 @@ public class ProfileController extends HttpServlet {
         }
         else if (action.equals("update_profile")) {
             String firstName = req.getParameter("first_name");
+            firstName = firstName.trim();
             String lastName = req.getParameter("last_name");
-            User.Gender gender = User.stringToGender(req.getParameter("gender"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            lastName = lastName.trim();
+            String genderStr = req.getParameter("gender");
             String dobStr = req.getParameter("dob");
-            LocalDate dob = null;
-            if (dobStr != null) {
-                dob = LocalDate.parse(dobStr, formatter);
+            if (!validator.validateName(firstName) 
+            || !validator.validateName(lastName)
+            || !validator.validateEnum(User.Gender.class, genderStr)
+            || !validator.validateDate(dobStr, "yyyy-MM-dd")) {
+                req.getSession().setAttribute("message", new Message(Message.Type.Error, "Wrong data format"));
+                resp.sendRedirect(req.getContextPath() + "/profile");
+                return;
             }
+            User.Gender gender = User.Gender.valueOf(genderStr);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dob = LocalDate.parse(dobStr, formatter);
             User data = new User(firstName, lastName, gender, dob);
             if (!userDAO.updateUserProfile(id, data)) {
                 req.getSession().setAttribute("message", new Message(Message.Type.Error, "Update profile failed!"));
             }
             else {
-                User newUser = userDAO.getUserByEmail(user.getAccount().getEmail());
-                if (newUser != null) {
-                    req.getSession().setAttribute("user", newUser);
-                }
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setGender(gender);
+                user.setDateOfBirth(dob);
+                req.getSession().setAttribute("user", user);
                 req.getSession().setAttribute("message", new Message(Message.Type.Success, "Update profile success!"));
             }
             resp.sendRedirect(req.getContextPath() + "/profile");

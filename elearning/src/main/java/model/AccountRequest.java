@@ -15,7 +15,13 @@ public class AccountRequest extends Request {
         public static class AccountRoleConverter extends AbstractBeanField<Account.Role, String> {
             @Override
             protected Object convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
-                return Account.stringToRole(value);
+                try {
+                    Account.Role role = Account.Role.valueOf(value);
+                    return role;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
             }
         }
         @SerializedName("email")

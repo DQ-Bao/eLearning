@@ -13,6 +13,7 @@ import model.Message;
 import model.Request;
 import util.MailUtil;
 import util.PropertyUtil;
+import util.ValidationUtil;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,17 +33,19 @@ import data_access.UserDataAccess;
 public class AdminRequestController extends HttpServlet {
     private RequestDataAccess reqDAO;
     private UserDataAccess userDAO;
+    private ValidationUtil validator;
 
     @Override
     public void init() throws ServletException {
         reqDAO = RequestDataAccess.getInstance();
         userDAO = UserDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("id");
-        if (idStr == null || idStr.isEmpty() || !idStr.matches("^[0-9]+$")) {
+        if (validator.validateInt(idStr)) {
             resp.sendError(404);
             return;
         }
@@ -63,8 +66,14 @@ public class AdminRequestController extends HttpServlet {
             resp.sendError(404);
             return;
         }
+        HttpSession session = req.getSession();
         if (action.equals("add_account")) {
-            addAccounts(req);
+            if (!addAccounts(req)) {
+                session.setAttribute("message", new Message(Message.Type.Error, "Add accounts failed!"));
+            }
+            else {
+                session.setAttribute("message", new Message(Message.Type.Success, "Accounts added!"));
+            }
             resp.sendRedirect(req.getContextPath() + "/admin/home");
         }
         else if (action.equals("send_contact_reply")) {
@@ -78,47 +87,49 @@ public class AdminRequestController extends HttpServlet {
                 String fromEmailAddress = PropertyUtil.getProperty("/private/application.properties", "system.mail");
                 MailUtil mail = MailUtil.getInstance();
                 mail.sendEmail(verifyEmail, fromEmailAddress, "Thank for contacting us!", replyHtml, "text/html");
+                session.setAttribute("message", new Message(Message.Type.Info, "Message has been sent to requester's email"));
             } catch (IOException | MessagingException e) {
                 e.printStackTrace();
             }
 
             String idStr = req.getParameter("id");
-            if (idStr == null || idStr.isEmpty() || !idStr.matches("^[0-9]+$")) {
+            if (validator.validateInt(idStr)) {
                 resp.sendError(404);
                 return;
             }
             int id = Integer.parseInt(idStr);
             String status = req.getParameter("status");
-            try {
+            if (validator.validateEnum(Request.Status.class, status)) {
                 reqDAO.updateRequest(id, Request.Status.valueOf(status), mdReply);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             resp.sendRedirect(req.getContextPath() + "/admin/home");
         }
         else if (action.equals("send_account_reply")) {
             String idStr = req.getParameter("id");
-            if (idStr == null || idStr.isEmpty() || !idStr.matches("^[0-9]+$")) {
+            if (validator.validateInt(idStr)) {
                 resp.sendError(404);
                 return;
             }
             int id = Integer.parseInt(idStr);
             String reply = req.getParameter("reply_message");
             String statusStr = req.getParameter("status");
-            try {
+            if (validator.validateEnum(Request.Status.class, statusStr)) {
                 Request.Status status = Request.Status.valueOf(statusStr);
                 if (status == Request.Status.Accepted) {
-                    addAccounts(req);
+                    if (!addAccounts(req)) {
+                        session.setAttribute("message", new Message(Message.Type.Error, "Add accounts failed!"));
+                    }
+                    else {
+                        session.setAttribute("message", new Message(Message.Type.Success, "Accounts added!"));
+                    }
                 }
                 reqDAO.updateRequest(id, status, reply);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             resp.sendRedirect(req.getContextPath() + "/admin/home");
         }
         else if (action.equals("remove_request")) {
             String idStr = req.getParameter("id");
-            if (idStr == null || idStr.isEmpty() || !idStr.matches("^[0-9]+$")) {
+            if (validator.validateInt(idStr)) {
                 resp.sendError(404);
                 return;
             }
@@ -127,35 +138,51 @@ public class AdminRequestController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/admin/home");
         }
     }
-    private void addAccounts(HttpServletRequest req) throws IOException, ServletException {
+    private boolean addAccounts(HttpServletRequest req) throws IOException, ServletException {
         List<AccountData> addList = new ArrayList<>();
         if (req.getContentType() != null && req.getContentType().toLowerCase().indexOf("multipart/form-data") > -1) {
             Part filePart = req.getPart("acc_file");
             if (filePart != null && filePart.getSize() > 0) {
-                addList = new CsvToBeanBuilder<AccountData>(new InputStreamReader(filePart.getInputStream()))
+                List<AccountData> temp = new CsvToBeanBuilder<AccountData>(new InputStreamReader(filePart.getInputStream()))
                     .withType(AccountData.class)
                     .withFieldAsNull(CSVReaderNullFieldIndicator.BOTH)
                     .build().parse();
+                for (AccountData data : temp) {
+                    boolean valid = validator.validateEmail(data.getEmail()) && data.getRole() != null;
+                    if (data.getRole() == Account.Role.Manager) {
+                        valid = validator.validateCountry(data.getCountry());
+                    }
+                    if (valid) {
+                        addList.add(data);
+                    }
+                }
             }
         }
 
         int cnt = 0;
         while (req.getParameter("email_" + cnt) != null) {
             AccountData data = new AccountData();
-            data.setEmail(req.getParameter("email_" + cnt));
-            data.setRole(Account.stringToRole(req.getParameter("role_" + cnt)));
-            data.setManager(req.getParameter("manager_" + cnt));
-            data.setCountry(req.getParameter("country_" + cnt));
-            data.setPosition(req.getParameter("position_" + cnt));
+            String email = req.getParameter("email_" + cnt);
+            String roleStr = req.getParameter("role_" + cnt);
+            String manager = req.getParameter("manager_" + cnt);
+            String country = req.getParameter("country_" + cnt);
+            String position = req.getParameter("position_" + cnt);
+            boolean valid = validator.validateEmail(email) && validator.validateEnum(Account.Role.class, roleStr);
+            if (valid && Account.Role.valueOf(roleStr) == Account.Role.Manager) {
+                valid = validator.validateCountry(country);
+            }
+            if (!valid) {
+                cnt++;
+                continue;
+            }
+            data.setEmail(email);
+            data.setRole(Account.Role.valueOf(roleStr));
+            data.setManager(manager);
+            data.setCountry(country);
+            data.setPosition(position);
             addList.add(data);
             cnt++;
         }
-        HttpSession session = req.getSession();
-        if (!userDAO.addAccountList(addList)) {
-            session.setAttribute("message", new Message(Message.Type.Error, "Add accounts failed!"));
-        }
-        else {
-            session.setAttribute("message", new Message(Message.Type.Success, "Accounts added!"));
-        }
+        return userDAO.addAccountList(addList);
     }
 }

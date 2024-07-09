@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Message;
 import model.User;
+import util.ValidationUtil;
 
 import java.io.IOException;
 
@@ -13,10 +14,12 @@ import data_access.EnrollmentDataAccess;
 
 public class EnrollController extends HttpServlet {
     private EnrollmentDataAccess dao;
+    private ValidationUtil validator;
 
     @Override
     public void init() throws ServletException {
         dao = EnrollmentDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
@@ -28,7 +31,7 @@ public class EnrollController extends HttpServlet {
         }
         if (action.equals("enroll")) {
             String idStr = req.getParameter("course_id");
-            if (idStr == null || !idStr.matches("^[0-9]+$")) {
+            if (!validator.validateInt(idStr)) {
                 resp.sendError(404);
                 return;
             }

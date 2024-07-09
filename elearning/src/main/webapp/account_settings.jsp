@@ -1,124 +1,98 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-  <%@taglib uri="/WEB-INF/tlds/tag" prefix="t" %>
-    <t:main>
-      <jsp:attribute name="head">
+<%@taglib uri="/WEB-INF/tlds/tag" prefix="t" %>
+<t:main>
+    <jsp:attribute name="head">
         <style>
-          .button {
-            background-color: #4CAF50;
-            /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-          }
+            .button .delete-btn::before {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 0;
+                background-color: #EF5B5B;
+                content: "";
+                -webkit-transition: all 0.4s ease-in-out;
+                transition: all 0.4s ease-in-out;
+                z-index: -1;
+            }
         </style>
-      </jsp:attribute>
-
-      <jsp:attribute name="script">
+    </jsp:attribute>
+    <jsp:attribute name="script">
         <script>
-          function showAccountSection() {
-            document.getElementById("accountSection").style.display = "block";
-            document.getElementById("purchaseHistorySection").style.display = "none";
-          }
-
-          function showPurchaseHistory() {
-            document.getElementById("accountSection").style.display = "none";
-            document.getElementById("purchaseHistorySection").style.display = "block";
-          }
-
-          function confirmDelete() {
-            document.getElementById("deleteConfirmation").style.display = "block";
-            document.getElementById("deleteButton").style.display = "inline";
-            document.getElementById("cancelButton").style.display = "inline";
-          }
-
-          function cancelDelete() {
-            document.getElementById("deleteConfirmation").style.display = "none";
-            document.getElementById("deleteButton").style.display = "none";
-            document.getElementById("cancelButton").style.display = "none";
-          }
-
-          // This function needs implementation to send a delete account request  
-          function deleteAccount() {
-            // Implement logic to send a delete account request to the server
-            alert("Account deleted successfully!");
-            // Redirect to login page or handle account deletion as needed
-          }
+            function checkPassword() {
+                const password = document.getElementById("new-password");
+                const confirmPassword = document.getElementById("confirm-password");
+                const submit = document.getElementById("submit");
+                if (password.value !== "" && password.value === confirmPassword.value) {
+                    submit.disabled = false;
+                }
+                else {
+                    submit.disabled = true;
+                }
+            }
         </script>
-      </jsp:attribute>
-
-      <jsp:body>
-
-        <h1>My Account</h1>
-
-        <div class="row"> <!-- Cái class row là để hiển thị trên một dòng -->
-          <!-- Bootstrap thì một dòng chia ra làm 12 phần, chỗ này dùng col-3 tức là nó chiếm 3 phần, phần kia mình để col-9, để cộng lại nó vừa đủ một dòng -->
-          <div class="col-3 nav nav-pills flex-column">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#settings" type="button"
-              aria-controls="settings" aria-selected="true">Settings</button>
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#purchase-history" type="button"
-              aria-controls="purchase-history" aria-selected="true">Purchase History</button>
-          </div>
-
-          <div class="col-9">
-            <div class="tab-content">
-              <div class="tab-pane fade show active" id="settings">
-                <div id="accountSection">
-                  <h2>Account Management</h2>
-                  <form action="/elearning/account" method="post">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required><br>
-                    <label for="oldPassword">Old password:</label>
-                    <input type="password" id="oldPassword" name="oldPassword" value=""><br>
-                    <label for="newPassword">New Password:</label>
-                    <input type="password" id="newPassword" name="newPassword"><br>
-                    <label for="cfPassword">Confirm New Password:</label>
-                    <input type="password" id="cfPassword" name="cfPassword"><br>
-                    <button type="submit">Update Account</button>
-                    <button type="button" onclick="confirmDelete()">Delete Account</button>
-                  </form>
-                  <p>${message}</p>
-                  <p id="deleteConfirmation" style="display: none;">Are you sure you want to delete your account? This
-                    action
-                    cannot be undone.</p>
-                  <button type="button" id="deleteButton" style="display: none;"
-                    onclick="deleteAccount()">Delete</button>
-                  <button type="button" id="cancelButton" style="display: none;"
-                    onclick="cancelDelete()">Cancel</button>
+    </jsp:attribute>
+    <jsp:body>
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12">
+                        <ul class="nav flex-column nav-tabs" role="tablist">
+                            <li class="nav-item mb-2" role="presentation">
+                                <button class="nav-link active" id="settings-tab" data-bs-toggle="tab"
+                                    data-bs-target="#settings" type="button" role="tab" aria-controls="settings"
+                                    aria-selected="true"><i class="fa-solid fa-gear"></i> Settings</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="purchase-history-tab" data-bs-toggle="tab"
+                                    data-bs-target="#purchase-history" type="button" role="tab" aria-controls="purchase-history"
+                                    aria-selected="false"><i class="fa-solid fa-cart-shopping"></i> Purchase History</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 col-12">
+                        <div class="tab-content">
+                            <div id="settings" class="container tab-pane fade show active" role="tabpanel" aria-labelledby="settings-tab">
+                                <div class="form-head mb-5">
+                                    <h4 class="title mb-3">Change Password</h4>
+                                    <form action="${pageContext.request.contextPath}/account" method="post" class="form">
+                                        <div class="row">
+                                            <div class="form-group col-12 mb-2">
+                                                <label>Old Password</label>
+                                                <input type="password" name="old_password" class="form-control" required>
+                                            </div>
+                                            <div class="form-group col-12 mb-2">
+                                                <label>New Password</label>
+                                                <input type="password" name="new_password" id="new-password" class="form-control" onkeyup="checkPassword()" required>
+                                            </div>
+                                            <div class="form-group col-12 mb-2">
+                                                <label>Re-enter Password</label>
+                                                <input type="password" id="confirm-password" class="form-control" onkeyup="checkPassword()" required>
+                                            </div>
+                                            <div class="form-group button col-12">
+                                                <button type="submit" name="action" value="change_pw" id="submit" class="btn" disabled>Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="form-head">
+                                    <h4 class="title mb-3">Delete Account</h4>
+                                    <form action="${pageContext.request.contextPath}/account" method="post" class="form">
+                                        <div class="row">
+                                            <div class="form-group button col-12">
+                                                <button type="submit" name="action" value="delete_account" class="btn delete-btn">Delete Account</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="purchase-history" class="container tab-pane fade" role="tabpanel" aria-labelledby="purchase-history-tab">
+                                <p>To do</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-              </div>
-              <div class="tab-pane fade show active" id="purchase-history">
-                <div id="purchaseHistorySection">
-                  <h2>Purchase History</h2>
-                 
-                    <table border="1">
-                      <tr>
-                        <td>img</td>
-                        <td>Title <br>
-                          by Manager</td>
-                        <td>price</td>
-                        <td>Paid day</td>
-                      </tr>
-                      <tr>
-
-                        
-                      </tr>
-                    </table>
-                 
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-
-
-
-        </form>
-      </jsp:body>
-    </t:main>
+    </jsp:body>
+</t:main>

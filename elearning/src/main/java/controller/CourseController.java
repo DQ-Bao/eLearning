@@ -9,7 +9,7 @@ import model.CourseContent;
 import model.Enrollment;
 import model.Teacher;
 import model.User;
-
+import util.ValidationUtil;
 import java.util.List;
 import java.io.IOException;
 import data_access.CourseDataAccess;
@@ -17,10 +17,12 @@ import data_access.EnrollmentDataAccess;
 
 public class CourseController extends HttpServlet {
     private CourseDataAccess dao;
+    private ValidationUtil validator;
 
     @Override
     public void init() throws ServletException {
         dao = CourseDataAccess.getInstance();
+        validator = ValidationUtil.getInstance();
     }
 
     @Override
@@ -31,7 +33,7 @@ public class CourseController extends HttpServlet {
             return;
         }
         idStr = idStr.substring(1);
-        if (!idStr.matches("^[0-9]+$")) {
+        if (!validator.validateInt(idStr)) {
             resp.sendError(404);
             return;
         }
